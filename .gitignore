@@ -39,3 +39,5 @@
 # debug information files
 *.dwo
 .vs
+SFML-Project/x64/Debug/SFML-Project.tlog
+SFML-Project/x64/Debug/SFML-Project.tlog
