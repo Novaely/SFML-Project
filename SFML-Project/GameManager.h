@@ -9,10 +9,10 @@ class GameManager :
     GameManager();
 
 
-    int _score;
-    int _multiplicateur;
-	float _timerBonusScore;
-    float _timerBonusScoreCheck;
+    int score;
+    int multiplicateur;
+	float timerBonusScore;
+    float timerBonusScoreCheck;
 
     /// <summary>
     /// score *2 sur x temps
