@@ -4,10 +4,11 @@ class Player :
     public Character
 {
     private : 
-        int _levelShoter = 1;
-    public : 
-        int GetlevelShoter();
-
-        void SetlevelShoter(int va);
+        int _levelShooter = 1;
+        
+    public:
+        int GetlevelShooter();
+        void SetlevelShooter(int val);
+        __declspec(property(get = GetlevelShooter, put = SetlevelShooter)) int LevelShooter;
 };
 
