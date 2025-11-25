@@ -1,11 +1,17 @@
 #include "CustomVector2f.h"
+#include <iostream>
+#include <cmath>
 
-// ----- Constructors
+#pragma region Constructors
+
 CustomVector2f::CustomVector2f() : x(0.0f), y(0.0f) {}
 CustomVector2f::CustomVector2f(float _xy) : x(_xy), y(_xy) {}
 CustomVector2f::CustomVector2f(float _x, float _y) : x(_x), y(_y) {}
 
-// ----- Operators
+#pragma endregion
+
+#pragma region Operators
+
 //With CustomVector2f
 
 CustomVector2f CustomVector2f::operator+(const CustomVector2f& other) const
@@ -115,3 +121,54 @@ CustomVector2f& CustomVector2f::operator/=(const float& other)
 	y /= other;
 	return *this;
 }
+
+#pragma endregion
+
+#pragma region Methods
+
+float CustomVector2f::GetSquaredMagnitude() const
+{
+	return x * x + y * y;
+}
+
+float CustomVector2f::GetMagnitude() const 
+{
+	return std::sqrt(GetSquaredMagnitude());
+}
+
+CustomVector2f CustomVector2f::GetNormalised() const
+{
+	float length = GetMagnitude();
+	return CustomVector2f(x / length, y / length);
+}
+
+CustomVector2f CustomVector2f::Normalise()
+{
+	*this /= GetMagnitude();
+}
+
+float CustomVector2f::GetAngle() const
+{
+	return std::atan2(y, x);
+}
+
+float CustomVector2f::AngleTo(const CustomVector2f& other) const
+{
+	CustomVector2f vecDirec = other - *this;
+	return vecDirec.GetAngle();
+}
+
+float CustomVector2f::SquaredDistanceTo(const CustomVector2f& other) const
+{
+	CustomVector2f vecDirec = other - *this;
+	return vecDirec.GetSquaredMagnitude();
+}
+
+float CustomVector2f::DistanceTo(const CustomVector2f& other) const
+{
+	CustomVector2f vecDirec = other - *this;
+	return vecDirec.GetMagnitude();
+}
+
+#pragma endregion
+
