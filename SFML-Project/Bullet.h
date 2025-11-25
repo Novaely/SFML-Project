@@ -4,5 +4,14 @@
 class Bullet :
     public Movable
 {
+
+    public:
+        // Constructor 
+        Bullet();
+
+        float damage;
+
+        void Active();
+		void Desactive();
 };
 
