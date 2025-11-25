@@ -8,6 +8,6 @@ class Player :
     public : 
         int GetlevelShoter();
 
-        int SetlevelShoter(int va);
+        void SetlevelShoter(int va);
 };
 
