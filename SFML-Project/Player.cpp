@@ -1,11 +1,11 @@
 #include "Player.h"
 
-int Player::GetlevelShoter() {
-	return _levelShoter;
+int Player::GetlevelShooter() {
+	return _levelShooter;
 }
 
-void Player::SetlevelShoter(int val) {
+void Player::SetlevelShooter(int val) {
 	if (val > 0) {
-		_levelShoter = val;
+		_levelShooter = val;
 	}
 }
