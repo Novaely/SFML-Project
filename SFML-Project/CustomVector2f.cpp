@@ -142,7 +142,7 @@ CustomVector2f CustomVector2f::GetNormalised() const
 	return CustomVector2f(x / length, y / length);
 }
 
-CustomVector2f CustomVector2f::Normalise()
+void CustomVector2f::Normalise()
 {
 	*this /= GetMagnitude();
 }

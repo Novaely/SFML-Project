@@ -1,2 +1,16 @@
-﻿  SFML-Project.cpp
-  SFML-Project.vcxproj -> C:\Documents\IIM\Programmation\Base_C++\SFMLProject\SFML-Project\x64\Debug\SFML-Project.exe
+﻿  CustomVector2f.cpp
+  GameObject.cpp
+C:\Documents\IIM\Programmation\Base_C++\SFMLProject\SFML-Project\SFML-Project\Utils.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  (compiling source file 'GameObject.cpp')
+  
+  Movable.cpp
+C:\Documents\IIM\Programmation\Base_C++\SFMLProject\SFML-Project\SFML-Project\Utils.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  (compiling source file 'Movable.cpp')
+  
+  Utils.cpp
+C:\Documents\IIM\Programmation\Base_C++\SFMLProject\SFML-Project\SFML-Project\Utils.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  (compiling source file 'Utils.cpp')
+  
+  Generating Code...
+Movable.obj : error LNK2019: unresolved external symbol "public: virtual void __cdecl GameObject::Update(float)" (?Update@GameObject@@UEAAXM@Z) referenced in function "public: virtual void __cdecl Movable::Update(float)" (?Update@Movable@@UEAAXM@Z)
+C:\Documents\IIM\Programmation\Base_C++\SFMLProject\SFML-Project\x64\Debug\SFML-Project.exe : fatal error LNK1120: 1 unresolved externals
