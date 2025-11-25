@@ -6,13 +6,19 @@
 
 class GameObject
 {
+	private:
+		ColorType _color = ColorType::None;
 	public:
-		ColorType color = ColorType::None;
+		
 		CustomVector2f position;
 		float rotation;
 
 		virtual void Update(float deltaTime);
 
+		ColorType GetColor();
+		void SetColor(ColorType cal);
+		__declspec(property(get = GetColor, put = SetColor)) int Color;
+	
 	protected :
 		virtual void Draw();
 };
