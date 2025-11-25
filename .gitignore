@@ -32,12 +32,12 @@
 *.a
 
 # Executables
-*.exe
 *.out
 *.app
 
 # debug information files
 *.dwo
 .vs
-SFML-Project/x64/Debug/SFML-Project.tlog
-SFML-Project/x64/Debug/SFML-Project.tlog
+
+SFML-Project/x64/
+SFML-Project/x64

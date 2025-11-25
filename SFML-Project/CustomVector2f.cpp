@@ -142,7 +142,7 @@ CustomVector2f CustomVector2f::GetNormalised() const
 	return CustomVector2f(x / length, y / length);
 }
 
-CustomVector2f CustomVector2f::Normalise()
+void CustomVector2f::Normalise()
 {
 	*this /= GetMagnitude();
 }
@@ -168,6 +168,11 @@ float CustomVector2f::DistanceTo(const CustomVector2f& other) const
 {
 	CustomVector2f vecDirec = other - *this;
 	return vecDirec.GetMagnitude();
+}
+
+float CustomVector2f::Dot(const CustomVector2f& other) const
+{
+	return x * other.x + y * other.y;
 }
 
 #pragma endregion

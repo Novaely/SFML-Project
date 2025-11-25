@@ -6,15 +6,17 @@ class Movable : public GameObject
 {
 	public:
 		float speed;
-		float maxSpeed;
+		float maxInputSpeed;
 
-		float axxeleration;
+		float acceleration;
 		float stopFriction;
 		float turnBackFriction;
 
 		CustomVector2f inputDirection;
 		CustomVector2f moveDirection;
 
+		void Update(float deltaTime) override;
+
 	protected:
-		void Move();
+		void Move(float deltaTime);
 };
