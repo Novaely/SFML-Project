@@ -3,28 +3,28 @@
 
 GameManager::GameManager()
 {
-	_score = 0;
-	_multiplicateur = 1;
-	_timerBonusScore = 0.0f;
-	_timerBonusScoreCheck = 0.0f;
+	score = 0;
+	multiplicateur = 1;
+	timerBonusScore = 0.0f;
+	timerBonusScoreCheck = 0.0f;
 
 
 }
 	void GameManager::Update(float deltaTime)
 	{
-		_timerBonusScore += deltaTime;
-		if (_timerBonusScore > _timerBonusScoreCheck)
+		timerBonusScore += deltaTime;
+		if (timerBonusScore > timerBonusScoreCheck)
 		{
-			_multiplicateur = 1;
+			multiplicateur = 1;
 		}
 	}
 
 
 	void GameManager::BonusScore(float timer, int multiplicateur)
 	{
-		_multiplicateur = multiplicateur;
-		_timerBonusScore = 0;
-		_timerBonusScoreCheck = timer;
+		multiplicateur = multiplicateur;
+		timerBonusScore = 0;
+		timerBonusScoreCheck = timer;
 
 	}
 
