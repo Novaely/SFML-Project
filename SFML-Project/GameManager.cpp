@@ -35,5 +35,5 @@ GameManager::GameManager()
 
 	void GameManager::BonusTir(Player & player)
 	{
-		// Implementation of shooting direction power-up logic
+		player.LevelShooter += 1;
 	}
