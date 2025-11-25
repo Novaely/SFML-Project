@@ -5,12 +5,11 @@ class Bullet :
     public Movable
 {
 
-    // Constructor 
-    Bullet();
-
-
-
     public:
+        // Constructor 
+        Bullet();
+
+
         float damage;
 
         void Active();
