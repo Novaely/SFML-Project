@@ -9,7 +9,6 @@ class Bullet :
         // Constructor 
         Bullet();
 
-
         float damage;
 
         void Active();
