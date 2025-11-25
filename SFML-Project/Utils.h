@@ -1,5 +1,6 @@
 #pragma once
 #include "CustomVector2f.h"
+#include <SFML/Graphics.hpp>
 
 enum class ColorType { None, Rouge, Bleu, Vert };
 enum class Team {None, Player, Enemy };

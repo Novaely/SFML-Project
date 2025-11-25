@@ -7,12 +7,14 @@
 class GameObject
 {
 	public:
+		GameObject();
+
 		ColorType color = ColorType::None;
 		CustomVector2f position;
 		float rotation;
 
-		virtual void Update(float deltaTime);
+		virtual void Update(float deltaTime, sf::RenderWindow& window);
 
-	protected :
-		virtual void Draw();
+	protected:
+		virtual void Draw(sf::RenderWindow& window);
 };

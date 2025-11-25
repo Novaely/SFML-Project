@@ -1,8 +1,14 @@
 #include "Movable.h"
 
-void Movable::Update(float deltaTime)
+Movable::Movable() :
+    GameObject(), speed(0), maxInputSpeed(0), acceleration(0), stopFriction(0), turnBackFriction(0), moveDirection(CustomVector2f(1, 0)), inputDirection(CustomVector2f()) 
 {
-    GameObject::Update(deltaTime);
+
+}
+
+void Movable::Update(float deltaTime, sf::RenderWindow& window)
+{
+    GameObject::Update(deltaTime, window);
 
     Move(deltaTime);
 }
