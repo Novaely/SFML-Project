@@ -1,10 +1,12 @@
 #pragma once
 
 #include "CustomVector2f.h";
+#include "Utils.h";
 
 class GameObject
 {
 	public:
+		ColorType color = ColorType::None;
 		CustomVector2f position;
 		float rotation;
 
