@@ -3,9 +3,8 @@
 
 Bullet::Bullet() : Movable()
 {
-	stopFriction = 0.0f;
-	turnBackFriction = 0.0f;
-	acceleration = 0.0f;
+	shape = new sf::CircleShape();
+
 	Desactive();
 }
 
@@ -22,11 +21,8 @@ void Bullet::Desactive()
 
 void Bullet::Draw(sf::RenderWindow& window)
 {
-	sf::CircleShape shape;
-	shape.setPosition(position.x, position.y);
+	shape->setPosition(position.x, position.y);
 
-	shape.setFillColor(sf::Color::Red);
-	shape.setRadius(5);
-
-	window.draw(shape);
+	shape->setFillColor(sf::Color::Red);
+	((sf::CircleShape*)shape)->setRadius(5);
 }

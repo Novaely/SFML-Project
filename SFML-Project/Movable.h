@@ -7,15 +7,15 @@ class Movable : public GameObject
 	public:
 		Movable();
 
-		float speed;
-		float maxInputSpeed;
+		float speed = 0;
+		float maxInputSpeed = 0;
 
-		float acceleration;
-		float stopFriction;
-		float turnBackFriction;
+		float acceleration = 0;
+		float stopFriction = 0;
+		float turnBackFriction = 0;
 
-		CustomVector2f inputDirection;
-		CustomVector2f moveDirection;
+		CustomVector2f inputDirection = CustomVector2f::right;
+		CustomVector2f moveDirection = CustomVector2f::zero;
 
 		void Update(float deltaTime, sf::RenderWindow& window) override;
 

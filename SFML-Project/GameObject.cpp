@@ -1,10 +1,16 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : position(CustomVector2f(0)), rotation(0), color(ColorType::None) {}
+GameObject::GameObject() {}
 
 void GameObject::Update(float deltaTime, sf::RenderWindow& window)
 {
+	shape->setPosition(position.x, position.y);
+	shape->setRotation(rotation);
+
 	Draw(window);
 }
 
-void GameObject::Draw(sf::RenderWindow& window) {}
+void GameObject::Draw(sf::RenderWindow& window)
+{
+	if (shape != nullptr) window.draw(*shape);
+}

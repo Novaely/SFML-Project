@@ -1,10 +1,6 @@
 #include "Movable.h"
 
-Movable::Movable() :
-    GameObject(), speed(0), maxInputSpeed(0), acceleration(0), stopFriction(0), turnBackFriction(0), moveDirection(CustomVector2f(1, 0)), inputDirection(CustomVector2f()) 
-{
-
-}
+Movable::Movable() : GameObject() {}
 
 void Movable::Update(float deltaTime, sf::RenderWindow& window)
 {
