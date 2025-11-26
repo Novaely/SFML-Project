@@ -1,9 +1,14 @@
 #include "PoolManager.h"
 
 PoolManager::PoolManager()
-	: bulletPool(startNumBullets, new Bullet()), cacEnemyPool(startNumCACEnemy, new CACEnemy()),
+	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, new CACEnemy()),
 	shooterEnemyPool(startNumShooterEnemy, new ShooterEnemy())
 {
+	for (int i = 0; i < startNumBullets; i++)
+	{
+		bulletPool[i] = new Bullet();
+	}
+
 	currentNumBullets = startNumBullets;
 
 	currentNumCACEnemy = startNumCACEnemy;
@@ -15,11 +20,15 @@ PoolManager::PoolManager()
 
 Bullet* PoolManager::ExtractBullet()
 {
-	if (indexOfFirstBullet >= currentNumBullets) AddBulletInPool();
+	if (indexOfFirstBullet >= currentNumBullets)
+	{
+		AddBulletInPool();
+	}
 
 	Bullet* pBullet = bulletPool[indexOfFirstBullet];
 
 	bulletPool[indexOfFirstBullet] = nullptr;
+
 	indexOfFirstBullet++;
 
 	return pBullet;
@@ -44,7 +53,12 @@ void PoolManager::AddBulletInPool()
 {
 	currentNumBullets += 10;
 
-	bulletPool.resize(currentNumBullets, new Bullet());
+	bulletPool.resize(currentNumBullets, nullptr);
+
+	for (int i = indexOfFirstBullet; i < currentNumBullets; i++)
+	{
+		bulletPool[i] = new Bullet();
+	}
 }
 
 void PoolManager::ReturnBullet(Bullet* bullet)

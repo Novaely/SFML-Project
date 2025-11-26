@@ -27,6 +27,6 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         player.Shoot();
-        std::cout << "Shoot (not implement)" << std::endl;
+        //std::cout << "Shoot (not implement)" << std::endl;
     }
 }
