@@ -1,6 +1,9 @@
 #pragma once
 #include "Manager.h"
 #include "Player.h"
+#include "CACEnemy.h"
+#include "ShooterEnemy.h"
+#include <list>
 
 class GameManager :
     public Manager
@@ -13,6 +16,11 @@ class GameManager :
     int multiplicateur;
 	float timerBonusScore;
     float timerBonusScoreCheck;
+
+    Player* player;
+	std::list<CACEnemy*> cacEnemy;
+	std::list<ShooterEnemy*> shooterEnemy;
+
 
     /// <summary>
     /// score *2 sur x temps
