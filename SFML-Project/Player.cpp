@@ -8,8 +8,8 @@ Player::Player() : Character() {
 	pShape->setRadius(10);
 	maxInputSpeed = 200;
 	acceleration = 100;
-	stopFriction = 20;
-	turnBackFriction = 40;
+	stopFriction = 100;
+	turnBackFriction = 200;
 	rotationSpeed = 0;
 	Active();
 }
