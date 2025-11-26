@@ -2,8 +2,16 @@
 
 struct CustomVector2f
 {
-	float x;
-	float y;
+	float x = 0.0f;
+	float y = 0.0f;
+
+	static const CustomVector2f zero;
+	static const CustomVector2f one;
+	static const CustomVector2f minusOne;
+	static const CustomVector2f right;
+	static const CustomVector2f down;
+	static const CustomVector2f left;
+	static const CustomVector2f up;
 
 	// Constructors
 	CustomVector2f();

@@ -2,6 +2,19 @@
 #include <iostream>
 #include <cmath>
 
+#pragma region Consts
+
+const CustomVector2f CustomVector2f::zero = CustomVector2f(0);
+const CustomVector2f CustomVector2f::one = CustomVector2f(1);
+const CustomVector2f CustomVector2f::minusOne = CustomVector2f(-1);
+const CustomVector2f CustomVector2f::right = CustomVector2f(1, 0);
+const CustomVector2f CustomVector2f::down = CustomVector2f(0, -1);
+const CustomVector2f CustomVector2f::left = CustomVector2f(-1, 0);
+const CustomVector2f CustomVector2f::up = CustomVector2f(0, 1);
+
+#pragma endregion
+
+
 #pragma region Constructors
 
 CustomVector2f::CustomVector2f() : x(0.0f), y(0.0f) {}
