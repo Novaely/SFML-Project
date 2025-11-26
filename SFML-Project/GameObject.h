@@ -15,6 +15,8 @@ class GameObject
 
 		virtual void Update(float deltaTime, sf::RenderWindow& window);
 
+		virtual void Active();
+		virtual void Desactive();
 	protected:
 		virtual void Draw(sf::RenderWindow& window);
 };

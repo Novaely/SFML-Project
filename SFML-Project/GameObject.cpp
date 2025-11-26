@@ -7,4 +7,7 @@ void GameObject::Update(float deltaTime, sf::RenderWindow& window)
 	Draw(window);
 }
 
+void GameObject::Active() {}
+void GameObject::Desactive() {}
+
 void GameObject::Draw(sf::RenderWindow& window) {}
