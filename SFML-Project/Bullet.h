@@ -13,5 +13,8 @@ class Bullet :
 
         void Active();
 		void Desactive();
+        
+    protected:
+        void Draw(sf::RenderWindow& window) override;
 };
 

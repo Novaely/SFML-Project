@@ -5,6 +5,8 @@
 class Movable : public GameObject
 {
 	public:
+		Movable();
+
 		float speed;
 		float maxInputSpeed;
 
@@ -15,7 +17,7 @@ class Movable : public GameObject
 		CustomVector2f inputDirection;
 		CustomVector2f moveDirection;
 
-		void Update(float deltaTime) override;
+		void Update(float deltaTime, sf::RenderWindow& window) override;
 
 	protected:
 		void Move(float deltaTime);
