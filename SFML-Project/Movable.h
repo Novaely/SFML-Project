@@ -14,6 +14,7 @@ class Movable : public GameObject
 		float stopFriction = 0;
 		float turnBackFriction = 0;
 		float rotationSpeed = 0;
+		float rotationDirection = 0;
 
 		float damage = 0;
 
@@ -24,4 +25,5 @@ class Movable : public GameObject
 
 	protected:
 		void Move(float deltaTime);
+		void Rotate(float deltaTime);
 };

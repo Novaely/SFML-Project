@@ -7,6 +7,7 @@ void Movable::Update(float deltaTime, sf::RenderWindow& window)
     GameObject::Update(deltaTime, window);
 
     Move(deltaTime);
+    Rotate(deltaTime);
 }
 
 void Movable::Move(float deltaTime)
@@ -37,4 +38,11 @@ void Movable::Move(float deltaTime)
 
     speed = Math::Clamp(speed, 0, maxInputSpeed);
     position += moveDirection * speed * deltaTime;
+}
+
+void Movable::Rotate(float deltaTime)
+{
+    if (rotationDirection != 0) {
+        rotation += rotationDirection * rotationSpeed * deltaTime;
+    }
 }

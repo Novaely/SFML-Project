@@ -21,13 +21,11 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     CustomVector2f inputDirection = { (float)keyRight - (float)keyLeft, (float)keyDown - (float)keyUp };
     player.inputDirection = inputDirection.GetNormalised();
 
+    bool keyRotLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+    bool keyRotRight = sf::Keyboard::isKeyPressed(sf::Keyboard::E);
+    player.rotationDirection = keyRotRight - keyRotLeft;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         std::cout << "Shoot (not implement)" << std::endl;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        std::cout << "Rotation Left! (not implement)" << std::endl;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-        std::cout << "Rotation Right! (not implement)" << std::endl;
     }
 }

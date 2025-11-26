@@ -2,15 +2,18 @@
 
 Player::Player() : Character() {
 	Color = ColorType::Rouge;
-	shape = new sf::CircleShape();
+	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
-	sf::CircleShape* pShape = (sf::CircleShape*)shape;
-	pShape->setRadius(10);
+	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
+	pShape->setPointCount(3);
+	pShape->setPoint(0, sf::Vector2f{ 0,-10 });
+	pShape->setPoint(1, sf::Vector2f{ 5, 5});
+	pShape->setPoint(2, sf::Vector2f{ -5, 5});
 	maxInputSpeed = 200;
 	acceleration = 100;
 	stopFriction = 20;
 	turnBackFriction = 40;
-	rotationSpeed = 0;
+	rotationSpeed = 100;
 	Active();
 }
 
