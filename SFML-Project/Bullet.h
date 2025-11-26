@@ -9,10 +9,8 @@ class Bullet :
         // Constructor 
         Bullet();
 
-        float damage = 0;
-
-        void Active();
-		void Desactive();
+        void Active() override;
+		void Desactive() override;
         
     protected:
         void Draw(sf::RenderWindow& window) override;

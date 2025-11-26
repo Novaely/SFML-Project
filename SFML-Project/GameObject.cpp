@@ -14,3 +14,5 @@ void GameObject::Draw(sf::RenderWindow& window)
 {
 	if (shape != nullptr) window.draw(*shape);
 }
+void GameObject::Active() {}
+void GameObject::Desactive() {}
