@@ -10,9 +10,9 @@ Player::Player() : Character() {
 	pShape->setPoint(1, sf::Vector2f{ 5, 5});
 	pShape->setPoint(2, sf::Vector2f{ -5, 5});
 	maxInputSpeed = 200;
-	acceleration = 100;
-	stopFriction = 20;
-	turnBackFriction = 40;
+	acceleration = 400;
+	stopFriction = 400;
+	turnBackFriction = 800;
 	rotationSpeed = 100;
 	Active();
 }
