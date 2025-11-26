@@ -7,7 +7,7 @@ class Movable : public GameObject
 	public:
 		Movable();
 
-		float speed = 0;
+		CustomVector2f speed = CustomVector2f::zero;
 		float maxInputSpeed = 0;
 
 		float acceleration = 0;
