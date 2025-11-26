@@ -17,6 +17,8 @@ class Movable : public GameObject
 		CustomVector2f inputDirection;
 		CustomVector2f moveDirection;
 
+		float damage;
+
 		void Update(float deltaTime, sf::RenderWindow& window) override;
 
 	protected:

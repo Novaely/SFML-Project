@@ -21,5 +21,7 @@ class GameObject
 	
 	protected :
 		ColorType _color = ColorType::None;
+		virtual void Active();
+		virtual void Desactive();
 		virtual void Draw(sf::RenderWindow& window);
 };

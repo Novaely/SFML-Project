@@ -4,5 +4,12 @@
 class Enemy :
     public Character
 {
+    public:
+        // Constructor 
+        Enemy();
+
+        void Active() override;
+        void Desactive() override;
+        
 };
 

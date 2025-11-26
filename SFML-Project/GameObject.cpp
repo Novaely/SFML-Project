@@ -16,3 +16,5 @@ ColorType GameObject::GetColor() {
 void GameObject::SetColor(ColorType val) {
 	_color = val;
 }
+void GameObject::Active() {}
+void GameObject::Desactive() {}
