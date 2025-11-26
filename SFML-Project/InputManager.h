@@ -7,7 +7,8 @@ class InputManager :
     public Manager
 {
     public :
-        void InputCheck(sf::Event event, Player& player);
+        void OneClickInputCheck(sf::Event event, Player& player);
+        void ContinuInputCheck(sf::Event event, Player& player);
         InputManager();
 };
 

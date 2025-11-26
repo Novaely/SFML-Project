@@ -4,5 +4,6 @@
 class Character : public Movable
 {
 	public : 
-		float health;
+		Character();
+		float health = 0;
 };

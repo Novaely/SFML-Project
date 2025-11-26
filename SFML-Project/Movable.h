@@ -13,6 +13,7 @@ class Movable : public GameObject
 		float acceleration = 0;
 		float stopFriction = 0;
 		float turnBackFriction = 0;
+		float rotationSpeed = 0;
 
 		float damage = 0;
 
