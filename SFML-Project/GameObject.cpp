@@ -2,6 +2,7 @@
 
 GameObject::GameObject() {}
 
+
 void GameObject::Update(float deltaTime, sf::RenderWindow& window)
 {
 	shape->setPosition(position.x, position.y);
@@ -32,4 +33,8 @@ ColorType GameObject::GetColor() {
 
 void GameObject::SetColor(ColorType val) {
 	_color = val;
+}
+
+void OnCollisionEnter(GameObject* other)
+{
 }

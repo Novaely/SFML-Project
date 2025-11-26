@@ -47,3 +47,29 @@ void Player::SwitchColor()
 	shape->setFillColor(_colors[_color]);
 	std::cout << "new color :" << text[(int)_color] << std::endl;
 }
+
+void Player::OnCollisionEnter(GameObject* other)
+{
+	GameObject Other = *(other);
+	if (Other.Color == _color)
+	{
+		if (Other.characterType == CharaType::Bullet)
+		{
+			if (Other.team == Team::Enemy)
+			{
+				std::cout << "Player hit by bullet Enemy" << std::endl;
+			}
+		}
+
+		if (Other.characterType == CharaType::CACEnemy)
+		{
+			std::cout << "Player hit by CAC Enemy" << std::endl;
+		}
+	
+		if (Other.characterType == CharaType::ShooterEnemy)
+		{
+			std::cout << "Player hit by Shooter Enemy" << std::endl;
+		}
+	}
+	
+}

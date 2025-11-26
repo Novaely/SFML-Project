@@ -26,6 +26,7 @@ class Movable : public GameObject
 
 		void Update(float deltaTime, sf::RenderWindow& window) override;
 
+
 	protected:
 		void Move(float deltaTime);
 		void Rotate(float deltaTime);

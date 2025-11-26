@@ -7,10 +7,13 @@
 
 class GameObject
 {
+
 	public:
 		GameObject();
 
 		sf::Shape* shape = nullptr;
+		CharaType characterType = CharaType::None;
+		Team team = Team::None;
 
 		CustomVector2f position = CustomVector2f::zero;
 		float rotation = 0.0f;
@@ -23,6 +26,8 @@ class GameObject
 		
 		virtual void Active();
 		virtual void Desactive();
+
+		virtual void OnCollisionEnter(GameObject* other);
 
 	protected:
 		bool _isActive = false;

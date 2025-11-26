@@ -7,4 +7,6 @@ class Character : public Movable
 		Character();
 		float health = 0;
 		float speedBullet = 0;
+
+
 };

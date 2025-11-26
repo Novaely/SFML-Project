@@ -12,14 +12,21 @@ CollisionManager::CollisionManager(GameManager* gm)
 void CollisionManager::Update(float deltaTime)
 {
 
-	for (int i = 0; i < (*cacEnemy).size(); i++)
+	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
+	while (it != (*cacEnemy).end()) 
 	{
-		 //CheckCollisionsSquareTriangle(cacEnemy[i], player);
+		if (CheckCollisionsSquareTriangle(&((*it)->position), &(player->position)))
+		{
+			player->OnCollisionEnter((*it));
+			std::cout << "Collision between CACEnemy and Player" << std::endl;
+		}
+		it++;
 	}
+
 	CheckCollisionsSquareTriangle(nullptr, nullptr);
 }
 
-void CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2f triangle[3])
+bool CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2f triangle[3])
 {
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
@@ -32,8 +39,8 @@ void CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2
 		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
 		{
 			std::cout << "Collision detected" << std::endl;
+			return true;
 		}
-
 	}
 
 	// Square -> Triangle
@@ -43,26 +50,30 @@ void CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2
         if (IsPointInTriangle(square[i], triangle))
         {
 			std::cout << "Collision detected" << std::endl;
+			return true;
         }
 	}
-
+	return false;
 }
-void CollisionManager::CheckCollisionsTriangleTriangle(vector2f triangle1[3], vector2f triangle2[3])
+bool CollisionManager::CheckCollisionsTriangleTriangle(vector2f triangle1[3], vector2f triangle2[3])
 {
 	for (int i = 0; i < 3; i++)
 	{
 		if (IsPointInTriangle(triangle1[i], triangle2))
 		{
 			std::cout << "Collision detected" << std::endl;
+			return true;
 		}
 		if (IsPointInTriangle(triangle2[i], triangle1))
 		{
 			std::cout << "Collision detected" << std::endl;
+			return true;
 		}
 	}
+	return false;
 }
 
-void CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vector2f square[4])
+bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vector2f square[4])
 {
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
@@ -75,8 +86,9 @@ void CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vecto
 	if (((cx - cr >= rx && cx + cr <= rw + rx) && (cy - cr >= ry && cy + cr <= ry + rh)) && (cx - cr < rx && cx + cr > rw + rx) && (cy - cr < ry && cy + cr > ry + rh))
 	{
 		std::cout << "Collision detected" << std::endl;
+		return true;
 	}
-
+	return false;
 }
 
 
@@ -106,6 +118,5 @@ bool CollisionManager::IsPointInTriangle(vector2f point, vector2f triangle[3])
 	{
 		return false;
 	}
-
 	return true;
 }

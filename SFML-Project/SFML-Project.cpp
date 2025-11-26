@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "InputManager.h"
+#include "PoolManager.h"
 
 const float FPS_60 = 1.0f / 60.0f;
 
@@ -13,7 +14,6 @@ int main()
 	int tick = 0;
 	InputManager inputManager;
 	PoolManager poolManager;
-	player.poolManager = &poolManager;
 
 	sf::Clock clock;
 	float deltaTime = 0;

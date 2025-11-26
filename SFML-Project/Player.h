@@ -15,5 +15,7 @@ class Player :
         __declspec(property(get = GetlevelShooter, put = SetlevelShooter)) int LevelShooter;
 
         void SwitchColor();
+
+        void OnCollisionEnter(GameObject* other) override; 
 };
 
