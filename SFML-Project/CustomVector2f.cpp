@@ -152,12 +152,14 @@ float CustomVector2f::GetMagnitude() const
 CustomVector2f CustomVector2f::GetNormalised() const
 {
 	float length = GetMagnitude();
-	return CustomVector2f(x / length, y / length);
+	if (length != 0) return CustomVector2f(x / length, y / length);
+	return CustomVector2f();
 }
 
 void CustomVector2f::Normalise()
 {
-	*this /= GetMagnitude();
+	float length = GetMagnitude();
+	if (length != 0) *this /= length;
 }
 
 float CustomVector2f::GetAngle() const
