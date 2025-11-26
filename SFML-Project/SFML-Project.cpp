@@ -1,49 +1,53 @@
 #include <iostream>
-//#include <SFML/Graphics.hpp>
-#include "Bullet.h"
+#include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "InputManager.h"
 
+const float FPS_60 = 1.0f / 60.0f;
+
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "ChronoSpacer");
-    // Initialise everything below
-    // Game loop
+	//initialisation de toutes les variables importantes
+	Player player;
+	float time = 0;
+	int tick = 0;
+	InputManager inputManager;
+	PoolManager poolManager;
+	player.poolManager = &poolManager;
 
-    Player player;
+	sf::Clock clock;
+	float deltaTime = 0;
 
-    InputManager inputManager;
+	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML-Project");
+	// Initialise everything below
+	// 
+	 // Game loop
+	while (window.isOpen()) {
+		deltaTime = clock.restart().asSeconds();
+		 time += deltaTime;
 
-    /*Bullet bullet;
-    bullet.maxInputSpeed = 50;
-    bullet.position = CustomVector2f(300, 100);
-    bullet.inputDirection = CustomVector2f(1, 0);
-    bullet.Active();*/
+		 //CHeck Input
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			// Process any input event here
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+			if (event.type == sf::Event::KeyPressed) {
+				inputManager.OneClickInputCheck(event, player);
 
-    sf::Clock clock;
-    float deltaTime = 0;
+			}
+		}
+		inputManager.ContinuInputCheck(event, player);
 
-    while (window.isOpen()) {
-        sf::Event event;
-        deltaTime = clock.restart().asSeconds();
+		//Update
 
-        while (window.pollEvent(event)) {
-            // Process any input event here
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            if (event.type == sf::Event::KeyPressed) {
-                inputManager.OneClickInputCheck(event, player);
-            }
-        }
-        
-        inputManager.ContinuInputCheck(event, player);
 
-        window.clear();
+		//Render
+		window.clear();
+		player.Update(deltaTime,window);
+		window.display();
 
-        //bullet.Update(deltaTime, window);
-        player.Update(deltaTime, window);
-
-        window.display();
-    }
+		sf::sleep(sf::seconds(FPS_60 - deltaTime));
+	}
 }

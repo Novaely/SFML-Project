@@ -66,4 +66,5 @@ void Movable::Rotate(float deltaTime)
     if (rotationDirection != 0) {
         rotation += rotationDirection * rotationSpeed * deltaTime;
     }
+    rotation = fmodf(rotation, 360);
 }
