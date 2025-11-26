@@ -11,9 +11,9 @@ class CollisionManager :
     public:
 		CollisionManager(GameManager* gm);
 
-		Player player;
-		std::list<CACEnemy*> cacEnemy;
-		std::list<ShooterEnemy*> shooterEnemy;
+		Player* player = nullptr;
+		std::list<CACEnemy*>* cacEnemy;
+		std::list<ShooterEnemy*>* shooterEnemy;
 
 		GameManager* gameManager;
 		void Update( float deltaTime);

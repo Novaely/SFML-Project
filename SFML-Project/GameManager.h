@@ -14,7 +14,7 @@ public :
 	float timerBonusScore;
     float timerBonusScoreCheck;
 
-    Player player;
+    Player* player;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
 	std::list<Bullet*> bullets;
