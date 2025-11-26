@@ -5,14 +5,14 @@ CollisionManager::CollisionManager(GameManager* gm)
 {
 	gameManager = gm;
 	player = gm->player;
-	cacEnemy = gm->cacEnemy;
-	shooterEnemy = gm->shooterEnemy;
+	cacEnemy = &(gm->cacEnemy);
+	shooterEnemy = &(gm->shooterEnemy);
 }
 
 void CollisionManager::Update(float deltaTime)
 {
 
-	for (int i = 0; i < cacEnemy.size(); i++)
+	for (int i = 0; i < (*cacEnemy).size(); i++)
 	{
 		 //CheckCollisionsSquareTriangle(cacEnemy[i], player);
 	}
