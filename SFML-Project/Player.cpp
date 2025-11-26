@@ -15,6 +15,9 @@ Player::Player() : Character() {
 	stopFriction = 400;
 	turnBackFriction = 800;
 	rotationSpeed = 100;
+	timerShootAgain = 1;
+	speedBullet = 500;
+	chronoShootAgain = timerShootAgain;
 	Active();
 }
 
@@ -50,5 +53,10 @@ void Player::SwitchColor()
 }
 
 void Player::Shoot() {
-	(*gameManager).CreateBullet(Team::Player,position, 100, Math::Polar2Cart(Math::ToRad(rotation),1), 10);
+	if (chronoShootAgain >= timerShootAgain)
+	{
+		std::cout << "shoot" << std::endl;
+		chronoShootAgain = 0;
+		(*gameManager).CreateBullet(Team::Player, position, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
+	}
 }
