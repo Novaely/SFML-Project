@@ -8,6 +8,7 @@ class Movable : public GameObject
 		Movable();
 
 		CustomVector2f speed = CustomVector2f::zero;
+
 		float maxInputSpeed = 0;
 
 		float acceleration = 0;
@@ -17,7 +18,7 @@ class Movable : public GameObject
 
 		float damage = 0;
 
-		CustomVector2f inputDirection = CustomVector2f::right;
+		CustomVector2f inputDirection = CustomVector2f::zero;
 		CustomVector2f moveDirection = CustomVector2f::zero;
 
 		void Update(float deltaTime, sf::RenderWindow& window) override;
