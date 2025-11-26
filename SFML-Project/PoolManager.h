@@ -7,13 +7,13 @@ class PoolManager : public Manager
 	public:
 		PoolManager();
 
-		Bullet& GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
-		CACEnemy& GetCACEnemy(CustomVector2f position, float health, Player* player);
-		ShooterEnemy& GetShooterEnemy(CustomVector2f position, float health, Player* player);
+		Bullet* GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
+		CACEnemy* GetCACEnemy(CustomVector2f position, float health, Player* player);
+		ShooterEnemy* GetShooterEnemy(CustomVector2f position, float health, Player* player);
 
-		void ReturnBullet(Bullet& bullet);
-		void ReturnEnemy(CACEnemy& enemy);
-		void ReturnEnemy(ShooterEnemy& enemy);
+		void ReturnBullet(Bullet* bullet);
+		void ReturnEnemy(CACEnemy* enemy);
+		void ReturnEnemy(ShooterEnemy* enemy);
 
 	private:
 		// Bullets
@@ -35,4 +35,14 @@ class PoolManager : public Manager
 
 		CACEnemy* ExtractCACEnemy();
 		void AddCACEnemyInPool();
+
+		// ShooterEnemy
+		int startNumShooterEnemy = 20;
+
+		int indexOfFirstShooterEnemy = 0;
+		int currentNumShooterEnemy;
+		std::vector<ShooterEnemy*> shooterEnemyPool;
+		
+		ShooterEnemy* ExtractShooterEnemy();
+		void AddShooterEnemyInPool();
 };

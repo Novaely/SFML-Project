@@ -1,10 +1,14 @@
 #include "PoolManager.h"
 
-PoolManager::PoolManager() : bulletPool(startNumBullets, new Bullet()), cacEnemyPool(startNumCACEnemy, new Enemy())
+PoolManager::PoolManager()
+	: bulletPool(startNumBullets, new Bullet()), cacEnemyPool(startNumCACEnemy, new CACEnemy()),
+	shooterEnemyPool(startNumShooterEnemy, new ShooterEnemy())
 {
 	currentNumBullets = startNumBullets;
 
 	currentNumCACEnemy = startNumCACEnemy;
+
+	currentNumShooterEnemy = startNumShooterEnemy;
 }
 
 #pragma region Bullets
@@ -21,7 +25,7 @@ Bullet* PoolManager::ExtractBullet()
 	return pBullet;
 }
 
-Bullet& PoolManager::GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)
+Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)
 {
 	Bullet* pBullet = ExtractBullet();
 
@@ -33,7 +37,7 @@ Bullet& PoolManager::GetBullet(Team team, CustomVector2f position, float speed, 
 
 	pBullet->Active();
 
-	return *pBullet;
+	return pBullet;
 }
 
 void PoolManager::AddBulletInPool()
@@ -43,13 +47,13 @@ void PoolManager::AddBulletInPool()
 	bulletPool.resize(currentNumBullets, new Bullet());
 }
 
-void PoolManager::ReturnBullet(Bullet& bullet)
+void PoolManager::ReturnBullet(Bullet* bullet)
 {
-	bullet.Desactive();
+	bullet->Desactive();
 
 	indexOfFirstBullet--;
 
-	bulletPool[indexOfFirstBullet] = &bullet;
+	bulletPool[indexOfFirstBullet] = bullet;
 }
 
 #pragma endregion
@@ -68,7 +72,7 @@ CACEnemy* PoolManager::ExtractCACEnemy()
 	return pEnemy;
 }
 
-CACEnemy& PoolManager::GetCACEnemy(CustomVector2f position, float health, Player* player)
+CACEnemy* PoolManager::GetCACEnemy(CustomVector2f position, float health, Player* player)
 {
 	CACEnemy* pEnemy = ExtractCACEnemy();
 
@@ -79,7 +83,7 @@ CACEnemy& PoolManager::GetCACEnemy(CustomVector2f position, float health, Player
 
 	pEnemy->Active();
 
-	return *pEnemy;
+	return pEnemy;
 }
 
 void PoolManager::AddCACEnemyInPool()
@@ -89,13 +93,59 @@ void PoolManager::AddCACEnemyInPool()
 	cacEnemyPool.resize(currentNumCACEnemy, new CACEnemy());
 }
 
-void PoolManager::ReturnEnemy(CACEnemy& enemy)
+void PoolManager::ReturnEnemy(CACEnemy* enemy)
 {
-	enemy.Desactive();
+	enemy->Desactive();
 
 	indexOfFirstCACEnemy--;
 
-	cacEnemyPool[indexOfFirstCACEnemy] = &enemy;
+	cacEnemyPool[indexOfFirstCACEnemy] = enemy;
+}
+
+#pragma endregion
+
+#pragma region ShooterEnemy
+
+ShooterEnemy* PoolManager::ExtractShooterEnemy()
+{
+	if (indexOfFirstShooterEnemy >= currentNumShooterEnemy) AddShooterEnemyInPool();
+
+	ShooterEnemy* pEnemy = shooterEnemyPool[indexOfFirstShooterEnemy];
+
+	shooterEnemyPool[indexOfFirstShooterEnemy] = nullptr;
+	indexOfFirstShooterEnemy++;
+
+	return pEnemy;
+}
+
+ShooterEnemy* PoolManager::GetShooterEnemy(CustomVector2f position, float health, Player* player)
+{
+	ShooterEnemy* pEnemy = ExtractShooterEnemy();
+
+	pEnemy->team = Team::Enemy;
+	pEnemy->position = position;
+	pEnemy->health;
+	// TO DO : Give player
+
+	pEnemy->Active();
+
+	return pEnemy;
+}
+
+void PoolManager::AddShooterEnemyInPool()
+{
+	currentNumShooterEnemy += 10;
+
+	shooterEnemyPool.resize(currentNumShooterEnemy, new ShooterEnemy());
+}
+
+void PoolManager::ReturnEnemy(ShooterEnemy* enemy)
+{
+	enemy->Desactive();
+
+	indexOfFirstShooterEnemy--;
+
+	shooterEnemyPool[indexOfFirstShooterEnemy] = enemy;
 }
 
 #pragma endregion
