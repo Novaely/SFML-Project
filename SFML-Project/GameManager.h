@@ -1,9 +1,5 @@
 #pragma once
 #include "Manager.h"
-#include "Player.h"
-#include "CACEnemy.h"
-#include "ShooterEnemy.h"
-#include "Bullet.h"
 #include <list>
 
 class GameManager :
