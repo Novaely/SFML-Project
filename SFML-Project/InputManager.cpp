@@ -26,6 +26,7 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     player.rotationDirection = keyRotRight - keyRotLeft;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        player.Shoot();
         std::cout << "Shoot (not implement)" << std::endl;
     }
 }

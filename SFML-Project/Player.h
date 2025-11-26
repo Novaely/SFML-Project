@@ -1,19 +1,25 @@
 #pragma once
 #include "Character.h"
 
+
+class GameManager;
+
 class Player :
     public Character
 {
-    private : 
-        int _levelShooter = 1;
-        
-    public:
-        Player();
+private:
+    int _levelShooter = 1;
 
-        int GetlevelShooter();
-        void SetlevelShooter(int val);
-        __declspec(property(get = GetlevelShooter, put = SetlevelShooter)) int LevelShooter;
+public:
+    //constructer
+    Player();
 
-        void SwitchColor();
+    GameManager* gameManager = nullptr;
+    int GetlevelShooter();
+    void SetlevelShooter(int val);
+    __declspec(property(get = GetlevelShooter, put = SetlevelShooter)) int LevelShooter;
+
+    void SwitchColor();
+    void Shoot();
 };
 

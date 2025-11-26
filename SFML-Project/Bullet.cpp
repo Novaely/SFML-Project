@@ -7,6 +7,7 @@ Bullet::Bullet() : Movable()
 	shape->setFillColor(sf::Color::Red);
 
 	((sf::CircleShape*)shape)->setRadius(5);
+	maxInputSpeed = 0;
 
 	Desactive();
 }

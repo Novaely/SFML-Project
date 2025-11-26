@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameManager.h"
 
 Player::Player() : Character() {
 	Color = ColorType::Rouge;
@@ -46,4 +47,8 @@ void Player::SwitchColor()
 	}
 	shape->setFillColor(_colors[_color]);
 	std::cout << "new color :" << text[(int)_color] << std::endl;
+}
+
+void Player::Shoot() {
+	(*gameManager).CreateBullet(Team::Player,position, 100, Math::Polar2Cart(Math::ToRad(rotation),1), 10);
 }

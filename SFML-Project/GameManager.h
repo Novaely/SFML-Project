@@ -1,6 +1,8 @@
 #pragma once
+
 #include "Manager.h"
 #include <list>
+#include "PoolManager.h"
 
 class GameManager :
     public Manager
@@ -14,10 +16,16 @@ public :
 	float timerBonusScore;
     float timerBonusScoreCheck;
 
-    Player* player;
+
+    Player* player = nullptr;
+    PoolManager* poolManager = nullptr;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
 	std::list<Bullet*> bullets;
+
+    void Update(float deltaTime, sf::RenderWindow& window);
+
+    void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
 
 private: 
     /// <summary>
@@ -26,14 +34,12 @@ private:
     /// power up direction de tir 
     /// </summary>
 
-    void Update(float deltaTime);
-
     void BonusScore(float timer, int multiplicateur);
 
-	void BonusVie(Player& player, float vieRegen);
+	void BonusVie(float vieRegen);
 
-    void BonusTir(Player& player);
+    void BonusTir();
 
-
+    void UpdateAll(float deltaTime, sf::RenderWindow& window);
 };
 
