@@ -19,6 +19,7 @@ class GameObject
 
 		virtual void Active();
 		virtual void Desactive();
+
 	protected:
 		bool _isActive = false;
 

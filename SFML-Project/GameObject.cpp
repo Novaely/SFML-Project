@@ -12,7 +12,16 @@ void GameObject::Update(float deltaTime, sf::RenderWindow& window)
 
 void GameObject::Draw(sf::RenderWindow& window)
 {
+	if (!_isActive) return;
 	if (shape != nullptr) window.draw(*shape);
 }
-void GameObject::Active() {}
-void GameObject::Desactive() {}
+
+void GameObject::Active()
+{
+	_isActive = true;
+}
+
+void GameObject::Desactive()
+{
+	_isActive = false;
+}

@@ -4,13 +4,13 @@
 
 #pragma region Consts
 
-static const CustomVector2f zero = CustomVector2f(0);
-static const CustomVector2f one = CustomVector2f(1);
-static const CustomVector2f minusOne = CustomVector2f(-1);
-static const CustomVector2f right = CustomVector2f(1, 0);
-static const CustomVector2f down = CustomVector2f(0, -1);
-static const CustomVector2f left = CustomVector2f(-1, 0);
-static const CustomVector2f up = CustomVector2f(0, 1);
+const CustomVector2f CustomVector2f::zero = CustomVector2f(0);
+const CustomVector2f CustomVector2f::one = CustomVector2f(1);
+const CustomVector2f CustomVector2f::minusOne = CustomVector2f(-1);
+const CustomVector2f CustomVector2f::right = CustomVector2f(1, 0);
+const CustomVector2f CustomVector2f::down = CustomVector2f(0, -1);
+const CustomVector2f CustomVector2f::left = CustomVector2f(-1, 0);
+const CustomVector2f CustomVector2f::up = CustomVector2f(0, 1);
 
 #pragma endregion
 
