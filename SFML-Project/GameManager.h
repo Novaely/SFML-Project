@@ -3,25 +3,27 @@
 #include "Player.h"
 #include "CACEnemy.h"
 #include "ShooterEnemy.h"
+#include "Bullet.h"
 #include <list>
 
 class GameManager :
     public Manager
 {
+public :
     // Constructors
     GameManager();
-
 
     int score;
     int multiplicateur;
 	float timerBonusScore;
     float timerBonusScoreCheck;
 
-    Player* player;
+    Player player;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
+	std::list<Bullet*> bullets;
 
-
+private: 
     /// <summary>
     /// score *2 sur x temps
     /// regen vie

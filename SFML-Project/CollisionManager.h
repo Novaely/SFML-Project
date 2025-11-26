@@ -9,9 +9,11 @@ class CollisionManager :
     public Manager
 {
     public:
-		CollisionManager()
-		{
-		};
+		CollisionManager(GameManager* gm);
+
+		Player player;
+		std::list<CACEnemy*> cacEnemy;
+		std::list<ShooterEnemy*> shooterEnemy;
 
 		GameManager* gameManager;
 		void Update( float deltaTime);

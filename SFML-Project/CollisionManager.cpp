@@ -1,12 +1,21 @@
 #include "CollisionManager.h"
 
 
-CollisionManager::CollisionManager()
+CollisionManager::CollisionManager(GameManager* gm)
 {
+	gameManager = gm;
+	player = gm->player;
+	cacEnemy = gm->cacEnemy;
+	shooterEnemy = gm->shooterEnemy;
 }
 
 void CollisionManager::Update(float deltaTime)
 {
+
+	for (int i = 0; i < cacEnemy.size(); i++)
+	{
+		 //CheckCollisionsSquareTriangle(cacEnemy[i], player);
+	}
 	CheckCollisionsSquareTriangle(nullptr, nullptr);
 }
 
@@ -22,28 +31,18 @@ void CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2
 	{
 		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
 		{
-			// Collision detected
+			std::cout << "Collision detected" << std::endl;
 		}
 
 	}
 
 	// Square -> Triangle
-
-	vector2f AB = triangle[1] - triangle[0];
-	vector2f BC = triangle[2] - triangle[1];
-	vector2f CA = triangle[0] - triangle[2];
-
-	vector2f n1 = vector2f(-AB.y, AB.x);
-	vector2f n2 = vector2f(-BC.y, BC.x);
-	vector2f n3 = vector2f(-CA.y, CA.x);
-
-
 	for (int i = 0; i < 4; i++)
 	{
 
         if (IsPointInTriangle(square[i], triangle))
         {
-			// Collision detected
+			std::cout << "Collision detected" << std::endl;
         }
 	}
 
@@ -54,11 +53,11 @@ void CollisionManager::CheckCollisionsTriangleTriangle(vector2f triangle1[3], ve
 	{
 		if (IsPointInTriangle(triangle1[i], triangle2))
 		{
-			// Collision detected
+			std::cout << "Collision detected" << std::endl;
 		}
 		if (IsPointInTriangle(triangle2[i], triangle1))
 		{
-			// Collision detected
+			std::cout << "Collision detected" << std::endl;
 		}
 	}
 }
@@ -75,7 +74,7 @@ void CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vecto
 
 	if (((cx - cr >= rx && cx + cr <= rw + rx) && (cy - cr >= ry && cy + cr <= ry + rh)) && (cx - cr < rx && cx + cr > rw + rx) && (cy - cr < ry && cy + cr > ry + rh))
 	{
-		// Collision detected
+		std::cout << "Collision detected" << std::endl;
 	}
 
 }
