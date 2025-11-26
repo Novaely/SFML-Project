@@ -1,13 +1,8 @@
 #include "PoolManager.h"
 
 PoolManager::PoolManager()
-	: bulletPool(startNumBullets, nullptr)
+	: bulletPool(startNumBullets, new Bullet())
 {
-	for (int i = 0; i < startNumBullets; i++)
-	{
-		bulletPool[i] = new Bullet;
-	}
-
 	currentNumBullets = startNumBullets;
 	indexOfFirstBullet = 0;
 }
@@ -24,41 +19,26 @@ Bullet* PoolManager::ExtractBullet()
 	return pBullet;
 }
 
-Bullet& PoolManager::GetBullet()
+Bullet& PoolManager::GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)
 {
 	Bullet* pBullet = ExtractBullet();
 
-	return *pBullet;
-}
+	pBullet->team = team;
+	pBullet->position = position;
+	pBullet->speed = CustomVector2f(speed);
+	pBullet->inputDirection = direction;
+	pBullet->damage = damage;
 
-Bullet& PoolManager::GetBullet(Team team)
-{
-	Bullet* pBullet = ExtractBullet();
-
-	//Team
-
-	return *pBullet;
-}
-
-Bullet& PoolManager::GetBullet(Team team, float speed, float damages)
-{
-	Bullet* pBullet = ExtractBullet();
-
-	// Team
-	pBullet->speed = speed;
-	pBullet->damage = damages;
+	pBullet->Active();
 
 	return *pBullet;
 }
 
 void PoolManager::AddBulletInPool()
 {
-	currentNumBullets++;
+	currentNumBullets += 10;
 	
-	bulletPool.resize(currentNumBullets, nullptr);
-	bulletPool[currentNumBullets - 1] = new Bullet();
-
-	indexOfFirstBullet = currentNumBullets - 2;
+	bulletPool.resize(currentNumBullets, new Bullet());
 }
 
 void PoolManager::ReturnBullet(Bullet& bullet)

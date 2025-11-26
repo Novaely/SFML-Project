@@ -7,9 +7,7 @@ class PoolManager : public Manager
 {
 	public:
 		PoolManager();
-		Bullet& GetBullet();
-		Bullet& GetBullet(Team team);
-		Bullet& GetBullet(Team team, float speed, float damages);
+		Bullet& GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
 
 		void ReturnBullet(Bullet& bullet);
 

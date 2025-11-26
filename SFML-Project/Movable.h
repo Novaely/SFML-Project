@@ -18,6 +18,8 @@ class Movable : public GameObject
 
 		float damage = 0;
 
+		Team team = Team::None;
+
 		CustomVector2f inputDirection = CustomVector2f::right;
 		CustomVector2f moveDirection = CustomVector2f::zero;
 
