@@ -49,13 +49,12 @@ void Player::SwitchColor()
 			break;
 	}
 	shape->setFillColor(_colors[_color]);
-	std::cout << "new color :" << text[(int)_color] << std::endl;
+	//std::cout << "new color :" << text[(int)_color] << std::endl;
 }
 
 void Player::Shoot() {
 	if (chronoShootAgain >= timerShootAgain)
 	{
-		std::cout << "shoot" << std::endl;
 		chronoShootAgain = 0;
 		(*gameManager).CreateBullet(Team::Player, position, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
 	}
