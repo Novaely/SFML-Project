@@ -23,7 +23,8 @@ public :
 	std::list<ShooterEnemy*> shooterEnemy;
 	std::list<Bullet*> bullets;
 
-    void Update(float deltaTime, sf::RenderWindow& window);
+    void Update(float deltaTime);
+    void Draw(sf::RenderWindow& window);
 
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
 
@@ -40,6 +41,6 @@ private:
 
     void BonusTir();
 
-    void UpdateAll(float deltaTime, sf::RenderWindow& window);
+    void UpdateAll(float deltaTime);
 };
 

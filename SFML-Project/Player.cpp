@@ -15,13 +15,13 @@ Player::Player() : Character() {
 	stopFriction = 400;
 	turnBackFriction = 800;
 	rotationSpeed = 100;
-	timerShootAgain = 1;
+	timerShootAgain = 0.1f;
 	speedBullet = 500;
 	chronoShootAgain = timerShootAgain;
 	Active();
 }
 
-int Player::GetlevelShooter() {
+int Player::GetlevelShooter() const {
 	return _levelShooter;
 }
 

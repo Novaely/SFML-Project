@@ -8,13 +8,24 @@ GameManager::GameManager()
 	timerBonusScore = 0.0f;
 	timerBonusScoreCheck = 0.0f;
 }
-void GameManager::Update(float deltaTime, sf::RenderWindow& window)
+void GameManager::Update(float deltaTime)
 {
-	UpdateAll(deltaTime, window);
+	UpdateAll(deltaTime);
 	timerBonusScore += deltaTime;
 	if (timerBonusScore > timerBonusScoreCheck)
 	{
 		multiplicateur = 1;
+	}
+}
+
+void GameManager::Draw(sf::RenderWindow& window)
+{
+	player->Draw(window);
+
+	std::list<Bullet*>::iterator it = bullets.begin();
+	while (it != bullets.end()) {
+		(*it)->Draw(window);
+		it++;
 	}
 }
 
@@ -41,12 +52,12 @@ void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, 
 	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage));
 }
 
-void GameManager::UpdateAll(float deltaTime, sf::RenderWindow& window) {
-	player->Update(deltaTime, window);
+void GameManager::UpdateAll(float deltaTime) {
+	player->Update(deltaTime);
 
 	std::list<Bullet*>::iterator it = bullets.begin();
 	while (it != bullets.end()) {
-		(*it)->Update(deltaTime, window);
+		(*it)->Update(deltaTime);
 		it++;
 	}
 }

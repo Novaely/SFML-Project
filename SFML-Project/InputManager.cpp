@@ -23,7 +23,7 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
 
     bool keyRotLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool keyRotRight = sf::Keyboard::isKeyPressed(sf::Keyboard::E);
-    player.rotationDirection = keyRotRight - keyRotLeft;
+    player.rotationDirection = (float)keyRotRight - (float)keyRotLeft;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         player.Shoot();

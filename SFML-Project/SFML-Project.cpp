@@ -50,7 +50,8 @@ int main()
 
 		//Render
 		window.clear();
-		gameManager.Update(deltaTime, window);
+		gameManager.Update(deltaTime);
+		gameManager.Draw(window);
 		window.display();
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
