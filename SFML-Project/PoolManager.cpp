@@ -1,18 +1,25 @@
 #include "PoolManager.h"
 
 PoolManager::PoolManager()
-	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, new CACEnemy()),
-	shooterEnemyPool(startNumShooterEnemy, new ShooterEnemy())
+	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, nullptr),
+	shooterEnemyPool(startNumShooterEnemy, nullptr)
 {
 	for (int i = 0; i < startNumBullets; i++)
 	{
 		bulletPool[i] = new Bullet();
 	}
-
 	currentNumBullets = startNumBullets;
 
+	for (int i = 0; i < startNumCACEnemy; i++)
+	{
+		cacEnemyPool[i] = new CACEnemy();
+	}
 	currentNumCACEnemy = startNumCACEnemy;
 
+	for (int i = 0; i < startNumShooterEnemy; i++)
+	{
+		shooterEnemyPool[i] = new ShooterEnemy();
+	}
 	currentNumShooterEnemy = startNumShooterEnemy;
 }
 
@@ -41,7 +48,7 @@ Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, 
 	pBullet->team = team;
 	pBullet->position = position;
 	pBullet->speed = CustomVector2f(speed);
-	pBullet->inputDirection = direction;
+	pBullet->moveDirection = direction;
 	pBullet->damage = damage;
 
 	pBullet->Active();
@@ -104,7 +111,12 @@ void PoolManager::AddCACEnemyInPool()
 {
 	currentNumCACEnemy += 10;
 
-	cacEnemyPool.resize(currentNumCACEnemy, new CACEnemy());
+	cacEnemyPool.resize(currentNumCACEnemy,nullptr);
+
+	for (int i = indexOfFirstCACEnemy; i < currentNumCACEnemy; i++)
+	{
+		cacEnemyPool[i] = new CACEnemy();
+	}
 }
 
 void PoolManager::ReturnEnemy(CACEnemy* enemy)
@@ -150,7 +162,12 @@ void PoolManager::AddShooterEnemyInPool()
 {
 	currentNumShooterEnemy += 10;
 
-	shooterEnemyPool.resize(currentNumShooterEnemy, new ShooterEnemy());
+	shooterEnemyPool.resize(currentNumShooterEnemy, nullptr);
+
+	for (int i = indexOfFirstShooterEnemy; i < currentNumShooterEnemy; i++)
+	{
+		shooterEnemyPool[i] = new ShooterEnemy();
+	}
 }
 
 void PoolManager::ReturnEnemy(ShooterEnemy* enemy)
