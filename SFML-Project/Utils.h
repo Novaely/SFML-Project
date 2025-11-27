@@ -14,4 +14,6 @@ namespace Math
 	CustomVector2f Polar2Cart(float angle, float radius);
 	float ToRad(float angle);
 	float ToDegree(float angle);
+
+	CustomVector2f RotatePoint(CustomVector2f point, CustomVector2f origin, float angle);
 }
