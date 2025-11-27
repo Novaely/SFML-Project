@@ -2,17 +2,14 @@
 
 GameObject::GameObject() {}
 
-void GameObject::Update(float deltaTime, sf::RenderWindow& window)
+void GameObject::Update(float deltaTime)
 {
 	shape->setPosition(position.x, position.y);
 	shape->setRotation(rotation);
-
-	Draw(window);
 }
 
 void GameObject::Draw(sf::RenderWindow& window)
 {
-	if (!_isActive) return;
 	if (shape != nullptr) window.draw(*shape);
 }
 
@@ -24,14 +21,21 @@ void GameObject::Active()
 void GameObject::Desactive()
 {
 	_isActive = false;
+	position = CustomVector2f::zero;
+	_color = ColorType::None;
 }
 
-ColorType GameObject::GetColor() {
+ColorType GameObject::GetColor() const {
 	return _color;
 }
 
 void GameObject::SetColor(ColorType val) {
 	_color = val;
+}
+
+bool GameObject::IsActive() const
+{
+	return _isActive;
 }
 
 GameObject::~GameObject()

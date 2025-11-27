@@ -16,7 +16,7 @@ class Character : public Movable
 		float rotationSpeed = 0;
 		float rotationDirection = 0;
 
-		void Update(float deltaTime, sf::RenderWindow& window) override;
+		void Update(float deltaTime) override;
 		void Move(float deltaTime) override;
 		void Rotate(float deltaTime);
 };

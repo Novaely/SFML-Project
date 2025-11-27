@@ -15,7 +15,7 @@ public:
     Player();
 
     GameManager* gameManager = nullptr;
-    int GetlevelShooter();
+    int GetlevelShooter() const;
     void SetlevelShooter(int val);
     __declspec(property(get = GetlevelShooter, put = SetlevelShooter)) int LevelShooter;
 

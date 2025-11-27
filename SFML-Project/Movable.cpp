@@ -2,9 +2,9 @@
 
 Movable::Movable() : GameObject() {}
 
-void Movable::Update(float deltaTime, sf::RenderWindow& window)
+void Movable::Update(float deltaTime)
 {
-    GameObject::Update(deltaTime, window);
+    GameObject::Update(deltaTime);
 
     Move(deltaTime);
 }
