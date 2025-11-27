@@ -11,12 +11,6 @@ class Movable : public GameObject
 
 		float maxInputSpeed = 0;
 
-		float acceleration = 0;
-		float stopFriction = 0;
-		float turnBackFriction = 0;
-		float rotationSpeed = 0;
-		float rotationDirection = 0;
-
 		float damage = 0;
 
 		Team team = Team::None;
@@ -24,10 +18,9 @@ class Movable : public GameObject
 		CustomVector2f inputDirection = CustomVector2f::zero;
 		CustomVector2f moveDirection = CustomVector2f::zero;
 
-		void Update(float deltaTime, sf::RenderWindow& window) override;
+		void Update(float deltaTime) override;
 
 
 	protected:
-		void Move(float deltaTime);
-		void Rotate(float deltaTime);
+		virtual void Move(float deltaTime);
 };

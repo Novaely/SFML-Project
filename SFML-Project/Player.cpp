@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameManager.h"
 
 Player::Player() : Character() {
 	Color = ColorType::Rouge;
@@ -14,10 +15,13 @@ Player::Player() : Character() {
 	stopFriction = 400;
 	turnBackFriction = 800;
 	rotationSpeed = 100;
+	timerShootAgain = 0.1f;
+	speedBullet = 500;
+	chronoShootAgain = timerShootAgain;
 	Active();
 }
 
-int Player::GetlevelShooter() {
+int Player::GetlevelShooter() const {
 	return _levelShooter;
 }
 
@@ -45,7 +49,15 @@ void Player::SwitchColor()
 			break;
 	}
 	shape->setFillColor(_colors[_color]);
-	std::cout << "new color :" << text[(int)_color] << std::endl;
+	//std::cout << "new color :" << text[(int)_color] << std::endl;
+}
+
+void Player::Shoot() {
+	if (chronoShootAgain >= timerShootAgain)
+	{
+		chronoShootAgain = 0;
+		(*gameManager).CreateBullet(Team::Player, position, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
+	}
 }
 
 void Player::OnCollisionEnter(GameObject* other)
@@ -65,11 +77,11 @@ void Player::OnCollisionEnter(GameObject* other)
 		{
 			std::cout << "Player hit by CAC Enemy" << std::endl;
 		}
-	
+
 		if (Other.characterType == CharaType::ShooterEnemy)
 		{
 			std::cout << "Player hit by Shooter Enemy" << std::endl;
 		}
 	}
-	
+
 }

@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "PoolManager.h"
+#include "GameManager.h"
 
 const float FPS_60 = 1.0f / 60.0f;
 
@@ -13,7 +14,11 @@ int main()
 	float time = 0;
 	int tick = 0;
 	InputManager inputManager;
+	GameManager gameManager;
 	PoolManager poolManager;
+	player.gameManager = &gameManager;
+	gameManager.player = &player;
+	gameManager.poolManager = &poolManager;
 
 	sf::Clock clock;
 	float deltaTime = 0;
@@ -45,7 +50,8 @@ int main()
 
 		//Render
 		window.clear();
-		player.Update(deltaTime,window);
+		gameManager.Update(deltaTime);
+		gameManager.Draw(window);
 		window.display();
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
