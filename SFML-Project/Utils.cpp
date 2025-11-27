@@ -21,3 +21,12 @@ float Math::ToDegree(float angle)
 {
 	return angle * 180.0f / PI;
 }
+
+CustomVector2f Math::RotatePoint(CustomVector2f point, CustomVector2f origin, float angle)
+{
+	CustomVector2f vecDirec = point - origin;
+	float length = vecDirec.GetMagnitude();
+	float baseAngle = vecDirec.GetAngle();
+
+	return Polar2Cart(baseAngle + angle, length) + origin;
+}
