@@ -61,6 +61,9 @@ void Player::Shoot() {
 	if (chronoShootAgain >= timerShootAgain)
 	{
 		chronoShootAgain = 0;
-		(*gameManager).CreateBullet(Team::Player, position + bulletSpawnPos, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
+		float angle = Math::ToRad(rotation);
+		CustomVector2f pos = position + Math::RotatePoint(bulletSpawnPos, CustomVector2f::zero, angle);
+
+		(*gameManager).CreateBullet(Team::Player, pos, speedBullet, Math::Polar2Cart(angle, 1), 10);
 	}
 }
