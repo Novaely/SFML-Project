@@ -6,6 +6,7 @@ class PoolManager : public Manager
 {
 	public:
 		PoolManager();
+		~PoolManager();
 
 		Bullet* GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
 		CACEnemy* GetCACEnemy(CustomVector2f position, float health, Player* player);
