@@ -79,16 +79,100 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vecto
 	float rh = square[3].y - square[0].y; // height
 	float rx = square[0].x; // x position
 	float ry = square[0].y; // y position
+
 	float cr = circle.getRadius(); // circle radius
 	float cx = circle.getPosition().x + cr; // circle x position (center)
 	float cy = circle.getPosition().y + cr; // circle y position (center)
 
-	if (((cx - cr >= rx && cx + cr <= rw + rx) && (cy - cr >= ry && cy + cr <= ry + rh)) && (cx - cr < rx && cx + cr > rw + rx) && (cy - cr < ry && cy + cr > ry + rh))
+	// Trouve le point du rectangle le plus proche du centre du cercle
+	float closestX = cx;
+	if (closestX < rx) closestX = rx;
+	else if (closestX > rx + rw) closestX = rx + rw;
+
+	float closestY = cy;
+	if (closestY < ry) closestY = ry;
+	else if (closestY > ry + rh) closestY = ry + rh;
+
+	// Distance au carré entre le centre et ce point le plus proche
+	float dx = cx - closestX;
+	float dy = cy - closestY;
+
+	if (dx * dx + dy * dy <= cr * cr)
 	{
 		std::cout << "Collision detected" << std::endl;
 		return true;
 	}
 	return false;
+
+	//if (((cx - cr >= rx && cx + cr <= rw + rx) && (cy - cr >= ry && cy + cr <= ry + rh)) || (cx - cr < rx && cx + cr > rw + rx) && (cy - cr < ry && cy + cr > ry + rh))
+	//{
+	//	return false;
+	//}
+	//std::cout << "Collision detected" << std::endl;
+	//return true;
+}
+
+bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape circle, vector2f triangle[3])
+{
+
+	float cr = circle.getRadius(); // circle radius
+	float cx = circle.getPosition().x + cr; // circle x position (center)
+	float cy = circle.getPosition().y + cr; // circle y position (center)
+
+	if (IsPointInTriangle((cx,cy), triangle))
+	{
+		std::cout << "Collision detected" << std::endl;
+		return true;
+	}
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		float dist = DistancePointToSegment((cx, cy), triangle[i], triangle[(i + 1) % 3]);
+		if (dist <= cr)
+		{
+			std::cout << "Collision detected" << std::endl;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+
+
+float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
+{
+	vector2f AB = end - start;
+	vector2f AP = point - start;
+
+	float distAB = AB.GetMagnitude();
+
+
+	// Projection scalaire normalisée de AP sur AB
+	float t = (AP.x * AB.x + AP.y * AB.y) / distAB*distAB;
+
+	// Clamp entre 0 et 1 pour rester sur le segment
+	if (t < 0.0f)
+	{
+		t = 0.0f;
+	}
+	else if (t > 1.0f)
+	{
+		t = 1.0f;
+	}
+
+	// Point projeté sur le segment
+	vector2f projection = {
+		start.x + t * AB.x,
+		start.y + t * AB.y
+	};
+
+	// Distance entre P et la projection
+	float dx = point.x - projection.x;
+	float dy = point.y - projection.y;
+	return std::sqrt(dx * dx + dy * dy);
 }
 
 
