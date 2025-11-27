@@ -181,3 +181,29 @@ void PoolManager::ReturnEnemy(ShooterEnemy* enemy)
 
 #pragma endregion
 
+PoolManager::~PoolManager()
+{
+	for (int i = 0; i < currentNumBullets; i++)
+	{
+		if (bulletPool[i] != nullptr)
+		{
+			delete bulletPool[i];
+		}
+	}
+
+	for (int i = 0; i < currentNumCACEnemy; i++)
+	{
+		if (cacEnemyPool[i] != nullptr)
+		{
+			delete cacEnemyPool[i];
+		}
+	}
+
+	for (int i = 0; i < currentNumShooterEnemy; i++)
+	{
+		if (shooterEnemyPool[i] != nullptr)
+		{
+			delete shooterEnemyPool[i];
+		}
+	}
+}
