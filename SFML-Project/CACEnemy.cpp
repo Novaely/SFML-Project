@@ -17,7 +17,11 @@ void CACEnemy::Desactive()
 {
 }
 
-void CACEnemy::Update(float deltaTime, sf::RenderWindow& window)
+void CACEnemy::Update(float deltaTime)
 {
-	
+	Enemy::Update(deltaTime);
 }
+
+void CACEnemy::ChasePlayer(float deltaTime) {}
+
+void CACEnemy::AttackPlayer() {}

@@ -46,6 +46,7 @@ GameObject::~GameObject()
 	}
 }
 
-void OnCollisionEnter(GameObject* other)
+void GameObject::OnCollisionEnter(GameObject* other)
 {
 }
+

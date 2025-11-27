@@ -1,8 +1,7 @@
 #include "Enemy.h"
 
 
-Player;
-GameManager;
+class Player;
 
 Enemy::Enemy() : Character()
 {

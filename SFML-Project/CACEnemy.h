@@ -11,13 +11,13 @@ class CACEnemy :
         float timeBetweenAttacks = 1.0f;
         float attackTimer = 0.0f;
         float damage = 0.0f;
+
         void Active() override;
         void Desactive() override;
-        void Update(float deltaTime, sf::RenderWindow& window) override;
+        void Update(float deltaTime) override;
+
     protected:
         void ChasePlayer(float deltaTime);
 		void AttackPlayer();
-
-
 };
 

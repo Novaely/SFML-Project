@@ -12,7 +12,7 @@ class Enemy :
 
 
         Player* player = nullptr;
-        GameManager* gameManager;
+        GameManager* gameManager = nullptr;
 
 
         void Active() override;

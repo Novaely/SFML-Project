@@ -33,12 +33,3 @@ void Movable::Move(float deltaTime)
     //std::cout << "Speed X: " << speed.x << " Speed Y: " << speed.y << std::endl;
 }
 
-void Movable::Rotate(float deltaTime)
-{
-    if (rotationDirection != 0) {
-        rotation += rotationDirection * rotationSpeed * deltaTime;
-    }
-    rotation = fmodf(rotation, 360);
-}
-
-
