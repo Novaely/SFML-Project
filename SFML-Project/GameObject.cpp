@@ -33,3 +33,11 @@ ColorType GameObject::GetColor() {
 void GameObject::SetColor(ColorType val) {
 	_color = val;
 }
+
+GameObject::~GameObject()
+{
+	if (shape != nullptr)
+	{
+		delete shape;
+	}
+}

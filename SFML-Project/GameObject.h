@@ -9,6 +9,7 @@ class GameObject
 {
 	public:
 		GameObject();
+		~GameObject();
 
 		sf::Shape* shape = nullptr;
 
