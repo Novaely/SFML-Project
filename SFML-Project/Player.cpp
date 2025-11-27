@@ -6,17 +6,22 @@ Player::Player() : Character() {
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
 	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
+
+	pShape->setOrigin(0, 0);
 	pShape->setPointCount(3);
-	pShape->setPoint(0, sf::Vector2f{ 0,-10 });
-	pShape->setPoint(1, sf::Vector2f{ 5, 5});
-	pShape->setPoint(2, sf::Vector2f{ -5, 5});
+	pShape->setPoint(0, sf::Vector2f{ 15, 0});
+	pShape->setPoint(1, sf::Vector2f{ -7.5f, 7.5f });
+	pShape->setPoint(2, sf::Vector2f{ -7.5f, -7.5f });
+
+	bulletSpawnPos = CustomVector2f(15, 0);
+
 	maxInputSpeed = 200;
 	acceleration = 400;
 	stopFriction = 400;
 	turnBackFriction = 800;
 	rotationSpeed = 100;
 	timerShootAgain = 0.1f;
-	speedBullet = 500;
+	speedBullet = 150;
 	chronoShootAgain = timerShootAgain;
 	Active();
 }
@@ -56,6 +61,6 @@ void Player::Shoot() {
 	if (chronoShootAgain >= timerShootAgain)
 	{
 		chronoShootAgain = 0;
-		(*gameManager).CreateBullet(Team::Player, position, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
+		(*gameManager).CreateBullet(Team::Player, position + bulletSpawnPos, speedBullet, Math::Polar2Cart(Math::ToRad(rotation), 1), 10);
 	}
 }

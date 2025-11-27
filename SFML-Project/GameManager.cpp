@@ -27,6 +27,20 @@ void GameManager::Draw(sf::RenderWindow& window)
 		(*it)->Draw(window);
 		it++;
 	}
+
+	std::list<CACEnemy*>::iterator cacIt = cacEnemy.begin();
+	while (cacIt != cacEnemy.end())
+	{
+		(*cacIt)->Draw(window);
+		cacIt++;
+	}
+
+	std::list<ShooterEnemy*>::iterator shooterIt = shooterEnemy.begin();
+	while (shooterIt != shooterEnemy.end())
+	{
+		(*shooterIt)->Draw(window);
+		shooterIt++;
+	}
 }
 
 void GameManager::BonusScore(float timer, int multiplicateur)
@@ -59,5 +73,19 @@ void GameManager::UpdateAll(float deltaTime) {
 	while (it != bullets.end()) {
 		(*it)->Update(deltaTime);
 		it++;
+	}
+
+	std::list<CACEnemy*>::iterator cacIt = cacEnemy.begin();
+	while (cacIt != cacEnemy.end())
+	{
+		(*cacIt)->Update(deltaTime);
+		cacIt++;
+	}
+
+	std::list<ShooterEnemy*>::iterator shooterIt = shooterEnemy.begin();
+	while (shooterIt != shooterEnemy.end())
+	{
+		(*shooterIt)->Update(deltaTime);
+		shooterIt++;
 	}
 }
