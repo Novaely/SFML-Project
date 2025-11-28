@@ -15,71 +15,71 @@ void CollisionManager::Update(float deltaTime)
 {
 	sf::Vector2f playerPos = pShape->getPosition();
 
-	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
-	while (it != (*cacEnemy).end()) 
+	std::list<CACEnemy*>::iterator itCACEnemyPlayer = (*cacEnemy).begin();
+	while (itCACEnemyPlayer != (*cacEnemy).end()) 
 	{
-		sf::RectangleShape* enemyShape = (sf::RectangleShape*)(*it)->shape;
+		sf::RectangleShape* enemyShape = (sf::RectangleShape*)(*itCACEnemyPlayer)->shape;
 
 		if (CheckCollisionsSquareTriangle(*enemyShape, *pShape))
 		{
-			player->OnCollisionEnter((*it));
-			(*it)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*itCACEnemyPlayer));
+			(*itCACEnemyPlayer)->OnCollisionEnter(player);
 			std::cout << "Collision between CACEnemy and Player" << std::endl;
 		}
-		it++;
+		itCACEnemyPlayer++;
 	}
 
-	std::list<ShooterEnemy*>::iterator it2 = (*shooterEnemy).begin();
-	while (it2 != (*shooterEnemy).end())
+	std::list<ShooterEnemy*>::iterator itShooterEnemyPlayer = (*shooterEnemy).begin();
+	while (itShooterEnemyPlayer != (*shooterEnemy).end())
 	{
-		sf::ConvexShape* enemyShape = (sf::ConvexShape*)(*it2)->shape;
+		sf::ConvexShape* enemyShape = (sf::ConvexShape*)(*itShooterEnemyPlayer)->shape;
 		if (CheckCollisionsTriangleTriangle(*enemyShape, *pShape))
 		{
-			player->OnCollisionEnter((*it2));
-			(*it)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*itShooterEnemyPlayer));
+			(*itShooterEnemyPlayer)->OnCollisionEnter(player);
 			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
 		}
-		it2++;
+		itShooterEnemyPlayer++;
 	}
 
-	std::list<Bullet*>::iterator it3 = (*bullets).begin();
-	while (it3 != (*bullets).end())
+	std::list<Bullet*>::iterator itBullet = (*bullets).begin();
+	while (itBullet != (*bullets).end())
 	{
-		sf::CircleShape* bulletShape = (sf::CircleShape*)(*it3)->shape;
+		sf::CircleShape* bulletShape = (sf::CircleShape*)(*itBullet)->shape;
 		if (CheckCollisionsCircleTriangle(*bulletShape, *pShape))
 		{
-			player->OnCollisionEnter((*it3));
-			(*it3)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*itBullet));
+			(*itBullet)->OnCollisionEnter(player);
 			std::cout << "Collision between Bullet and Player" << std::endl;
 		}
 
-		std::list<CACEnemy*>::iterator it4 = (*cacEnemy).begin();
-		while (it4 != (*cacEnemy).end())
+		std::list<CACEnemy*>::iterator itCACEnemyBullet = (*cacEnemy).begin();
+		while (itCACEnemyBullet != (*cacEnemy).end())
 		{
-			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*it4)->shape;
+			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*itCACEnemyBullet)->shape;
 			if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
 			{
-				(*it4)->OnCollisionEnter((*it3));
-				(*it3)->OnCollisionEnter((*it4));
+				(*itCACEnemyBullet)->OnCollisionEnter((*itBullet));
+				(*itBullet)->OnCollisionEnter((*itCACEnemyBullet));
 				std::cout << "Collision between Bullet and CACEnemy" << std::endl;
 			}
-			it4++;
+			itCACEnemyBullet++;
 		}
 
-		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
+		std::list<ShooterEnemy*>::iterator itShooterEnemyBullet = (*shooterEnemy).begin();
 
-		while (it5 != (*shooterEnemy).end())
+		while (itShooterEnemyBullet != (*shooterEnemy).end())
 		{
-			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it5)->shape;
+			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*itShooterEnemyBullet)->shape;
 			if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
 			{
-				(*it5)->OnCollisionEnter((*it3));
-				(*it3)->OnCollisionEnter((*it5));
+				(*itShooterEnemyBullet)->OnCollisionEnter((*itBullet));
+				(*itBullet)->OnCollisionEnter((*itShooterEnemyBullet));
 				std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
 			}
-			it5++;
+			itShooterEnemyBullet++;
 		}
-		it3++;
+		itBullet++;
 	}
 
 }
@@ -178,7 +178,7 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	if (closestY < ry) closestY = ry;
 	else if (closestY > ry + rh) closestY = ry + rh;
 
-	// Distance au carré entre le centre et ce point le plus proche
+	// Distance au carrÃ© entre le centre et ce point le plus proche
 	float dx = cx - closestX;
 	float dy = cy - closestY;
 
@@ -233,14 +233,14 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
 {
-	// Vecteur du segment et vecteur du point par rapport au début du segment
+	// Vecteur du segment et vecteur du point par rapport au dÃ©but du segment
 	vector2f AB = end - start;
 	vector2f AP = point - start;
 
-	// Longueur au carré du segment (évite sqrt inutile)
+	// Longueur au carrÃ© du segment (Ã©vite sqrt inutile)
 	float len2 = AB.Dot(AB);
 
-	// Segment dégénéré (start == end) : distance au point start
+	// Segment dÃ©gÃ©nÃ©rÃ© (start == end) : distance au point start
 	if (len2 == 0.0f)
 	{
 		float dx = point.x - start.x;
@@ -248,14 +248,14 @@ float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, v
 		return std::sqrt(dx * dx + dy * dy);
 	}
 
-	// Paramètre de projection normalisé t = (AP·AB) / |AB|^2
+	// ParamÃ¨tre de projection normalisÃ© t = (APÂ·AB) / |AB|^2
 	float t = AP.Dot(AB) / len2;
 
 	// Clamp entre 0 et 1 pour rester sur le segment
 	if (t < 0.0f) t = 0.0f;
 	else if (t > 1.0f) t = 1.0f;
 
-	// Point projeté sur le segment
+	// Point projetÃ© sur le segment
 	vector2f projection = start + AB * t;
 
 	// Distance entre le point et la projection

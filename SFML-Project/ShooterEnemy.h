@@ -6,5 +6,8 @@ class ShooterEnemy :
 {
 public:
     ShooterEnemy();
+    float attackRadius = 0.0f;
+
+    void Update(float deltaTime) override;
 };
 
