@@ -5,4 +5,17 @@ CACEnemy::CACEnemy() {
 	shape->setFillColor(sf::Color::Red);
 
 	((sf::RectangleShape*)shape)->setSize({5,5});
+
+	maxInputSpeed = 200;
+	acceleration = 400;
+	stopFriction = 400;
+	turnBackFriction = 800;
+	rotationSpeed = 100;
+}
+
+void CACEnemy::Update(float deltaTime)
+{
+	Enemy::Update(deltaTime);
+
+	inputDirection = position.DirectionTo(*targetPos);
 }

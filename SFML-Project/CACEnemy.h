@@ -6,5 +6,7 @@ class CACEnemy :
 {
     public:
         CACEnemy();
+
+        void Update(float deltaTime) override;
 };
 

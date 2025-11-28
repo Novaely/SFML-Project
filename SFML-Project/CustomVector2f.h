@@ -29,6 +29,8 @@ struct CustomVector2f
 	float SquaredDistanceTo(const CustomVector2f& other) const;
 	float DistanceTo(const CustomVector2f& other) const;
 
+	CustomVector2f DirectionTo(const CustomVector2f& other) const;
+
 	float Dot(const CustomVector2f& other) const;
 
 	// Operators

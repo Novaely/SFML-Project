@@ -103,7 +103,8 @@ CACEnemy* PoolManager::GetCACEnemy(CustomVector2f position, float health, Player
 	pEnemy->team = Team::Enemy;
 	pEnemy->position = position;
 	pEnemy->health;
-	// TO DO : Give player
+	
+	pEnemy->targetPos = &(player->position);
 
 	pEnemy->Active();
 

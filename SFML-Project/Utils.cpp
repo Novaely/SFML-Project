@@ -66,4 +66,3 @@ float Math::DistancePointToSegment(CustomVector2f p, CustomVector2f a, CustomVec
 
 	return p.DistanceTo(projection);
 }
-}

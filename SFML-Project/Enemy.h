@@ -8,6 +8,8 @@ class Enemy :
         // Constructor 
         Enemy();
 
+        CustomVector2f* targetPos = nullptr;
+
         void Active() override;
         void Desactive() override;
         
