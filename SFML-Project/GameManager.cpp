@@ -136,6 +136,12 @@ void GameManager::CreateCacEnemy(CustomVector2f position, float health) {
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
 	(*enemy).Color = ColorType::Vert; // random plus tard
+
+	enemy->OnShoot = [this](ShooterEnemy& enemy)
+	{
+		OnEnemyShoot(enemy);
+	};
+
 	shooterEnemy.push_back(enemy);
 }
 
@@ -168,4 +174,12 @@ void GameManager::UpdateAll(float deltaTime) {
 		(*itemIt)->Update(deltaTime);
 		itemIt++;
 	}
+}
+
+void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
+{
+	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
+	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
+
+	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), 10, enemy.GetColor());
 }
