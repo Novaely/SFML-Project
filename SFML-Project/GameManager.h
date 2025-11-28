@@ -4,29 +4,42 @@
 #include <list>
 #include "PoolManager.h"
 
-class GameManager :
-    public Manager
+class GameManager : public Manager
 {
 public :
     // Constructors
     GameManager();
+    ~GameManager();
+
+    //Singleton
+    static GameManager* GetInstance();
+
 
     int score;
     int multiplicateur;
 	float timerBonusScore;
     float timerBonusScoreCheck;
-
+    float timerSpawnEnemies;
+    float chronoSpawnEnemies;
+    bool QuelEnemy; // random plus tard
+    bool spawnEnemy;
 
     Player* player = nullptr;
     PoolManager* poolManager = nullptr;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
 	std::list<Bullet*> bullets;
+    std::list<Collectible*> collectibles;
 
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
 
+    void PlayerShoot();
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
+    void CreateCollectible(); //not implement
+    void CreateCacEnemy(CustomVector2f position, float health);
+    void CreateShooterEnemy(CustomVector2f position, float health);
+
 
 private: 
     /// <summary>
@@ -42,5 +55,8 @@ private:
     void BonusTir();
 
     void UpdateAll(float deltaTime);
+
+    //Singleton
+    static GameManager* _instance;
 };
 

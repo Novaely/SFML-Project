@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Utils.h"
-#include <iostream>
-#include <cmath>
 #include <map>
 
 class GameObject

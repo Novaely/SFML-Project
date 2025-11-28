@@ -16,7 +16,15 @@ class Character : public Movable
 		float rotationSpeed = 0;
 		float rotationDirection = 0;
 
+		CustomVector2f bulletSpawnPos = CustomVector2f::zero;
+
+		bool CanShoot() const;
 		void Update(float deltaTime) override;
 		void Move(float deltaTime) override;
 		void Rotate(float deltaTime);
+
+		CustomVector2f GetLookDirection();
+
+	protected:
+		bool _canShoot = true;
 };

@@ -2,6 +2,10 @@
 
 CACEnemy::CACEnemy() : Enemy()
 {
+	shape = new sf::RectangleShape();
+	shape->setFillColor(sf::Color::Red);
+
+	((sf::RectangleShape*)shape)->setSize({ 5,5 });
 	detectionRadius = 150.0f;
 	attackRadius = 50.0f;
 	timeBetweenAttacks = 1.0f;

@@ -1,6 +1,8 @@
 #pragma once
 #include "CustomVector2f.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <cmath>
 
 enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet };
 enum class ColorType { None = 0, Rouge = 1, Bleu = 2, Vert = 3 };
@@ -15,4 +17,6 @@ namespace Math
 	CustomVector2f Polar2Cart(float angle, float radius);
 	float ToRad(float angle);
 	float ToDegree(float angle);
+
+	CustomVector2f RotatePoint(CustomVector2f point, CustomVector2f origin, float angle);
 }

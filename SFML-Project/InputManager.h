@@ -1,6 +1,6 @@
 #pragma once
-#include "Manager.h"
 #include "Player.h"
+#include "GameManager.h"
 #include <SFML/Graphics.hpp>
 
 class InputManager :
@@ -10,5 +10,7 @@ class InputManager :
         void OneClickInputCheck(sf::Event event, Player& player);
         void ContinuInputCheck(sf::Event event, Player& player);
         InputManager();
-};
 
+    private:
+        GameManager* gameManager = nullptr;
+};
