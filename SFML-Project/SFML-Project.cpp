@@ -47,7 +47,7 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-		gameManager.Update(deltaTime);
+		gameManager.Update(deltaTime, window);
 
 		//Render
 		window.clear();

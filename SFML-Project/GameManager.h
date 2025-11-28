@@ -21,8 +21,7 @@ public :
     float timerBonusScoreCheck;
     float timerSpawnEnemies;
     float chronoSpawnEnemies;
-    bool QuelEnemy; // random plus tard
-    bool spawnEnemy;
+    bool wantSpawnEnemy;
 
     Player* player = nullptr;
     PoolManager* poolManager = nullptr;
@@ -31,7 +30,7 @@ public :
 	std::list<Bullet*> bullets;
     std::list<Collectible*> collectibles;
 
-    void Update(float deltaTime);
+    void Update(float deltaTime, sf::RenderWindow& window);
     void Draw(sf::RenderWindow& window);
 
     void PlayerShoot();
