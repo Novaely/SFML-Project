@@ -45,14 +45,7 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 		}
 		else {
 			chronoSpawnEnemies = 0;
-			if (RandomInt(0, 1))
-			{
-				CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y)}, 100);
-			}
-			else
-			{
-				CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100);
-			}
+			SpawnEnemy(windowSize);
 		}
 	}
 	UpdateAll(deltaTime);
@@ -125,17 +118,17 @@ void GameManager::CreateCollectible() {
 	//collectibles.push_back
 }
 
-void GameManager::CreateCacEnemy(CustomVector2f position, float health) {
+void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
 
 	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
 
-	(*enemy).Color = ColorType::Bleu; // random plus tard
+	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
 }
 
-void GameManager::CreateShooterEnemy(CustomVector2f position, float health) {
+void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
-	(*enemy).Color = ColorType::Vert; // random plus tard
+	(*enemy).Color = color;
 	shooterEnemy.push_back(enemy);
 }
 
@@ -167,5 +160,27 @@ void GameManager::UpdateAll(float deltaTime) {
 	{
 		(*itemIt)->Update(deltaTime);
 		itemIt++;
+	}
+}
+
+void GameManager::SpawnEnemy(CustomVector2f windowSize) {
+	ColorType color;
+	switch (RandomInt(0, 2)) {
+		case 0 : 
+			color = ColorType::Rouge;
+			break;
+		case 1 : 
+			color = ColorType::Bleu;
+			break;
+		case 2 : 
+			color = ColorType::Vert;
+	}
+	if (RandomInt(0, 1))
+	{
+		CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+	}
+	else
+	{
+		CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 	}
 }

@@ -36,9 +36,9 @@ public :
     void PlayerShoot();
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
     void CreateCollectible(); //not implement
-    void CreateCacEnemy(CustomVector2f position, float health);
-    void CreateShooterEnemy(CustomVector2f position, float health);
-
+    void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
+    void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
+    void SpawnEnemy(CustomVector2f windowSize);
 
 private: 
     /// <summary>
