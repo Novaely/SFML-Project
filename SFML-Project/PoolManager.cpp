@@ -47,6 +47,7 @@ Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, 
 
 	pBullet->team = team;
 	pBullet->position = position;
+	pBullet->shape->setPosition(position.x, position.y);
 	pBullet->speed = CustomVector2f(speed);
 	pBullet->maxInputSpeed = speed;
 	pBullet->moveDirection = direction;
@@ -100,6 +101,7 @@ CACEnemy* PoolManager::GetCACEnemy(CustomVector2f position, float health, Player
 
 	pEnemy->team = Team::Enemy;
 	pEnemy->position = position;
+	pEnemy->shape->setPosition(position.x, position.y);
 	pEnemy->health;
 	// TO DO : Give player
 
@@ -151,6 +153,8 @@ ShooterEnemy* PoolManager::GetShooterEnemy(CustomVector2f position, float health
 
 	pEnemy->team = Team::Enemy;
 	pEnemy->position = position;
+	pEnemy->shape->setPosition(position.x, position.y);
+
 	pEnemy->health;
 	// TO DO : Give player
 

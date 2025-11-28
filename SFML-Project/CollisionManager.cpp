@@ -93,7 +93,7 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 	
 
 	sf::Vector2f trianPos = trian.getPosition();
-	vector2f triangle[3] = { ((trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y), ((trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y), ((trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y) };
+	vector2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y}, {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
 
 
 	float rw = square[1].x - square[0].x; // width
@@ -129,8 +129,8 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	sf::Vector2f trianPos2 = trian2.getPosition();
 
 
-	vector2f triangle1[3] = { ((trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y), ((trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y), ((trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y) };
-	vector2f triangle2[3] = { ((trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y), ((trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y), ((trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y) };
+	vector2f triangle1[3] = { {(trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y}, {(trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y}, {(trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y} };
+	vector2f triangle2[3] = { {(trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y}, {(trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y}, {(trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y} };
 
 
 	for (int i = 0; i < 3; i++)
@@ -156,7 +156,7 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
 	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
 	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
-	vector2f square[4] = { (p1.x, p1.y), (p2.x, p2.y), (p3.x, p3.y), (p4.x, p4.y) };
+	vector2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
 
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
@@ -195,17 +195,18 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	//return true;
 }
 
-bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape circle, sf::ConvexShape trian)
+bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf::ConvexShape& trian)
 {
 	sf::Vector2f trianPos = trian.getPosition();
 
-	vector2f triangle[3] = { ((trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y), ((trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y), ((trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y) };
+	vector2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y},  {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
 
 	float cr = circle.getRadius(); // circle radius
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
+	vector2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
 
-	if (IsPointInTriangle((cx,cy), triangle))
+	if (IsPointInTriangle(centerCircle, triangle))
 	{
 		std::cout << "Collision detected" << std::endl;
 		return true;
@@ -230,32 +231,32 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape circle, sf:
 
 float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
 {
+	// Vecteur du segment et vecteur du point par rapport au début du segment
 	vector2f AB = end - start;
 	vector2f AP = point - start;
 
-	float distAB = AB.GetMagnitude();
+	// Longueur au carré du segment (évite sqrt inutile)
+	float len2 = AB.Dot(AB);
 
+	// Segment dégénéré (start == end) : distance au point start
+	if (len2 == 0.0f)
+	{
+		float dx = point.x - start.x;
+		float dy = point.y - start.y;
+		return std::sqrt(dx * dx + dy * dy);
+	}
 
-	// Projection scalaire normalisée de AP sur AB
-	float t = (AP.x * AB.x + AP.y * AB.y) / distAB*distAB;
+	// Paramètre de projection normalisé t = (AP·AB) / |AB|^2
+	float t = AP.Dot(AB) / len2;
 
 	// Clamp entre 0 et 1 pour rester sur le segment
-	if (t < 0.0f)
-	{
-		t = 0.0f;
-	}
-	else if (t > 1.0f)
-	{
-		t = 1.0f;
-	}
+	if (t < 0.0f) t = 0.0f;
+	else if (t > 1.0f) t = 1.0f;
 
 	// Point projeté sur le segment
-	vector2f projection = {
-		start.x + t * AB.x,
-		start.y + t * AB.y
-	};
+	vector2f projection = start + AB * t;
 
-	// Distance entre P et la projection
+	// Distance entre le point et la projection
 	float dx = point.x - projection.x;
 	float dy = point.y - projection.y;
 	return std::sqrt(dx * dx + dy * dy);
@@ -268,13 +269,13 @@ bool CollisionManager::IsPointInTriangle(vector2f point, vector2f triangle[3])
 	vector2f BC = triangle[2] - triangle[1];
 	vector2f CA = triangle[0] - triangle[2];
 
-	vector2f n1 = vector2f(-AB.y, AB.x);
-	vector2f n2 = vector2f(-BC.y, BC.x);
-	vector2f n3 = vector2f(-CA.y, CA.x);
-
 	vector2f ABP = point - triangle[0] + AB * 0.5f;
 	vector2f BCP = point - triangle[1] + BC * 0.5f;
 	vector2f CAP = point - triangle[2] + CA * 0.5f;
+
+	vector2f n1 = vector2f(-AB.y, AB.x);
+	vector2f n2 = vector2f(-BC.y, BC.x);
+	vector2f n3 = vector2f(-CA.y, CA.x);
 
 	if (ABP.Dot(n1) > 0)
 	{

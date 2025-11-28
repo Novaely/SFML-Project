@@ -27,7 +27,7 @@ void Bullet::Desactive()
 
 void Bullet::OnCollisionEnter(GameObject* other)
 {
-	GameObject Other = *(other);
+	const GameObject& Other = *(other);
 
 	if (team == Team::Enemy)
 	{

@@ -66,7 +66,7 @@ void Player::Shoot() {
 
 void Player::OnCollisionEnter(GameObject* other)
 {
-	GameObject Other = *(other);
+	const GameObject& Other = *(other);
 	if (Other.Color == _color)
 	{
 		if (Other.characterType == CharaType::Bullet)

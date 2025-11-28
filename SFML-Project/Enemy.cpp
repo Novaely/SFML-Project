@@ -18,7 +18,7 @@ void Enemy::Desactive()
 
 void Enemy::OnCollisionEnter(GameObject* other)
 {
-	GameObject Other = *(other);
+	const GameObject& Other = *(other);
 
 	if (Other.Color == _color)
 	{
