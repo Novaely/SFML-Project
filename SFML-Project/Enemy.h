@@ -12,6 +12,9 @@ class Enemy :
 
         void Active() override;
         void Desactive() override;
-        
+
+        void OnCollisionEnter(GameObject* other) override;
+
+     
 };
 

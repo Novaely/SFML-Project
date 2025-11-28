@@ -1,5 +1,8 @@
 #include "Enemy.h"
 
+
+class Player;
+
 Enemy::Enemy() : Character()
 {
 }
@@ -7,16 +10,25 @@ Enemy::Enemy() : Character()
 
 void Enemy::Active()
 {
-	health = 100.0f;
-	speed = 100.0f;
-	damage = 10.0f;
-
 }
 
 void Enemy::Desactive()
 {
-	health = 0.0f;
-	speed = 0.0f;
-	damage = 0.0f;
+}
+
+void Enemy::OnCollisionEnter(GameObject* other)
+{
+	const GameObject& Other = *(other);
+
+	if (Other.Color == _color)
+	{
+		if (Other.characterType == CharaType::Bullet)
+		{
+			if (Other.team == Team::Player)
+			{
+				std::cout << "Enemy hit by bullet" << std::endl;
+			}
+		}
+	}
 
 }

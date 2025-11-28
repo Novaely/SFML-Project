@@ -60,3 +60,29 @@ void Player::Shoot() {
 		_canShoot = false;
 	}
 }
+
+void Player::OnCollisionEnter(GameObject* other)
+{
+	const GameObject& Other = *(other);
+	if (Other.Color == _color)
+	{
+		if (Other.characterType == CharaType::Bullet)
+		{
+			if (Other.team == Team::Enemy)
+			{
+				std::cout << "Player hit by bullet Enemy" << std::endl;
+			}
+		}
+
+		if (Other.characterType == CharaType::CACEnemy)
+		{
+			std::cout << "Player hit by CAC Enemy" << std::endl;
+		}
+
+		if (Other.characterType == CharaType::ShooterEnemy)
+		{
+			std::cout << "Player hit by Shooter Enemy" << std::endl;
+		}
+	}
+
+}

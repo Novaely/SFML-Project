@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "PoolManager.h"
 #include "GameManager.h"
+#include "CollisionManager.h"
 
 const float FPS_60 = 1.0f / 60.0f;
 
@@ -19,6 +20,7 @@ int main()
 	PoolManager poolManager;
 	gameManager.player = &player;
 	gameManager.poolManager = &poolManager;
+	CollisionManager collisionManager(&gameManager);
 
 	sf::Clock clock;
 	float deltaTime = 0;
@@ -49,6 +51,7 @@ int main()
 
 		//Update
 		gameManager.Update(deltaTime, windowSize);
+		collisionManager.Update(deltaTime);
 
 		//Render
 		window.clear();

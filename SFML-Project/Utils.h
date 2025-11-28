@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 
+enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet };
 enum class ColorType { None = 0, Rouge = 1, Bleu = 2, Vert = 3 };
 enum class Team { None, Player, Enemy };
 int RandomInt(int min, int max);

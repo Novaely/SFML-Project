@@ -32,3 +32,4 @@ void Movable::Move(float deltaTime)
     //std::cout << "Velocity X: " << test.x << " Velocity Y: " << test.y << " Velocity Length : " << length << std::endl;
     //std::cout << "Speed X: " << speed.x << " Speed Y: " << speed.y << std::endl;
 }
+

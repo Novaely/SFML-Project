@@ -5,11 +5,14 @@
 
 class GameObject
 {
+
 	public:
 		GameObject();
 		~GameObject();
 
 		sf::Shape* shape = nullptr;
+		CharaType characterType = CharaType::None;
+		Team team = Team::None;
 
 		CustomVector2f position = CustomVector2f::zero;
 		float rotation = 0.0f;
@@ -25,6 +28,8 @@ class GameObject
 		virtual void Desactive();
 
 		bool IsActive() const;
+
+		virtual void OnCollisionEnter(GameObject* other);
 
 	protected:
 		bool _isActive = false;
