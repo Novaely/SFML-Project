@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "Utils.h"
 
 GameManager* GameManager::_instance = nullptr;
 
@@ -34,25 +35,24 @@ GameManager::GameManager()
 	timerBonusScoreCheck = 0.0f;
 	timerSpawnEnemies = 1;
 	chronoSpawnEnemies = timerSpawnEnemies;
-	QuelEnemy = false; // random plus tard
-	spawnEnemy = false; //mettre en true si vous voulez avoir le spawn des ennemies
+	wantSpawnEnemy = false; //mettre en true si vous voulez avoir le spawn des ennemies
 }
-void GameManager::Update(float deltaTime)
+void GameManager::Update(float deltaTime, sf::RenderWindow& window)
 {
-	if (spawnEnemy) {
+	sf::Vector2u windowSize = window.getSize();
+	if (wantSpawnEnemy) {
 		if (chronoSpawnEnemies <= timerSpawnEnemies) {
 			chronoSpawnEnemies += deltaTime;
 		}
 		else {
 			chronoSpawnEnemies = 0;
-			QuelEnemy = !QuelEnemy; // random plus tard
-			if (QuelEnemy)
+			if (RandomInt(0, 1))
 			{
-				CreateCacEnemy({ 100,100 }, 100);
+				CreateCacEnemy({ RandomFloat(0, (float)windowSize.x),RandomFloat(0,(float)windowSize.y)}, 100);
 			}
 			else
 			{
-				CreateShooterEnemy({ 200,200 }, 100);
+				CreateShooterEnemy({ RandomFloat(0, (float)windowSize.x),RandomFloat(0,(float)windowSize.y) }, 100);
 			}
 		}
 	}
@@ -129,15 +129,14 @@ void GameManager::CreateCollectible() {
 void GameManager::CreateCacEnemy(CustomVector2f position, float health) {
 
 	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
+
 	(*enemy).Color = ColorType::Bleu; // random plus tard
-	(*enemy).shape->setFillColor(sf::Color::Blue); // random plus tard
 	cacEnemy.push_back(enemy);
 }
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
 	(*enemy).Color = ColorType::Vert; // random plus tard
-	(*enemy).shape->setFillColor(sf::Color::Green);// random plus tard
 	shooterEnemy.push_back(enemy);
 }
 

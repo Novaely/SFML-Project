@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <random>
 
 float Math::Clamp(float value, float min, float max)
 {
@@ -29,4 +30,18 @@ CustomVector2f Math::RotatePoint(CustomVector2f point, CustomVector2f origin, fl
 	float baseAngle = vecDirec.GetAngle();
 
 	return Polar2Cart(baseAngle + angle, length) + origin;
+}
+
+int RandomInt(int min, int max) {
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dist(min, max);
+	return dist(gen);
+}
+
+float RandomFloat(float min, float max) {
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> dist(min, max);
+	return dist(gen);
 }
