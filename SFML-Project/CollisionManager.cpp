@@ -39,7 +39,7 @@ void CollisionManager::Update(float deltaTime)
 			(*it)->OnCollisionEnter(player);
 			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
 		}
-		it++;
+		it2++;
 	}
 
 	std::list<Bullet*>::iterator it3 = (*bullets).begin();
@@ -63,6 +63,7 @@ void CollisionManager::Update(float deltaTime)
 				(*it3)->OnCollisionEnter((*it4));
 				std::cout << "Collision between Bullet and CACEnemy" << std::endl;
 			}
+			it4++;
 		}
 
 		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
@@ -76,6 +77,7 @@ void CollisionManager::Update(float deltaTime)
 				(*it3)->OnCollisionEnter((*it5));
 				std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
 			}
+			it5++;
 		}
 		it3++;
 	}
