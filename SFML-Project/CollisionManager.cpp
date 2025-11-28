@@ -85,7 +85,7 @@ void CollisionManager::Update(float deltaTime)
 
 		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
 		{
-
+			(*it3)->OnCollisionEnter(nullptr);
 			std::cout << "Collision between Bullet and Window Bounds" << std::endl;
 		}
 
