@@ -1,14 +1,18 @@
 #include "CollisionManager.h"
 
 
-CollisionManager::CollisionManager(GameManager* gm)
+CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 {
+	windowShape = new sf::RectangleShape();
+	((sf::RectangleShape*)windowShape)->setSize({ windowSize.x, windowSize.y});
+
 	gameManager = gm;
 	player = gm->player;
 	pShape = (sf::ConvexShape*)player->shape;
 	cacEnemy = &(gm->cacEnemy);
 	shooterEnemy = &(gm->shooterEnemy);
 	bullets = &(gm->bullets);
+	
 }
 
 void CollisionManager::Update(float deltaTime)
@@ -18,9 +22,9 @@ void CollisionManager::Update(float deltaTime)
 	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
 	while (it != (*cacEnemy).end()) 
 	{
-		sf::RectangleShape* enemyShape = (sf::RectangleShape*)(*it)->shape;
+		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*it)->shape;
 
-		if (CheckCollisionsSquareTriangle(*enemyShape, *pShape))
+		if (CheckCollisionsSquareTriangle(*cacEnemyShape, *pShape))
 		{
 			player->OnCollisionEnter((*it));
 			(*it)->OnCollisionEnter(player);
@@ -32,11 +36,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<ShooterEnemy*>::iterator it2 = (*shooterEnemy).begin();
 	while (it2 != (*shooterEnemy).end())
 	{
-		sf::ConvexShape* enemyShape = (sf::ConvexShape*)(*it2)->shape;
-		if (CheckCollisionsTriangleTriangle(*enemyShape, *pShape))
+		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*it2)->shape;
+		if (CheckCollisionsTriangleTriangle(*shooterEnemyShape, *pShape))
 		{
 			player->OnCollisionEnter((*it2));
-			(*it)->OnCollisionEnter(player);
+			(*it2)->OnCollisionEnter(player);
 			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
 		}
 		it2++;
@@ -67,7 +71,6 @@ void CollisionManager::Update(float deltaTime)
 		}
 
 		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
-
 		while (it5 != (*shooterEnemy).end())
 		{
 			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it5)->shape;
@@ -79,6 +82,13 @@ void CollisionManager::Update(float deltaTime)
 			}
 			it5++;
 		}
+
+		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
+		{
+			(*it3)->OnCollisionEnter(nullptr);
+			std::cout << "Collision between Bullet and Window Bounds" << std::endl;
+		}
+
 		it3++;
 	}
 
@@ -91,7 +101,8 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
 	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
 	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
-	vector2f square[4] = { (p1.x, p1.y), (p2.x, p2.y), (p3.x, p3.y), (p4.x, p4.y) };
+	vector2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
+
 	
 
 	sf::Vector2f trianPos = trian.getPosition();
@@ -103,16 +114,6 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 	float rx = square[0].x; // x position
 	float ry = square[0].y; // y position
 
-	// Triangle -> Square
-	for (int i = 0; i < 3; i++)
-	{
-		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
-		{
-			std::cout << "Collision detected" << std::endl;
-			return true;
-		}
-	}
-
 	// Square -> Triangle
 	for (int i = 0; i < 4; i++)
 	{
@@ -123,6 +124,17 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 			return true;
         }
 	}
+
+	// Triangle -> Square
+	for (int i = 0; i < 3; i++)
+	{
+		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
+		{
+			std::cout << "Collision detected" << std::endl;
+			return true;
+		}
+	}
+
 	return false;
 }
 bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2)
@@ -188,13 +200,6 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 		return true;
 	}
 	return false;
-
-	//if (((cx - cr >= rx && cx + cr <= rw + rx) && (cy - cr >= ry && cy + cr <= ry + rh)) || (cx - cr < rx && cx + cr > rw + rx) && (cy - cr < ry && cy + cr > ry + rh))
-	//{
-	//	return false;
-	//}
-	//std::cout << "Collision detected" << std::endl;
-	//return true;
 }
 
 bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf::ConvexShape& trian)
@@ -207,6 +212,10 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
 	vector2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
+	for (int i = 0 ; i < 3; i++)
+	{
+		std::cout << trian.getPoint(i).x + trianPos.x << "," << trian.getPoint(i).y + trianPos.y << std::endl;
+	}
 
 	if (IsPointInTriangle(centerCircle, triangle))
 	{
@@ -217,7 +226,7 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 	for (int i = 0; i < 3; i++)
 	{
-		float dist = DistancePointToSegment((cx, cy), triangle[i], triangle[(i + 1) % 3]);
+		float dist = DistancePointToSegment(centerCircle, triangle[i], triangle[(i + 1) % 3]);
 		if (dist <= cr)
 		{
 			std::cout << "Collision detected" << std::endl;
@@ -279,17 +288,22 @@ bool CollisionManager::IsPointInTriangle(vector2f point, vector2f triangle[3])
 	vector2f n2 = vector2f(-BC.y, BC.x);
 	vector2f n3 = vector2f(-CA.y, CA.x);
 
-	if (ABP.Dot(n1) > 0)
+	if (dotProduct(ABP.x, ABP.y, n1.x, n1.y) < 0)
 	{
 		return false;
 	}
-	if (BCP.Dot(n2) > 0)
+	if (dotProduct(BCP.x, BCP.y, n2.x, n2.y) < 0)
 	{
 		return false;
 	}
-	if (CAP.Dot(n3) > 0)
+	if (dotProduct(CAP.x, CAP.y, n3.x, n3.y) < 0)
 	{
 		return false;
 	}
 	return true;
+}
+
+float CollisionManager::dotProduct(float vx1, float vy1, float vx2, float vy2)
+{
+	return vx1 * vx2 + vy1 * vy2;
 }
