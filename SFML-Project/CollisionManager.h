@@ -29,5 +29,6 @@ class CollisionManager :
 
 		bool IsPointInTriangle(vector2f point, vector2f triangle[3]);
 		float DistancePointToSegment(vector2f point, vector2f start, vector2f end);
+		float dotProduct(float vx1, float vy1, float vx2, float vy2);
 };
 
