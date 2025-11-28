@@ -30,3 +30,24 @@ CustomVector2f Math::RotatePoint(CustomVector2f point, CustomVector2f origin, fl
 
 	return Polar2Cart(baseAngle + angle, length) + origin;
 }
+
+float Math::DistancePointToSegment(CustomVector2f p, CustomVector2f a, CustomVector2f b)
+{
+	CustomVector2f ab = b - a;
+	CustomVector2f ap = p - a;
+
+	float lengthSquared = ab.Dot(ab);
+
+	if (lengthSquared <= 0)
+	{
+		return ap.GetMagnitude();
+	}
+
+	float t = ap.Dot(ab) / lengthSquared;
+
+	t = Math::Clamp(t, 0, 1);
+
+	CustomVector2f projection = a + ab * t;
+
+	return p.DistanceTo(projection);
+}
