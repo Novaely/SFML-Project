@@ -50,8 +50,8 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-		collisionManager.Update(deltaTime);
 		gameManager.Update(deltaTime, windowSize);
+		collisionManager.Update(deltaTime);
 
 		//Render
 		window.clear();
