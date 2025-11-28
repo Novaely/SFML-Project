@@ -26,30 +26,36 @@ void Bullet::Desactive()
 
 void Bullet::OnCollisionEnter(GameObject* other)
 {
-	const GameObject& Other = *(other);
+	if (other == nullptr) {
 
-	if (team == Team::Enemy)
-	{
-		if (Other.characterType == CharaType::Player)
-		{
-			std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
-		}
 	}
+	else {
+		const GameObject& Other = *(other);
 
-	if (team == Team::Player)
-	{
-		if (Other.Color == _color)
+		if (team == Team::Enemy)
 		{
-			if (Other.characterType == CharaType::CACEnemy)
+			if (Other.characterType == CharaType::Player)
 			{
-				std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
-			}
-			if (Other.characterType == CharaType::ShooterEnemy)
-			{
-				std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
+				std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
 			}
 		}
+
+		if (team == Team::Player)
+		{
+			if (Other.Color == _color)
+			{
+				if (Other.characterType == CharaType::CACEnemy)
+				{
+					std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
+				}
+				if (Other.characterType == CharaType::ShooterEnemy)
+				{
+					std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
+				}
+			}
+		}
 	}
+	
 
 	// si bullet sort de l'ecran -> Destroy
 
