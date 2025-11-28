@@ -1,8 +1,6 @@
 #pragma once
 #include "Character.h"
 
-class GameManager;
-class Player;
 class Enemy :
     public Character
 {
@@ -10,10 +8,7 @@ class Enemy :
         // Constructor 
         Enemy();
 
-
-        Player* player = nullptr;
-        GameManager* gameManager = nullptr;
-
+        CustomVector2f* targetPos = nullptr;
 
         void Active() override;
         void Desactive() override;

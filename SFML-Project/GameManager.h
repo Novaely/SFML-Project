@@ -55,6 +55,8 @@ private:
 
     void UpdateAll(float deltaTime);
 
+    void OnEnemyShoot(ShooterEnemy& enemy);
+
     //Singleton
     static GameManager* _instance;
 };
