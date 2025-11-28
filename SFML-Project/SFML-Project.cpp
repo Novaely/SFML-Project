@@ -20,7 +20,7 @@ int main()
 	PoolManager poolManager;
 	gameManager.player = &player;
 	gameManager.poolManager = &poolManager;
-	CollisionManager collisionManager(&gameManager);
+	CollisionManager collisionManager(&gameManager, windowSize);
 
 	sf::Clock clock;
 	float deltaTime = 0;
