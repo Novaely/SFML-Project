@@ -53,20 +53,29 @@ void CollisionManager::Update(float deltaTime)
 			std::cout << "Collision between Bullet and Player" << std::endl;
 		}
 
-		sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*it)->shape;
-		if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
+		std::list<CACEnemy*>::iterator it4 = (*cacEnemy).begin();
+		while (it4 != (*cacEnemy).end())
 		{
-			(*it)->OnCollisionEnter((*it3));
-			(*it3)->OnCollisionEnter((*it));
-			std::cout << "Collision between Bullet and CACEnemy" << std::endl;
+			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*it4)->shape;
+			if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
+			{
+				(*it4)->OnCollisionEnter((*it3));
+				(*it3)->OnCollisionEnter((*it4));
+				std::cout << "Collision between Bullet and CACEnemy" << std::endl;
+			}
 		}
 
-		sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it2)->shape;
-		if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
+		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
+
+		while (it5 != (*shooterEnemy).end())
 		{
-			(*it2)->OnCollisionEnter((*it3));
-			(*it3)->OnCollisionEnter((*it2));
-			std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
+			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it5)->shape;
+			if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
+			{
+				(*it5)->OnCollisionEnter((*it3));
+				(*it3)->OnCollisionEnter((*it5));
+				std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
+			}
 		}
 		it3++;
 	}
