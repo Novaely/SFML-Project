@@ -22,7 +22,7 @@ void GameObject::Desactive()
 {
 	_isActive = false;
 	position = CustomVector2f::zero;
-	_color = ColorType::None;
+	SetColor(ColorType::None);
 }
 
 ColorType GameObject::GetColor() const {
@@ -31,6 +31,10 @@ ColorType GameObject::GetColor() const {
 
 void GameObject::SetColor(ColorType val) {
 	_color = val;
+	if (shape != nullptr)
+	{
+		shape->setFillColor(_colors[_color]);
+	}
 }
 
 bool GameObject::IsActive() const

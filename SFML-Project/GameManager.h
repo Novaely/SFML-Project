@@ -35,7 +35,7 @@ public :
     void Draw(sf::RenderWindow& window);
 
     void PlayerShoot();
-    void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
+    void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
     void CreateCollectible(); //not implement
     void CreateCacEnemy(CustomVector2f position, float health);
     void CreateShooterEnemy(CustomVector2f position, float health);

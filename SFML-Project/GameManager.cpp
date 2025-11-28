@@ -114,12 +114,12 @@ void GameManager::PlayerShoot()
 	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(player->bulletSpawnPos, CustomVector2f::zero, Math::ToRad(player->rotation));
 	CustomVector2f pos = player->position + bulletSpawnLocalPos;
 
-	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10);
+	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
 }
 
-void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)
+void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType)
 {
-	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage));
+	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage, colorType));
 }
 
 void GameManager::CreateCollectible() {

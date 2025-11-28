@@ -41,7 +41,7 @@ Bullet* PoolManager::ExtractBullet()
 	return pBullet;
 }
 
-Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)
+Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType)
 {
 	Bullet* pBullet = ExtractBullet();
 
@@ -51,6 +51,7 @@ Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, 
 	pBullet->maxInputSpeed = speed;
 	pBullet->moveDirection = direction;
 	pBullet->damage = damage;
+	pBullet->SetColor(colorType);
 
 	pBullet->Active();
 

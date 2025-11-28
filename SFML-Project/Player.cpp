@@ -37,23 +37,20 @@ void Player::SetlevelShooter(int val) {
 
 void Player::SwitchColor()
 {
-	std::string text[] = {"none","red","blue","green"};
 	switch (_color) {
 		default : 
-			_color = ColorType::Rouge;
+			Color = ColorType::Rouge;
 			break;
 		case ColorType::Rouge : 
-			_color = ColorType::Bleu;
+			Color = ColorType::Bleu;
 			break;
 		case ColorType::Bleu : 
-			_color = ColorType::Vert;
+			Color = ColorType::Vert;
 			break;
 		case ColorType::Vert : 
-			_color = ColorType::Rouge;
+			Color = ColorType::Rouge;
 			break;
 	}
-	shape->setFillColor(_colors[_color]);
-	//std::cout << "new color :" << text[(int)_color] << std::endl;
 }
 
 void Player::Shoot() {

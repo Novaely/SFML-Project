@@ -8,7 +8,7 @@ class PoolManager : public Manager
 		PoolManager();
 		~PoolManager();
 
-		Bullet* GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
+		Bullet* GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
 		CACEnemy* GetCACEnemy(CustomVector2f position, float health, Player* player);
 		ShooterEnemy* GetShooterEnemy(CustomVector2f position, float health, Player* player);
 
