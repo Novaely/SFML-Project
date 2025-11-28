@@ -52,6 +52,7 @@ int main()
 		//Update
 		gameManager.Update(deltaTime, windowSize);
 		collisionManager.Update(deltaTime);
+		gameManager.UpdateDestroyItem();
 
 		//Render
 		window.clear();

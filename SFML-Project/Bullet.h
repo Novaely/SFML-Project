@@ -13,7 +13,5 @@ class Bullet :
 		void Desactive() override;
 
         void OnCollisionEnter(GameObject* other) override;
-
-
 };
 

@@ -116,9 +116,12 @@ void GameManager::PlayerShoot()
 	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
 }
 
+//fonction Creatation
 void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType)
 {
-	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage, colorType));
+	Bullet* bullet = poolManager->GetBullet(team, position, speed, direction, damage, colorType);
+	bullet->pDie = [this](GameObject* go) { this->DestroyBullet(go); };
+	bullets.push_back(bullet);
 }
 
 void GameManager::CreateCollectible() {
@@ -137,6 +140,13 @@ void GameManager::CreateShooterEnemy(CustomVector2f position, float health) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
 	(*enemy).Color = ColorType::Vert; // random plus tard
 	shooterEnemy.push_back(enemy);
+}
+
+//fonction destruction
+void GameManager::DestroyBullet(GameObject* item)
+{
+	Bullet* bullet = (Bullet*)item;
+	poolManager->ReturnBullet(bullet);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -167,5 +177,21 @@ void GameManager::UpdateAll(float deltaTime) {
 	{
 		(*itemIt)->Update(deltaTime);
 		itemIt++;
+	}
+}
+
+void GameManager::UpdateDestroyItem() {
+	std::list<Bullet*>::iterator itToDestroy = bulletsToDestroy.begin();
+	while (itToDestroy != bulletsToDestroy.end()) {
+		auto it = bullets.begin();
+		while (it == bullets.end()) {
+			if ((*it) == (*itToDestroy)) {
+				it = bullets.erase(it);
+			}
+			else {
+				it++;
+			}
+		}
+		itToDestroy = bulletsToDestroy.erase(itToDestroy);
 	}
 }
