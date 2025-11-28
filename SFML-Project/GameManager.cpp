@@ -37,9 +37,8 @@ GameManager::GameManager()
 	chronoSpawnEnemies = timerSpawnEnemies;
 	wantSpawnEnemy = false; //mettre en true si vous voulez avoir le spawn des ennemies
 }
-void GameManager::Update(float deltaTime, sf::RenderWindow& window)
+void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 {
-	sf::Vector2u windowSize = window.getSize();
 	if (wantSpawnEnemy) {
 		if (chronoSpawnEnemies <= timerSpawnEnemies) {
 			chronoSpawnEnemies += deltaTime;
@@ -48,11 +47,11 @@ void GameManager::Update(float deltaTime, sf::RenderWindow& window)
 			chronoSpawnEnemies = 0;
 			if (RandomInt(0, 1))
 			{
-				CreateCacEnemy({ RandomFloat(0, (float)windowSize.x),RandomFloat(0,(float)windowSize.y)}, 100);
+				CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y)}, 100);
 			}
 			else
 			{
-				CreateShooterEnemy({ RandomFloat(0, (float)windowSize.x),RandomFloat(0,(float)windowSize.y) }, 100);
+				CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100);
 			}
 		}
 	}

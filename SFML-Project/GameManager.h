@@ -30,7 +30,7 @@ public :
 	std::list<Bullet*> bullets;
     std::list<Collectible*> collectibles;
 
-    void Update(float deltaTime, sf::RenderWindow& window);
+    void Update(float deltaTime, CustomVector2f windowSize);
     void Draw(sf::RenderWindow& window);
 
     void PlayerShoot();

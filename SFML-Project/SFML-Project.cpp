@@ -9,6 +9,7 @@ const float FPS_60 = 1.0f / 60.0f;
 
 int main()
 {
+	CustomVector2f windowSize = {800, 600};
 	//initialisation de toutes les variables importantes
 	Player player;
 	float time = 0;
@@ -22,7 +23,7 @@ int main()
 	sf::Clock clock;
 	float deltaTime = 0;
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML-Project");
+	sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "SFML-Project");
 	// Initialise everything below
 	// 
 	 // Game loop
@@ -47,7 +48,7 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-		gameManager.Update(deltaTime, window);
+		gameManager.Update(deltaTime, windowSize);
 
 		//Render
 		window.clear();
