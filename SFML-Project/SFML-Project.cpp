@@ -38,8 +38,10 @@ int main()
 				window.close();
 			}
 			if (event.type == sf::Event::KeyPressed) {
-				inputManager.OneClickInputCheck(event, player);
-
+				inputManager.OneClickInputPressed(event, player);
+			}
+			if (event.type == sf::Event::KeyReleased) {
+				inputManager.OneClickInputUnpressed(event);
 			}
 		}
 		inputManager.ContinuInputCheck(event, player);

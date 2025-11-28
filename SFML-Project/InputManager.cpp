@@ -7,14 +7,25 @@ InputManager::InputManager()
     gameManager = GameManager::GetInstance();
 }
 
-void InputManager::OneClickInputCheck(sf::Event event, Player& player)
+void InputManager::OneClickInputPressed(sf::Event event, Player& player)
 {
-    switch (event.key.code) {
-        case sf::Keyboard::LShift:
+    if (event.key.code == sf::Keyboard::LShift) {
+        if (!LShiftPressed) {
+            LShiftPressed = true;
             player.SwitchColor();
-            break;
+        }
+        
     }
 }
+
+void InputManager::OneClickInputUnpressed(sf::Event event)
+{
+    if (event.key.code == sf::Keyboard::LShift) {
+        LShiftPressed = false;
+    }
+}
+
+
 
 void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     bool keyUp = (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
