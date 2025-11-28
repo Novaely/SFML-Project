@@ -45,3 +45,25 @@ float RandomFloat(float min, float max) {
 	std::uniform_real_distribution<float> dist(min, max);
 	return dist(gen);
 }
+
+float Math::DistancePointToSegment(CustomVector2f p, CustomVector2f a, CustomVector2f b)
+{
+	CustomVector2f ab = b - a;
+	CustomVector2f ap = p - a;
+
+	float lengthSquared = ab.Dot(ab);
+
+	if (lengthSquared <= 0)
+	{
+		return ap.GetMagnitude();
+	}
+
+	float t = ap.Dot(ab) / lengthSquared;
+
+	t = Math::Clamp(t, 0, 1);
+
+	CustomVector2f projection = a + ab * t;
+
+	return p.DistanceTo(projection);
+}
+}

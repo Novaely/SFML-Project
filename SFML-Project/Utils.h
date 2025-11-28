@@ -20,5 +20,7 @@ namespace Math
 	float ToRad(float angle);
 	float ToDegree(float angle);
 
+	float DistancePointToSegment(CustomVector2f point, CustomVector2f segPointA, CustomVector2f segPointB);
+
 	CustomVector2f RotatePoint(CustomVector2f point, CustomVector2f origin, float angle);
 }
