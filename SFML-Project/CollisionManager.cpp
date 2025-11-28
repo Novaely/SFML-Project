@@ -11,6 +11,7 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 	pShape = (sf::ConvexShape*)player->shape;
 	cacEnemy = &(gm->cacEnemy);
 	shooterEnemy = &(gm->shooterEnemy);
+	collectibles = &(gm->collectibles);
 	bullets = &(gm->bullets);
 	
 }
@@ -92,6 +93,20 @@ void CollisionManager::Update(float deltaTime)
 		it3++;
 	}
 
+	std::list<Collectible*>::iterator it6 = (*collectibles).begin();
+	while (it6 != (*collectibles).end())
+	{
+		sf::CircleShape* collectibles = (sf::CircleShape*)(*it6)->shape;
+
+		if (CheckCollisionsCircleTriangle(*collectibles, *pShape))
+		{
+			player->OnCollisionEnter((*it6));
+			(*it6)->OnCollisionEnter(player);
+			std::cout << "Collision between Collectible and Player" << std::endl;
+		}
+		it++;
+	}
+
 }
 
 bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf::ConvexShape trian)
@@ -120,7 +135,6 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 
         if (IsPointInTriangle(square[i], triangle))
         {
-			std::cout << "Collision detected" << std::endl;
 			return true;
         }
 	}
@@ -130,7 +144,6 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 	{
 		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
 		{
-			std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -151,12 +164,10 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	{
 		if (IsPointInTriangle(triangle1[i], triangle2))
 		{
-			std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 		if (IsPointInTriangle(triangle2[i], triangle1))
 		{
-			std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -196,7 +207,6 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 
 	if (dx * dx + dy * dy <= cr * cr)
 	{
-		std::cout << "Collision detected" << std::endl;
 		return true;
 	}
 	return false;
@@ -212,10 +222,6 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
 	vector2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
-	for (int i = 0 ; i < 3; i++)
-	{
-		std::cout << trian.getPoint(i).x + trianPos.x << "," << trian.getPoint(i).y + trianPos.y << std::endl;
-	}
 
 	if (IsPointInTriangle(centerCircle, triangle))
 	{
