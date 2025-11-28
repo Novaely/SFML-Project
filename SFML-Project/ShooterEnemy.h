@@ -4,5 +4,7 @@
 class ShooterEnemy :
     public Enemy
 {
+public:
+    ShooterEnemy();
 };
 
