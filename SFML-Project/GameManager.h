@@ -4,18 +4,21 @@
 #include <list>
 #include "PoolManager.h"
 
-class GameManager :
-    public Manager
+class GameManager : public Manager
 {
 public :
     // Constructors
     GameManager();
+    ~GameManager();
+
+    //Singleton
+    static GameManager* GetInstance();
+
 
     int score;
     int multiplicateur;
 	float timerBonusScore;
     float timerBonusScoreCheck;
-
 
     Player* player = nullptr;
     PoolManager* poolManager = nullptr;
@@ -26,6 +29,7 @@ public :
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
 
+    void PlayerShoot();
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage);
 
 private: 
@@ -42,5 +46,8 @@ private:
     void BonusTir();
 
     void UpdateAll(float deltaTime);
+
+    //Singleton
+    static GameManager* _instance;
 };
 

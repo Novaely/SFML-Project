@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "GameManager.h"
 
 Player::Player() : Character() {
 	Color = ColorType::Rouge;
@@ -61,9 +60,6 @@ void Player::Shoot() {
 	if (chronoShootAgain >= timerShootAgain)
 	{
 		chronoShootAgain = 0;
-		float angle = Math::ToRad(rotation);
-		CustomVector2f pos = position + Math::RotatePoint(bulletSpawnPos, CustomVector2f::zero, angle);
-
-		(*gameManager).CreateBullet(Team::Player, pos, speedBullet, Math::Polar2Cart(angle, 1), 10);
+		_canShoot = false;
 	}
 }

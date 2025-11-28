@@ -1,11 +1,9 @@
 #include "Character.h"
 
-Character::Character() : Movable() {
+Character::Character() : Movable() {}
 
-
-}
-
-void Character::Update(float deltaTime) {
+void Character::Update(float deltaTime)
+{
 	Movable::Update(deltaTime);
 
 	Rotate(deltaTime);
@@ -13,6 +11,10 @@ void Character::Update(float deltaTime) {
 	if (chronoShootAgain <= timerShootAgain) {
 		chronoShootAgain += deltaTime;
 	}
+    else
+    {
+        _canShoot = true;
+    }
 }
 
 void Character::Move(float deltaTime)
@@ -70,4 +72,16 @@ void Character::Rotate(float deltaTime)
         rotation += rotationDirection * rotationSpeed * deltaTime;
     }
     rotation = fmodf(rotation, 360);
+}
+
+bool Character::CanShoot() const
+{
+    return _canShoot;
+}
+
+CustomVector2f Character::GetLookDirection()
+{
+    float angle = Math::ToRad(rotation);
+
+    return Math::Polar2Cart(angle, 1);
 }

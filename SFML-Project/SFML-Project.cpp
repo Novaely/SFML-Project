@@ -13,10 +13,9 @@ int main()
 	Player player;
 	float time = 0;
 	int tick = 0;
-	InputManager inputManager;
 	GameManager gameManager;
+	InputManager inputManager;
 	PoolManager poolManager;
-	player.gameManager = &gameManager;
 	gameManager.player = &player;
 	gameManager.poolManager = &poolManager;
 
@@ -46,11 +45,10 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-
+		gameManager.Update(deltaTime);
 
 		//Render
 		window.clear();
-		gameManager.Update(deltaTime);
 		gameManager.Draw(window);
 		window.display();
 

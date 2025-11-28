@@ -1,8 +1,33 @@
 #include "GameManager.h"
 
+GameManager* GameManager::_instance = nullptr;
+
+GameManager* GameManager::GetInstance()
+{
+	return _instance;
+}
+
+GameManager::~GameManager()
+{
+	if (_instance == this)
+	{
+		_instance = nullptr;
+	}
+}
 
 GameManager::GameManager()
 {
+	if (_instance == nullptr)
+	{
+		_instance = this;
+	}
+	else
+	{
+		std::cout << "GameManager already exist !" << std::endl;
+		delete this;
+		return;
+	}
+
 	score = 0;
 	multiplicateur = 1;
 	timerBonusScore = 0.0f;
@@ -48,7 +73,6 @@ void GameManager::BonusScore(float timer, int multiplicateur)
 	multiplicateur = multiplicateur;
 	timerBonusScore = 0;
 	timerBonusScoreCheck = timer;
-
 }
 
 void GameManager::BonusVie(float vieRegen)
@@ -59,6 +83,17 @@ void GameManager::BonusVie(float vieRegen)
 void GameManager::BonusTir()
 {
 	(*player).LevelShooter += 1;
+}
+
+void GameManager::PlayerShoot()
+{
+	if (!player->CanShoot()) return;
+
+	player->Shoot();
+	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(player->bulletSpawnPos, CustomVector2f::zero, Math::ToRad(player->rotation));
+	CustomVector2f pos = player->position + bulletSpawnLocalPos;
+
+	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10);
 }
 
 void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage)

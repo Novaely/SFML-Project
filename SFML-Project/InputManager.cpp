@@ -2,7 +2,10 @@
 #include <iostream>
 #include "Utils.h"
 
-InputManager::InputManager() {}
+InputManager::InputManager()
+{
+    gameManager = GameManager::GetInstance();
+}
 
 void InputManager::OneClickInputCheck(sf::Event event, Player& player)
 {
@@ -26,6 +29,6 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     player.rotationDirection = (float)keyRotRight - (float)keyRotLeft;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        player.Shoot();
+        gameManager->PlayerShoot();
     }
 }
