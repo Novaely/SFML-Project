@@ -1,14 +1,18 @@
 #include "CollisionManager.h"
 
 
-CollisionManager::CollisionManager(GameManager* gm)
+CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 {
+	windowShape = new sf::RectangleShape();
+	((sf::RectangleShape*)windowShape)->setSize({ windowSize.x, windowSize.y});
+
 	gameManager = gm;
 	player = gm->player;
 	pShape = (sf::ConvexShape*)player->shape;
 	cacEnemy = &(gm->cacEnemy);
 	shooterEnemy = &(gm->shooterEnemy);
 	bullets = &(gm->bullets);
+	
 }
 
 void CollisionManager::Update(float deltaTime)
@@ -18,9 +22,9 @@ void CollisionManager::Update(float deltaTime)
 	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
 	while (it != (*cacEnemy).end()) 
 	{
-		sf::RectangleShape* enemyShape = (sf::RectangleShape*)(*it)->shape;
+		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*it)->shape;
 
-		if (CheckCollisionsSquareTriangle(*enemyShape, *pShape))
+		if (CheckCollisionsSquareTriangle(*cacEnemyShape, *pShape))
 		{
 			player->OnCollisionEnter((*it));
 			(*it)->OnCollisionEnter(player);
@@ -32,8 +36,8 @@ void CollisionManager::Update(float deltaTime)
 	std::list<ShooterEnemy*>::iterator it2 = (*shooterEnemy).begin();
 	while (it2 != (*shooterEnemy).end())
 	{
-		sf::ConvexShape* enemyShape = (sf::ConvexShape*)(*it2)->shape;
-		if (CheckCollisionsTriangleTriangle(*enemyShape, *pShape))
+		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*it2)->shape;
+		if (CheckCollisionsTriangleTriangle(*shooterEnemyShape, *pShape))
 		{
 			player->OnCollisionEnter((*it2));
 			(*it)->OnCollisionEnter(player);
@@ -67,7 +71,6 @@ void CollisionManager::Update(float deltaTime)
 		}
 
 		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
-
 		while (it5 != (*shooterEnemy).end())
 		{
 			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it5)->shape;
@@ -79,6 +82,13 @@ void CollisionManager::Update(float deltaTime)
 			}
 			it5++;
 		}
+
+		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
+		{
+
+			std::cout << "Collision between Bullet and Window Bounds" << std::endl;
+		}
+
 		it3++;
 	}
 

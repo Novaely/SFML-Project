@@ -9,17 +9,19 @@ class CollisionManager :
     public Manager
 {
     public:
-		CollisionManager(GameManager* gm);
+		CollisionManager(GameManager* gm, CustomVector2f windowSize);
 
 		Player* player = nullptr;
 		std::list<CACEnemy*>* cacEnemy;
 		std::list<ShooterEnemy*>* shooterEnemy;
 		std::list<Bullet*>* bullets;
 		sf::ConvexShape* pShape;
+		sf::Shape* windowShape;
+
 
 		GameManager* gameManager;
 		void Update( float deltaTime);
-
+	private: 
 		bool CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf::ConvexShape trian);
 		bool CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2);
 		bool CheckCollisionsCircleSquare(sf::CircleShape circle, sf::RectangleShape rect);

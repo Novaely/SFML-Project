@@ -9,6 +9,6 @@ ShooterEnemy::ShooterEnemy() {
 	pShape->setOrigin(0, 0);
 	pShape->setPointCount(3);
 	pShape->setPoint(0, sf::Vector2f{ 10, 0 });
-	pShape->setPoint(1, sf::Vector2f{ -7.5f, 7.5f });
-	pShape->setPoint(2, sf::Vector2f{ -7.5f, -7.5f });
+	pShape->setPoint(1, sf::Vector2f{ -10.5f, 10.5f });
+	pShape->setPoint(2, sf::Vector2f{ -10.5f, -10.5f });
 }
