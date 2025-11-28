@@ -20,6 +20,7 @@ class Movable : public GameObject
 
 		void Update(float deltaTime) override;
 
+
 	protected:
 		virtual void Move(float deltaTime);
 };

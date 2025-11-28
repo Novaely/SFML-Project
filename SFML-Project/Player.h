@@ -3,6 +3,9 @@
 
 class Player : public Character
 {
+private:
+    int _levelShooter = 1;
+
 public:
     //constructer
     Player();
@@ -13,7 +16,7 @@ public:
 
     void SwitchColor();
     void Shoot();
+    void OnCollisionEnter(GameObject* other) override;
 
-private:
-    int _levelShooter = 1;
 };
+

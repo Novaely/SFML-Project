@@ -49,3 +49,8 @@ GameObject::~GameObject()
 		delete shape;
 	}
 }
+
+void GameObject::OnCollisionEnter(GameObject* other)
+{
+}
+
