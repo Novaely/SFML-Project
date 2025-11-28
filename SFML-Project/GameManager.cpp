@@ -7,9 +7,30 @@ GameManager::GameManager()
 	multiplicateur = 1;
 	timerBonusScore = 0.0f;
 	timerBonusScoreCheck = 0.0f;
+	timerSpawnEnemies = 1;
+	chronoSpawnEnemies = timerSpawnEnemies;
+	QuelEnemy = false; // random plus tard
+	spawnEnemy = false; //mettre en true si vous voulez avoir le spawn des ennemies
 }
 void GameManager::Update(float deltaTime)
 {
+	if (spawnEnemy) {
+		if (chronoSpawnEnemies <= timerSpawnEnemies) {
+			chronoSpawnEnemies += deltaTime;
+		}
+		else {
+			chronoSpawnEnemies = 0;
+			QuelEnemy = !QuelEnemy; // random plus tard
+			if (QuelEnemy)
+			{
+				CreateCacEnemy({ 100,100 }, 100);
+			}
+			else
+			{
+				CreateShooterEnemy({ 200,200 }, 100);
+			}
+		}
+	}
 	UpdateAll(deltaTime);
 	timerBonusScore += deltaTime;
 	if (timerBonusScore > timerBonusScoreCheck)
@@ -66,6 +87,25 @@ void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, 
 	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage));
 }
 
+void GameManager::CreateCollectible() {
+	//collectibles.push_back
+}
+
+void GameManager::CreateCacEnemy(CustomVector2f position, float health) {
+
+	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
+	(*enemy).Color = ColorType::Bleu; // random plus tard
+	(*enemy).shape->setFillColor(sf::Color::Blue); // random plus tard
+	cacEnemy.push_back(enemy);
+}
+
+void GameManager::CreateShooterEnemy(CustomVector2f position, float health) {
+	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
+	(*enemy).Color = ColorType::Vert; // random plus tard
+	(*enemy).shape->setFillColor(sf::Color::Green);// random plus tard
+	shooterEnemy.push_back(enemy);
+}
+
 void GameManager::UpdateAll(float deltaTime) {
 	player->Update(deltaTime);
 
@@ -87,5 +127,12 @@ void GameManager::UpdateAll(float deltaTime) {
 	{
 		(*shooterIt)->Update(deltaTime);
 		shooterIt++;
+	}
+
+	std::list<Collectible*>::iterator itemIt = collectibles.begin();
+	while (itemIt != collectibles.end())
+	{
+		(*itemIt)->Update(deltaTime);
+		itemIt++;
 	}
 }

@@ -6,6 +6,7 @@
 #include "CACEnemy.h"
 #include "ShooterEnemy.h"
 #include "Bullet.h"
+#include "Collectible.h"
 
 class Manager
 {

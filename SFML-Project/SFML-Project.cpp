@@ -46,11 +46,10 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-
+		gameManager.Update(deltaTime);
 
 		//Render
 		window.clear();
-		gameManager.Update(deltaTime);
 		gameManager.Draw(window);
 		window.display();
 

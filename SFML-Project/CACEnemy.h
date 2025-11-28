@@ -4,5 +4,7 @@
 class CACEnemy :
     public Enemy
 {
+    public:
+        CACEnemy();
 };
 
