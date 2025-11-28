@@ -5,29 +5,88 @@ CollisionManager::CollisionManager(GameManager* gm)
 {
 	gameManager = gm;
 	player = gm->player;
+	pShape = (sf::ConvexShape*)player->shape;
 	cacEnemy = &(gm->cacEnemy);
 	shooterEnemy = &(gm->shooterEnemy);
+	bullets = &(gm->bullets);
 }
 
 void CollisionManager::Update(float deltaTime)
 {
+	sf::Vector2f playerPos = pShape->getPosition();
 
 	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
 	while (it != (*cacEnemy).end()) 
 	{
-		if (CheckCollisionsSquareTriangle(&((*it)->position), &(player->position)))
+		sf::RectangleShape* enemyShape = (sf::RectangleShape*)(*it)->shape;
+
+		if (CheckCollisionsSquareTriangle(*enemyShape, *pShape))
 		{
 			player->OnCollisionEnter((*it));
+			(*it)->OnCollisionEnter(player);
 			std::cout << "Collision between CACEnemy and Player" << std::endl;
 		}
 		it++;
 	}
 
-	CheckCollisionsSquareTriangle(nullptr, nullptr);
+	std::list<ShooterEnemy*>::iterator it2 = (*shooterEnemy).begin();
+	while (it2 != (*shooterEnemy).end())
+	{
+		sf::ConvexShape* enemyShape = (sf::ConvexShape*)(*it2)->shape;
+		if (CheckCollisionsTriangleTriangle(*enemyShape, *pShape))
+		{
+			player->OnCollisionEnter((*it2));
+			(*it)->OnCollisionEnter(player);
+			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
+		}
+		it++;
+	}
+
+	std::list<Bullet*>::iterator it3 = (*bullets).begin();
+	while (it3 != (*bullets).end())
+	{
+		sf::CircleShape* bulletShape = (sf::CircleShape*)(*it3)->shape;
+		if (CheckCollisionsCircleTriangle(*bulletShape, *pShape))
+		{
+			player->OnCollisionEnter((*it3));
+			(*it3)->OnCollisionEnter(player);
+			std::cout << "Collision between Bullet and Player" << std::endl;
+		}
+
+		sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*it)->shape;
+		if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
+		{
+			(*it)->OnCollisionEnter((*it3));
+			(*it3)->OnCollisionEnter((*it));
+			std::cout << "Collision between Bullet and CACEnemy" << std::endl;
+		}
+
+		sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it2)->shape;
+		if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
+		{
+			(*it2)->OnCollisionEnter((*it3));
+			(*it3)->OnCollisionEnter((*it2));
+			std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
+		}
+		it3++;
+	}
+
 }
 
-bool CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2f triangle[3])
+bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf::ConvexShape trian)
 {
+	sf::Vector2f rectPos = rect.getPosition();
+	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
+	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
+	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
+	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
+	vector2f square[4] = { (p1.x, p1.y), (p2.x, p2.y), (p3.x, p3.y), (p4.x, p4.y) };
+	
+
+	sf::Vector2f trianPos = trian.getPosition();
+	vector2f triangle[3] = { ((trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y), ((trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y), ((trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y) };
+
+
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
 	float rx = square[0].x; // x position
@@ -55,8 +114,16 @@ bool CollisionManager::CheckCollisionsSquareTriangle(vector2f square[4], vector2
 	}
 	return false;
 }
-bool CollisionManager::CheckCollisionsTriangleTriangle(vector2f triangle1[3], vector2f triangle2[3])
+bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2)
 {
+	sf::Vector2f trianPos1 = trian1.getPosition();
+	sf::Vector2f trianPos2 = trian2.getPosition();
+
+
+	vector2f triangle1[3] = { ((trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y), ((trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y), ((trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y) };
+	vector2f triangle2[3] = { ((trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y), ((trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y), ((trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y) };
+
+
 	for (int i = 0; i < 3; i++)
 	{
 		if (IsPointInTriangle(triangle1[i], triangle2))
@@ -73,16 +140,23 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(vector2f triangle1[3], ve
 	return false;
 }
 
-bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vector2f square[4])
+bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::RectangleShape rect)
 {
+	sf::Vector2f rectPos = rect.getPosition();
+	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
+	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
+	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
+	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
+	vector2f square[4] = { (p1.x, p1.y), (p2.x, p2.y), (p3.x, p3.y), (p4.x, p4.y) };
+
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
 	float rx = square[0].x; // x position
 	float ry = square[0].y; // y position
 
 	float cr = circle.getRadius(); // circle radius
-	float cx = circle.getPosition().x + cr; // circle x position (center)
-	float cy = circle.getPosition().y + cr; // circle y position (center)
+	float cx = circle.getPosition().x; // circle x position (center)
+	float cy = circle.getPosition().y; // circle y position (center)
 
 	// Trouve le point du rectangle le plus proche du centre du cercle
 	float closestX = cx;
@@ -112,12 +186,15 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, vecto
 	//return true;
 }
 
-bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape circle, vector2f triangle[3])
+bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape circle, sf::ConvexShape trian)
 {
+	sf::Vector2f trianPos = trian.getPosition();
+
+	vector2f triangle[3] = { ((trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y), ((trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y), ((trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y) };
 
 	float cr = circle.getRadius(); // circle radius
-	float cx = circle.getPosition().x + cr; // circle x position (center)
-	float cy = circle.getPosition().y + cr; // circle y position (center)
+	float cx = circle.getPosition().x; // circle x position (center)
+	float cy = circle.getPosition().y; // circle y position (center)
 
 	if (IsPointInTriangle((cx,cy), triangle))
 	{
