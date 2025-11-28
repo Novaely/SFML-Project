@@ -104,7 +104,7 @@ void CollisionManager::Update(float deltaTime)
 			(*it6)->OnCollisionEnter(player);
 			std::cout << "Collision between Collectible and Player" << std::endl;
 		}
-		it++;
+		it6++;
 	}
 
 }
