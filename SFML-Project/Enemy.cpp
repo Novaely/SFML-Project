@@ -26,7 +26,7 @@ void Enemy::OnCollisionEnter(GameObject* other)
 		{
 			if (Other.team == Team::Player)
 			{
-				std::cout << "Enemy hit by bullet" << std::endl;
+				//std::cout << "Enemy hit by bullet" << std::endl;
 			}
 		}
 	}

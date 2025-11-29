@@ -12,7 +12,12 @@ class Character : public Movable
 
 		float acceleration = 0;
 		float stopFriction = 0;
-		float turnBackFriction = 0;
+		//float turnBackFriction = 0;
+
+		float diretionChangeTreshold = 0.05f;
+		float directionChangeSpeed = 5;
+		float turnBackDirectionChangeSpeed = 2.5f;
+
 		float rotationSpeed = 0;
 		float rotationDirection = 0;
 

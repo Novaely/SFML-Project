@@ -22,8 +22,10 @@ void Movable::Move(float deltaTime)
     std::cout << "Velocity X: " << test.x << " Velocity Y: " << test.y << " Velocity Length : " << length << std::endl;
     std::cout << "Speed: " << vecSpeed << std::endl;*/
 
-    speed.x = Math::Clamp(speed.x, 0, maxInputSpeed);
-    speed.y = Math::Clamp(speed.y, 0, maxInputSpeed);
+    //speed.x = Math::Clamp(speed.x, 0, maxInputSpeed);
+    //speed.y = Math::Clamp(speed.y, 0, maxInputSpeed);
+
+    speed = Math::Clamp(speed, 0, maxInputSpeed);
     position += moveDirection * speed * deltaTime;
 
     //CustomVector2f test = moveDirection * speed;

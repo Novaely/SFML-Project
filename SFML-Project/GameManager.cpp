@@ -170,7 +170,7 @@ void GameManager::UpdateAll(float deltaTime) {
 }
 
 void GameManager::SpawnEnemy(CustomVector2f windowSize) {
-	ColorType color;
+	ColorType color = ColorType::None;
 	switch (RandomInt(0, 2)) {
 		case 0 : 
 			color = ColorType::Rouge;

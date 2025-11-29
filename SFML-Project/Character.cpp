@@ -19,7 +19,7 @@ void Character::Update(float deltaTime)
 
 void Character::Move(float deltaTime)
 {
-    if (inputDirection.x == 0)
+    /*if (inputDirection.x == 0)
     {
         speed.x -= stopFriction * deltaTime;
     }
@@ -61,9 +61,34 @@ void Character::Move(float deltaTime)
                 moveDirection.y = inputDirection.y;
             }
         }
+    }*/
+
+    if (inputDirection == CustomVector2f::zero)
+    {
+        speed -= stopFriction * deltaTime;
+    }
+    else
+    {
+        if (inputDirection.Dot(moveDirection) >= 0)
+        {
+            speed += acceleration * deltaTime;
+            moveDirection = moveDirection + (inputDirection - moveDirection) * directionChangeSpeed * deltaTime;
+        }
+        else
+        {
+            //speed -= turnBackFriction * deltaTime;
+            moveDirection = moveDirection + (inputDirection - moveDirection) * turnBackDirectionChangeSpeed * deltaTime;
+        }
+        
+        if (moveDirection.DistanceTo(inputDirection) <= diretionChangeTreshold)
+        {
+            moveDirection = inputDirection;
+        }
     }
 
     Movable::Move(deltaTime);
+
+   //std::cout << "MoveDir: X:" << moveDirection.x << " Y: " << moveDirection.y << " Speed: " << speed.x << std::endl;
 }
 
 void Character::Rotate(float deltaTime)

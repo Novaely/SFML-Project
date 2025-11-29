@@ -36,7 +36,7 @@ void Bullet::OnCollisionEnter(GameObject* other)
 		{
 			if (Other.characterType == CharaType::Player)
 			{
-				std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
+				//std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
 			}
 		}
 
@@ -46,11 +46,11 @@ void Bullet::OnCollisionEnter(GameObject* other)
 			{
 				if (Other.characterType == CharaType::CACEnemy)
 				{
-					std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
+					//std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
 				}
 				if (Other.characterType == CharaType::ShooterEnemy)
 				{
-					std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
+					//std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
 				}
 			}
 		}

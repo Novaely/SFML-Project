@@ -28,7 +28,7 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it));
 			(*it)->OnCollisionEnter(player);
-			std::cout << "Collision between CACEnemy and Player" << std::endl;
+			//std::cout << "Collision between CACEnemy and Player" << std::endl;
 		}
 		it++;
 	}
@@ -41,7 +41,7 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it2));
 			(*it2)->OnCollisionEnter(player);
-			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
+			//std::cout << "Collision between ShooterEnemy and Player" << std::endl;
 		}
 		it2++;
 	}
@@ -54,7 +54,7 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it3));
 			(*it3)->OnCollisionEnter(player);
-			std::cout << "Collision between Bullet and Player" << std::endl;
+			//std::cout << "Collision between Bullet and Player" << std::endl;
 		}
 
 		std::list<CACEnemy*>::iterator it4 = (*cacEnemy).begin();
@@ -65,7 +65,7 @@ void CollisionManager::Update(float deltaTime)
 			{
 				(*it4)->OnCollisionEnter((*it3));
 				(*it3)->OnCollisionEnter((*it4));
-				std::cout << "Collision between Bullet and CACEnemy" << std::endl;
+				//std::cout << "Collision between Bullet and CACEnemy" << std::endl;
 			}
 			it4++;
 		}
@@ -78,7 +78,7 @@ void CollisionManager::Update(float deltaTime)
 			{
 				(*it5)->OnCollisionEnter((*it3));
 				(*it3)->OnCollisionEnter((*it5));
-				std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
+				//std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
 			}
 			it5++;
 		}
@@ -86,7 +86,7 @@ void CollisionManager::Update(float deltaTime)
 		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
 		{
 			(*it3)->OnCollisionEnter(nullptr);
-			std::cout << "Collision between Bullet and Window Bounds" << std::endl;
+			//std::cout << "Collision between Bullet and Window Bounds" << std::endl;
 		}
 
 		it3++;
@@ -120,7 +120,7 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 
         if (IsPointInTriangle(square[i], triangle))
         {
-			std::cout << "Collision detected" << std::endl;
+			//std::cout << "Collision detected" << std::endl;
 			return true;
         }
 	}
@@ -130,7 +130,7 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 	{
 		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
 		{
-			std::cout << "Collision detected" << std::endl;
+			//std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -151,12 +151,12 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	{
 		if (IsPointInTriangle(triangle1[i], triangle2))
 		{
-			std::cout << "Collision detected" << std::endl;
+			//std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 		if (IsPointInTriangle(triangle2[i], triangle1))
 		{
-			std::cout << "Collision detected" << std::endl;
+			//std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -190,13 +190,13 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	if (closestY < ry) closestY = ry;
 	else if (closestY > ry + rh) closestY = ry + rh;
 
-	// Distance au carré entre le centre et ce point le plus proche
+	// Distance au carrÃ© entre le centre et ce point le plus proche
 	float dx = cx - closestX;
 	float dy = cy - closestY;
 
 	if (dx * dx + dy * dy <= cr * cr)
 	{
-		std::cout << "Collision detected" << std::endl;
+		//std::cout << "Collision detected" << std::endl;
 		return true;
 	}
 	return false;
@@ -214,12 +214,12 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 	vector2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
 	for (int i = 0 ; i < 3; i++)
 	{
-		std::cout << trian.getPoint(i).x + trianPos.x << "," << trian.getPoint(i).y + trianPos.y << std::endl;
+		//std::cout << trian.getPoint(i).x + trianPos.x << "," << trian.getPoint(i).y + trianPos.y << std::endl;
 	}
 
 	if (IsPointInTriangle(centerCircle, triangle))
 	{
-		std::cout << "Collision detected" << std::endl;
+		//std::cout << "Collision detected" << std::endl;
 		return true;
 	}
 
@@ -229,7 +229,7 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 		float dist = DistancePointToSegment(centerCircle, triangle[i], triangle[(i + 1) % 3]);
 		if (dist <= cr)
 		{
-			std::cout << "Collision detected" << std::endl;
+			//std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -242,14 +242,14 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
 {
-	// Vecteur du segment et vecteur du point par rapport au début du segment
+	// Vecteur du segment et vecteur du point par rapport au dÃ©but du segment
 	vector2f AB = end - start;
 	vector2f AP = point - start;
 
-	// Longueur au carré du segment (évite sqrt inutile)
+	// Longueur au carrÃ© du segment (Ã©vite sqrt inutile)
 	float len2 = AB.Dot(AB);
 
-	// Segment dégénéré (start == end) : distance au point start
+	// Segment dÃ©gÃ©nÃ©rÃ© (start == end) : distance au point start
 	if (len2 == 0.0f)
 	{
 		float dx = point.x - start.x;
@@ -257,14 +257,14 @@ float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, v
 		return std::sqrt(dx * dx + dy * dy);
 	}
 
-	// Paramètre de projection normalisé t = (AP·AB) / |AB|^2
+	// ParamÃ¨tre de projection normalisÃ© t = (APÂ·AB) / |AB|^2
 	float t = AP.Dot(AB) / len2;
 
 	// Clamp entre 0 et 1 pour rester sur le segment
 	if (t < 0.0f) t = 0.0f;
 	else if (t > 1.0f) t = 1.0f;
 
-	// Point projeté sur le segment
+	// Point projetÃ© sur le segment
 	vector2f projection = start + AB * t;
 
 	// Distance entre le point et la projection
