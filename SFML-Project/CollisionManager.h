@@ -15,6 +15,7 @@ class CollisionManager :
 		std::list<CACEnemy*>* cacEnemy;
 		std::list<ShooterEnemy*>* shooterEnemy;
 		std::list<Bullet*>* bullets;
+		std::list<Collectible*>* collectibles;
 		sf::ConvexShape* pShape;
 		sf::Shape* windowShape;
 
