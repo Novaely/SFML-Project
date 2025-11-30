@@ -66,7 +66,6 @@ void CollisionManager::Update(float deltaTime)
 			{
 				(*it4)->OnCollisionEnter((*it3));
 				(*it3)->OnCollisionEnter((*it4));
-				std::cout << "Collision between Bullet and CACEnemy" << std::endl;
 			}
 			it4++;
 		}

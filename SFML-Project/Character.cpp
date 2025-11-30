@@ -85,3 +85,13 @@ CustomVector2f Character::GetLookDirection()
 
     return Math::Polar2Cart(angle, 1);
 }
+
+void Character::Damage(float dmg)
+{
+    health -= dmg;
+    if (health <= 0)
+    {
+        isAlive = false;
+        pDie(this);
+    }
+}
