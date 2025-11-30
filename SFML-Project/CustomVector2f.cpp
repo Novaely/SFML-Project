@@ -185,6 +185,12 @@ float CustomVector2f::DistanceTo(const CustomVector2f& other) const
 	return vecDirec.GetMagnitude();
 }
 
+CustomVector2f CustomVector2f::DirectionTo(const CustomVector2f& other) const
+{
+	CustomVector2f vecDirec = other - *this;
+	return vecDirec.GetNormalised();
+}
+
 float CustomVector2f::Dot(const CustomVector2f& other) const
 {
 	return x * other.x + y * other.y;

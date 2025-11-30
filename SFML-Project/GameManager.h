@@ -37,13 +37,12 @@ public :
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
     void CreateCollectible(); //not implement
-    void CreateCacEnemy(CustomVector2f position, float health);
-    void CreateShooterEnemy(CustomVector2f position, float health);
+    void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
+    void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
+    void SpawnEnemy(CustomVector2f windowSize);
     //fonction destruction
     void UpdateDestroyItem();
     void DestroyBullet(GameObject* bullet);
-
-
 
 private: 
     /// <summary>
@@ -59,6 +58,8 @@ private:
     void BonusTir();
 
     void UpdateAll(float deltaTime);
+
+    void OnEnemyShoot(ShooterEnemy& enemy);
 
     //Singleton
     static GameManager* _instance;

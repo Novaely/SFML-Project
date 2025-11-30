@@ -105,7 +105,8 @@ CACEnemy* PoolManager::GetCACEnemy(CustomVector2f position, float health, Player
 	pEnemy->position = position;
 	pEnemy->shape->setPosition(position.x, position.y);
 	pEnemy->health;
-	// TO DO : Give player
+	
+	pEnemy->targetPos = &(player->position);
 
 	pEnemy->Active();
 
@@ -158,7 +159,8 @@ ShooterEnemy* PoolManager::GetShooterEnemy(CustomVector2f position, float health
 	pEnemy->shape->setPosition(position.x, position.y);
 
 	pEnemy->health;
-	// TO DO : Give player
+
+	pEnemy->targetPos = &(player->position);
 
 	pEnemy->Active();
 

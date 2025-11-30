@@ -18,7 +18,7 @@ class PoolManager : public Manager
 
 	private:
 		// Bullets
-		int startNumBullets = 100;
+		int startNumBullets = 500;
 
 		int indexOfFirstBullet = 0;
 		int currentNumBullets;
@@ -28,7 +28,7 @@ class PoolManager : public Manager
 		void AddBulletInPool();
 
 		// CACEnemy
-		int startNumCACEnemy = 20;
+		int startNumCACEnemy = 100;
 
 		int indexOfFirstCACEnemy = 0;
 		int currentNumCACEnemy;
@@ -38,7 +38,7 @@ class PoolManager : public Manager
 		void AddCACEnemyInPool();
 
 		// ShooterEnemy
-		int startNumShooterEnemy = 20;
+		int startNumShooterEnemy = 100;
 
 		int indexOfFirstShooterEnemy = 0;
 		int currentNumShooterEnemy;
