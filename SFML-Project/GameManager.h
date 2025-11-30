@@ -34,11 +34,17 @@ public :
     void Draw(sf::RenderWindow& window);
 
     void PlayerShoot();
+    //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
     void CreateCollectible(); //not implement
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void SpawnEnemy(CustomVector2f windowSize);
+    //fonction destruction
+    void UpdateDestroyItem();
+    void DestroyBullet(GameObject* item);
+    void DestroyCacEnemy(GameObject* item);
+    void DestroyShooterEnemy(GameObject* item);
 
 private: 
     /// <summary>
@@ -59,5 +65,10 @@ private:
 
     //Singleton
     static GameManager* _instance;
+
+    std::list<CACEnemy*> cacEnemyToDestroy;
+    std::list<ShooterEnemy*> shooterEnemyToDestroy;
+    std::list<Bullet*> bulletsToDestroy;
+    std::list<Collectible*> collectiblesToDestroy;
 };
 

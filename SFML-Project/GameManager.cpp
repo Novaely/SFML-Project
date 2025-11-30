@@ -35,7 +35,7 @@ GameManager::GameManager()
 	timerBonusScoreCheck = 0.0f;
 	timerSpawnEnemies = 5;
 	chronoSpawnEnemies = timerSpawnEnemies;
-	wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
+	wantSpawnEnemy = false; //mettre en true si vous voulez avoir le spawn des ennemies
 }
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 {
@@ -109,9 +109,12 @@ void GameManager::PlayerShoot()
 	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
 }
 
+//fonction Creatation
 void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType)
 {
-	bullets.push_back(poolManager->GetBullet(team,position,speed,direction,damage, colorType));
+	Bullet* bullet = poolManager->GetBullet(team, position, speed, direction, damage, colorType);
+	bullet->pDie = [this](GameObject* go) { this->DestroyBullet(go); };
+	bullets.push_back(bullet);
 }
 
 void GameManager::CreateCollectible() {
@@ -121,13 +124,14 @@ void GameManager::CreateCollectible() {
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
 
 	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
-
+	enemy->pDie = [this](GameObject* go) { this->DestroyCacEnemy(go); };
 	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
 }
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
+	enemy->pDie = [this](GameObject* go) { this->DestroyShooterEnemy(go); };
 	(*enemy).Color = color;
 
 	enemy->OnShoot = [this](ShooterEnemy& enemy)
@@ -136,6 +140,28 @@ void GameManager::CreateShooterEnemy(CustomVector2f position, float health, Colo
 	};
 
 	shooterEnemy.push_back(enemy);
+}
+
+//fonction destruction
+void GameManager::DestroyBullet(GameObject* item)
+{
+	Bullet* bullet = (Bullet*)item;
+	poolManager->ReturnBullet(bullet);
+	bulletsToDestroy.push_back(bullet);
+}
+
+void GameManager::DestroyCacEnemy(GameObject* item)
+{
+	CACEnemy* cacEnemy = (CACEnemy*)item;
+	poolManager->ReturnEnemy(cacEnemy);
+	cacEnemyToDestroy.push_back(cacEnemy);
+}
+
+void GameManager::DestroyShooterEnemy(GameObject* item)
+{
+	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
+	poolManager->ReturnEnemy(shooterEnemy);
+	shooterEnemyToDestroy.push_back(shooterEnemy);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -172,14 +198,15 @@ void GameManager::UpdateAll(float deltaTime) {
 void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	ColorType color;
 	switch (RandomInt(0, 2)) {
-		case 0 : 
-			color = ColorType::Rouge;
+		default:
+		color = ColorType::Rouge;
 			break;
 		case 1 : 
 			color = ColorType::Bleu;
 			break;
 		case 2 : 
 			color = ColorType::Vert;
+			break;
 	}
 	if (RandomInt(0, 1))
 	{
@@ -197,4 +224,51 @@ void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
 	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
 
 	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), 10, enemy.GetColor());
+}
+
+void GameManager::UpdateDestroyItem() {
+	//check destroy Bullets
+	auto itToDestroyBullets = bulletsToDestroy.begin();
+	while (itToDestroyBullets != bulletsToDestroy.end()) {
+		auto itBullets = bullets.begin();
+		while (itBullets != bullets.end()) {
+			if ((*itBullets) == (*itToDestroyBullets)) {
+				itBullets = bullets.erase(itBullets);
+			}
+			else {
+				itBullets++;
+			}
+		}
+		itToDestroyBullets = bulletsToDestroy.erase(itToDestroyBullets);
+	}
+
+	//check destroy CacEnemy
+	auto itToDestroyCacEnemy = cacEnemyToDestroy.begin();
+	while (itToDestroyCacEnemy != cacEnemyToDestroy.end()) {
+		auto itCacEnemy = cacEnemy.begin();
+		while (itCacEnemy != cacEnemy.end()) {
+			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
+				itCacEnemy = cacEnemy.erase(itCacEnemy);
+			}
+			else {
+				itCacEnemy++;
+			}
+		}
+		itToDestroyCacEnemy = cacEnemyToDestroy.erase(itToDestroyCacEnemy);
+	}
+
+	//check destroy ShooterEnemy
+	auto itToDestroyShooterEnemy = shooterEnemyToDestroy.begin();
+	while (itToDestroyShooterEnemy != shooterEnemyToDestroy.end()) {
+		auto itShooterEnemy = shooterEnemy.begin();
+		while (itShooterEnemy != shooterEnemy.end()) {
+			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
+				itShooterEnemy = shooterEnemy.erase(itShooterEnemy);
+			}
+			else {
+				itShooterEnemy++;
+			}
+		}
+		itToDestroyShooterEnemy = shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
+	}
 }

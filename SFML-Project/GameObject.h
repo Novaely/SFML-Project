@@ -2,6 +2,7 @@
 
 #include "Utils.h"
 #include <map>
+#include <functional>
 
 class GameObject
 {
@@ -16,6 +17,7 @@ class GameObject
 
 		CustomVector2f position = CustomVector2f::zero;
 		float rotation = 0.0f;
+		bool isAlive = true;
 
 		virtual void Update(float deltaTime);
 		virtual void Draw(sf::RenderWindow& window);
@@ -30,6 +32,7 @@ class GameObject
 		bool IsActive() const;
 
 		virtual void OnCollisionEnter(GameObject* other);
+		std::function<void(GameObject*)> pDie;
 
 	protected:
 		bool _isActive = false;

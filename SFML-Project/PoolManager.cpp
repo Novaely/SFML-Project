@@ -4,6 +4,7 @@ PoolManager::PoolManager()
 	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, nullptr),
 	shooterEnemyPool(startNumShooterEnemy, nullptr)
 {
+	std::cout << "plpuyt" << std::endl;
 	for (int i = 0; i < startNumBullets; i++)
 	{
 		bulletPool[i] = new Bullet();

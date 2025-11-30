@@ -27,7 +27,7 @@ void Bullet::Desactive()
 void Bullet::OnCollisionEnter(GameObject* other)
 {
 	if (other == nullptr) {
-
+			pDie(this);
 	}
 	else {
 		const GameObject& Other = *(other);
@@ -55,8 +55,4 @@ void Bullet::OnCollisionEnter(GameObject* other)
 			}
 		}
 	}
-	
-
-	// si bullet sort de l'ecran -> Destroy
-
 }
