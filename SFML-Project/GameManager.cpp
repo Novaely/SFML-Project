@@ -124,13 +124,14 @@ void GameManager::CreateCollectible() {
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
 
 	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
-
+	enemy->pDie = [this](GameObject* go) { this->DestroyCacEnemy(go); };
 	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
 }
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
+	enemy->pDie = [this](GameObject* go) { this->DestroyShooterEnemy(go); };
 	(*enemy).Color = color;
 
 	enemy->OnShoot = [this](ShooterEnemy& enemy)
@@ -147,6 +148,20 @@ void GameManager::DestroyBullet(GameObject* item)
 	Bullet* bullet = (Bullet*)item;
 	poolManager->ReturnBullet(bullet);
 	bulletsToDestroy.push_back(bullet);
+}
+
+void GameManager::DestroyCacEnemy(GameObject* item)
+{
+	CACEnemy* cacEnemy = (CACEnemy*)item;
+	poolManager->ReturnEnemy(cacEnemy);
+	cacEnemyToDestroy.push_back(cacEnemy);
+}
+
+void GameManager::DestroyShooterEnemy(GameObject* item)
+{
+	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
+	poolManager->ReturnEnemy(shooterEnemy);
+	shooterEnemyToDestroy.push_back(shooterEnemy);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -183,14 +198,15 @@ void GameManager::UpdateAll(float deltaTime) {
 void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	ColorType color;
 	switch (RandomInt(0, 2)) {
-		case 0 : 
-			color = ColorType::Rouge;
+		default:
+		color = ColorType::Rouge;
 			break;
 		case 1 : 
 			color = ColorType::Bleu;
 			break;
 		case 2 : 
 			color = ColorType::Vert;
+			break;
 	}
 	if (RandomInt(0, 1))
 	{
@@ -211,17 +227,48 @@ void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
 }
 
 void GameManager::UpdateDestroyItem() {
-	auto itToDestroy = bulletsToDestroy.begin();
-	while (itToDestroy != bulletsToDestroy.end()) {
-		auto it = bullets.begin();
-		while (it != bullets.end()) {
-			if ((*it) == (*itToDestroy)) {
-				it = bullets.erase(it);
+	//check destroy Bullets
+	auto itToDestroyBullets = bulletsToDestroy.begin();
+	while (itToDestroyBullets != bulletsToDestroy.end()) {
+		auto itBullets = bullets.begin();
+		while (itBullets != bullets.end()) {
+			if ((*itBullets) == (*itToDestroyBullets)) {
+				itBullets = bullets.erase(itBullets);
 			}
 			else {
-				it++;
+				itBullets++;
 			}
 		}
-		itToDestroy = bulletsToDestroy.erase(itToDestroy);
+		itToDestroyBullets = bulletsToDestroy.erase(itToDestroyBullets);
+	}
+
+	//check destroy CacEnemy
+	auto itToDestroyCacEnemy = cacEnemyToDestroy.begin();
+	while (itToDestroyCacEnemy != cacEnemyToDestroy.end()) {
+		auto itCacEnemy = cacEnemy.begin();
+		while (itCacEnemy != cacEnemy.end()) {
+			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
+				itCacEnemy = cacEnemy.erase(itCacEnemy);
+			}
+			else {
+				itCacEnemy++;
+			}
+		}
+		itToDestroyCacEnemy = cacEnemyToDestroy.erase(itToDestroyCacEnemy);
+	}
+
+	//check destroy ShooterEnemy
+	auto itToDestroyShooterEnemy = shooterEnemyToDestroy.begin();
+	while (itToDestroyShooterEnemy != shooterEnemyToDestroy.end()) {
+		auto itShooterEnemy = shooterEnemy.begin();
+		while (itShooterEnemy != shooterEnemy.end()) {
+			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
+				itShooterEnemy = shooterEnemy.erase(itShooterEnemy);
+			}
+			else {
+				itShooterEnemy++;
+			}
+		}
+		itToDestroyShooterEnemy = shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
 	}
 }

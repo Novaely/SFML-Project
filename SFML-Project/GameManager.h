@@ -42,7 +42,9 @@ public :
     void SpawnEnemy(CustomVector2f windowSize);
     //fonction destruction
     void UpdateDestroyItem();
-    void DestroyBullet(GameObject* bullet);
+    void DestroyBullet(GameObject* item);
+    void DestroyCacEnemy(GameObject* item);
+    void DestroyShooterEnemy(GameObject* item);
 
 private: 
     /// <summary>
