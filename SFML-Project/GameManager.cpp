@@ -146,6 +146,7 @@ void GameManager::DestroyBullet(GameObject* item)
 {
 	Bullet* bullet = (Bullet*)item;
 	poolManager->ReturnBullet(bullet);
+	bulletsToDestroy.push_back(bullet);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -210,10 +211,10 @@ void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
 }
 
 void GameManager::UpdateDestroyItem() {
-	std::list<Bullet*>::iterator itToDestroy = bulletsToDestroy.begin();
+	auto itToDestroy = bulletsToDestroy.begin();
 	while (itToDestroy != bulletsToDestroy.end()) {
 		auto it = bullets.begin();
-		while (it == bullets.end()) {
+		while (it != bullets.end()) {
 			if ((*it) == (*itToDestroy)) {
 				it = bullets.erase(it);
 			}
