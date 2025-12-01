@@ -20,11 +20,11 @@ void Enemy::OnCollisionEnter(GameObject* other)
 {
 	const GameObject& Other = *(other);
 
-	if (Other.Color == _color)
+	if (Other.team == Team::Player)
 	{
 		if (Other.characterType == CharaType::Bullet)
 		{
-			if (Other.team == Team::Player)
+			if (Other.Color == _color)
 			{
 				std::cout << "Enemy hit by bullet" << std::endl;
 				Damage(10);

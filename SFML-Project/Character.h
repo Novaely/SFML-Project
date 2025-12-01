@@ -22,10 +22,10 @@ class Character : public Movable
 		void Update(float deltaTime) override;
 		void Move(float deltaTime) override;
 		void Rotate(float deltaTime);
-		void Damage(float dmg);
 
 		CustomVector2f GetLookDirection();
 
 	protected:
 		bool _canShoot = true;
+		virtual void Damage(float dmg);
 };

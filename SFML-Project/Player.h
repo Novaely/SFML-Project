@@ -5,6 +5,7 @@ class Player : public Character
 {
 private:
     int _levelShooter = 1;
+    void Damage(float dmg) override;
 
 public:
     //constructer
@@ -17,6 +18,8 @@ public:
     void SwitchColor();
     void Shoot();
     void OnCollisionEnter(GameObject* other) override;
+
+
 
 };
 

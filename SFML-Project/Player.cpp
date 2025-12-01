@@ -1,6 +1,7 @@
 #include "Player.h"
 
 Player::Player() : Character() {
+	characterType = CharaType::Player;
 	Color = ColorType::Rouge;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
@@ -64,28 +65,35 @@ void Player::Shoot() {
 void Player::OnCollisionEnter(GameObject* other)
 {
 	const GameObject& Other = *(other);
-	if (Other.Color == _color)
+	if (Other.characterType == CharaType::Bullet)
 	{
-		if (Other.characterType == CharaType::Bullet)
+		if (Other.team == Team::Enemy)
 		{
-			if (Other.team == Team::Enemy)
-			{
-				std::cout << "Player hit by bullet Enemy" << std::endl;
-				Damage(10);
-			}
-		}
-
-		if (Other.characterType == CharaType::CACEnemy)
-		{
-			std::cout << "Player hit by CAC Enemy" << std::endl;
-			Damage(10);
-		}
-
-		if (Other.characterType == CharaType::ShooterEnemy)
-		{
-			std::cout << "Player hit by Shooter Enemy" << std::endl;
+			std::cout << "Player hit by bullet Enemy" << std::endl;
 			Damage(10);
 		}
 	}
 
+	if (Other.characterType == CharaType::CACEnemy)
+	{
+		std::cout << "Player hit by CAC Enemy" << std::endl;
+		Damage(10);
+	}
+
+	if (Other.characterType == CharaType::ShooterEnemy)
+	{
+		std::cout << "Player hit by Shooter Enemy" << std::endl;
+		Damage(10);
+	}
+}
+
+void Player::Damage(float dmg)
+{
+	health -= dmg;
+	if (health <= 0)
+	{
+		isAlive = false;
+		std::cout << "fin du jeu" << std::endl;
+		//cut le jeu
+	}
 }

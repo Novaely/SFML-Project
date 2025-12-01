@@ -3,6 +3,7 @@
 
 Bullet::Bullet() : Movable()
 {
+	characterType = CharaType::Bullet;
 	shape = new sf::CircleShape();
 
 	((sf::CircleShape*)shape)->setRadius(5);
