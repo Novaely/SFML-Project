@@ -30,7 +30,7 @@ struct LightningParameters
     float linesWidth = 2.5f;
     float innerLineWidth = 1.0f;
 
-    float lifeTime = 0.75f;
+    float lifeTime = 5;
 
     // Parameters automatically updated
     float rotation = 0;
@@ -44,11 +44,16 @@ class SingleLightning : public GameObject
 {
 	public:
         SingleLightning(LightningParameters& params, sf::Color color, sf::Color& innerColor);
+        ~SingleLightning();
 
         int sideDirection = 1;
 
 		void Update(float deltaTime) override;
 		void Draw(sf::RenderWindow& window) override;
+
+        void Stop();
+
+        bool IsFinish();
 
 	private:
         struct SegmentInfos

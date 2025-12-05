@@ -30,6 +30,12 @@ SingleLightning::SingleLightning(LightningParameters& params, sf::Color color, s
 	_currentState = &SingleLightning::Spawning;
 }
 
+void SingleLightning::Stop()
+{
+	_isDestroying = true;
+	_currentState = &SingleLightning::Destroying;
+}
+
 void SingleLightning::Update(float deltaTime)
 {
 	currentLifeTime += deltaTime;
@@ -252,4 +258,27 @@ SingleLightning::SegmentInfos SingleLightning::CreateSegmentInfo()
 	seg.recShape->setFillColor(_color);
 	seg.innerRecShape->setFillColor(*_innerLineColor);
 	return seg;
+}
+
+SingleLightning::~SingleLightning()
+{
+	delete firstSeg.recShape;
+	delete firstSeg.innerRecShape;
+
+	delete secondSeg.recShape;
+	delete secondSeg.innerRecShape;
+
+	delete lastSeg.recShape;
+	delete lastSeg.innerRecShape;
+
+	for (SegmentInfos& segInfo : listSegInfos)
+	{
+		delete segInfo.recShape;
+		delete segInfo.innerRecShape;
+	}
+}
+
+bool SingleLightning::IsFinish()
+{
+	return _isFinished;
 }

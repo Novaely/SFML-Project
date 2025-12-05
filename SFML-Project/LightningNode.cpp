@@ -8,7 +8,15 @@ void LightningNode::Update(float deltaTime)
 	while (singleLightIt != allLightnings.end())
 	{
 		(*singleLightIt)->Update(deltaTime);
-		singleLightIt++;
+		if ((*singleLightIt)->IsFinish())
+		{
+			delete *singleLightIt;
+			singleLightIt = allLightnings.erase(singleLightIt);
+		}
+		else
+		{
+			singleLightIt++;
+		}
 	}
 }
 
@@ -44,5 +52,13 @@ void LightningNode::StartLightning()
 		newLighting->sideDirection = i % 2 == 0 ? 1 : -1;
 
 		allLightnings[i] = newLighting;
+	}
+}
+
+void LightningNode::StopLightning()
+{
+	for (SingleLightning* singleLightning : allLightnings)
+	{
+		singleLightning->Stop();
 	}
 }
