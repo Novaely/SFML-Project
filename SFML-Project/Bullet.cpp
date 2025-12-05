@@ -1,6 +1,5 @@
 #include "Bullet.h"
 
-
 Bullet::Bullet() : Movable()
 {
 	characterType = CharaType::Bullet;

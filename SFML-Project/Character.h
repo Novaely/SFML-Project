@@ -10,11 +10,16 @@ public:
 	float timerShootAgain = 0;
 	float chronoShootAgain = 0;
 
-	float acceleration = 0;
-	float stopFriction = 0;
-	float turnBackFriction = 0;
-	float rotationSpeed = 0;
-	float rotationDirection = 0;
+		float acceleration = 0;
+		float stopFriction = 0;
+		//float turnBackFriction = 0;
+
+		float diretionChangeTreshold = 0.05f;
+		float directionChangeSpeed = 5;
+		float turnBackDirectionChangeSpeed = 2.5f;
+
+		float rotationSpeed = 0;
+		float rotationDirection = 0;
 
 	CustomVector2f bulletSpawnPos = CustomVector2f::zero;
 

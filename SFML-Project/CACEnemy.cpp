@@ -9,10 +9,11 @@ CACEnemy::CACEnemy() : Enemy()
 	((sf::RectangleShape*)shape)->setSize({ 5,5 });
 	damage = 10.0f;
 
-	maxInputSpeed = 200;
+	maxInputSpeed = 150;
 	acceleration = 400;
 	stopFriction = 400;
-	turnBackFriction = 800;
+	//turnBackFriction = 800;
+
 	rotationSpeed = 100;
 }
 

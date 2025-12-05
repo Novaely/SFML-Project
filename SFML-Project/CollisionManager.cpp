@@ -1,6 +1,5 @@
 #include "CollisionManager.h"
 
-
 CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 {
 	windowShape = new sf::RectangleShape();
@@ -29,7 +28,6 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it));
 			(*it)->OnCollisionEnter(player);
-			std::cout << "Collision between CACEnemy and Player" << std::endl;
 		}
 		it++;
 	}
@@ -42,7 +40,6 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it2));
 			(*it2)->OnCollisionEnter(player);
-			std::cout << "Collision between ShooterEnemy and Player" << std::endl;
 		}
 		it2++;
 	}
@@ -55,7 +52,6 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it3));
 			(*it3)->OnCollisionEnter(player);
-			std::cout << "Collision between Bullet and Player" << std::endl;
 		}
 
 		std::list<CACEnemy*>::iterator it4 = (*cacEnemy).begin();
@@ -78,7 +74,6 @@ void CollisionManager::Update(float deltaTime)
 			{
 				(*it5)->OnCollisionEnter((*it3));
 				(*it3)->OnCollisionEnter((*it5));
-				std::cout << "Collision between Bullet and ShooterEnemy" << std::endl;
 			}
 			it5++;
 		}
@@ -86,7 +81,6 @@ void CollisionManager::Update(float deltaTime)
 		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
 		{
 			(*it3)->OnCollisionEnter(nullptr);
-			std::cout << "Collision between Bullet and Window Bounds" << std::endl;
 		}
 
 		it3++;
@@ -101,7 +95,6 @@ void CollisionManager::Update(float deltaTime)
 		{
 			player->OnCollisionEnter((*it6));
 			(*it6)->OnCollisionEnter(player);
-			std::cout << "Collision between Collectible and Player" << std::endl;
 		}
 		it6++;
 	}
@@ -154,7 +147,6 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	sf::Vector2f trianPos1 = trian1.getPosition();
 	sf::Vector2f trianPos2 = trian2.getPosition();
 
-
 	vector2f triangle1[3] = { {(trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y}, {(trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y}, {(trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y} };
 	vector2f triangle2[3] = { {(trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y}, {(trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y}, {(trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y} };
 
@@ -200,7 +192,7 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	if (closestY < ry) closestY = ry;
 	else if (closestY > ry + rh) closestY = ry + rh;
 
-	// Distance au carré entre le centre et ce point le plus proche
+	// Distance au carrÃ© entre le centre et ce point le plus proche
 	float dx = cx - closestX;
 	float dy = cy - closestY;
 
@@ -224,7 +216,6 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 	if (IsPointInTriangle(centerCircle, triangle))
 	{
-		std::cout << "Collision detected" << std::endl;
 		return true;
 	}
 
@@ -234,7 +225,6 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 		float dist = DistancePointToSegment(centerCircle, triangle[i], triangle[(i + 1) % 3]);
 		if (dist <= cr)
 		{
-			std::cout << "Collision detected" << std::endl;
 			return true;
 		}
 	}
@@ -247,14 +237,14 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
 {
-	// Vecteur du segment et vecteur du point par rapport au début du segment
+	// Vecteur du segment et vecteur du point par rapport au dÃ©but du segment
 	vector2f AB = end - start;
 	vector2f AP = point - start;
 
-	// Longueur au carré du segment (évite sqrt inutile)
+	// Longueur au carrÃ© du segment (Ã©vite sqrt inutile)
 	float len2 = AB.Dot(AB);
 
-	// Segment dégénéré (start == end) : distance au point start
+	// Segment dÃ©gÃ©nÃ©rÃ© (start == end) : distance au point start
 	if (len2 == 0.0f)
 	{
 		float dx = point.x - start.x;
@@ -262,14 +252,14 @@ float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, v
 		return std::sqrt(dx * dx + dy * dy);
 	}
 
-	// Paramètre de projection normalisé t = (AP·AB) / |AB|^2
+	// ParamÃ¨tre de projection normalisÃ© t = (APÂ·AB) / |AB|^2
 	float t = AP.Dot(AB) / len2;
 
 	// Clamp entre 0 et 1 pour rester sur le segment
 	if (t < 0.0f) t = 0.0f;
 	else if (t > 1.0f) t = 1.0f;
 
-	// Point projeté sur le segment
+	// Point projetÃ© sur le segment
 	vector2f projection = start + AB * t;
 
 	// Distance entre le point et la projection

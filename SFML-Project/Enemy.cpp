@@ -26,7 +26,6 @@ void Enemy::OnCollisionEnter(GameObject* other)
 		{
 			if (Other.Color == _color)
 			{
-				std::cout << "Enemy hit by bullet" << std::endl;
 				Damage(10);
 			}
 		}
