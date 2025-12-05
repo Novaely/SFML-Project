@@ -5,6 +5,7 @@ class Player : public Character
 {
 private:
     int _levelShooter = 1;
+protected:
     void Damage(float dmg) override;
 
 public:
