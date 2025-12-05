@@ -23,10 +23,10 @@ int main()
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(&gameManager, windowSize);
 
-	LightningNode lightNode;
+	/*LightningNode lightNode;
 	lightNode.startPoint = Vec2f(200, 300);
 	lightNode.endPoint = Vec2f(600, 300);
-	lightNode.StartLightning();
+	lightNode.StartLightning();*/
 
 	sf::Clock clock;
 	float deltaTime = 0;
@@ -59,13 +59,13 @@ int main()
 		gameManager.Update(deltaTime, windowSize);
 		gameManager.UpdateDestroyItem();
 		collisionManager.Update(deltaTime);
-		lightNode.Update(deltaTime);
+		//lightNode.Update(deltaTime);
 		gameManager.UpdateDestroyItem();
 
 		//Render
 		window.clear();
 		gameManager.Draw(window);
-		lightNode.Draw(window);
+		//lightNode.Draw(window);
 		window.display();
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
