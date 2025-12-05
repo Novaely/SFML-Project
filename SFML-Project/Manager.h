@@ -8,7 +8,10 @@
 #include "Bullet.h"
 #include "Collectible.h"
 
-class Manager
+class Manager 
 {
+public:
+    virtual void Draw(sf::RenderWindow& window);
+
 };
 

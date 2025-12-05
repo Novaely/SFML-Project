@@ -31,7 +31,7 @@ public :
     std::list<Collectible*> collectibles;
 
     void Update(float deltaTime, CustomVector2f windowSize);
-    void Draw(sf::RenderWindow& window);
+    void Draw(sf::RenderWindow& window) override;
 
     void PlayerShoot();
     //fonction creation
@@ -45,6 +45,8 @@ public :
     void DestroyBullet(GameObject* item);
     void DestroyCacEnemy(GameObject* item);
     void DestroyShooterEnemy(GameObject* item);
+
+    int GetPlayerHealth() const; 
 
 private: 
     /// <summary>

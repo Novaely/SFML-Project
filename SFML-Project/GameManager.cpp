@@ -272,3 +272,8 @@ void GameManager::UpdateDestroyItem() {
 		itToDestroyShooterEnemy = shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
 	}
 }
+
+int GameManager::GetPlayerHealth() const
+{
+	return player->health;
+}
