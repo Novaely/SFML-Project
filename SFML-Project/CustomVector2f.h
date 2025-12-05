@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 struct CustomVector2f
 {
 	float x = 0.0f;
@@ -36,6 +38,7 @@ struct CustomVector2f
 	// Operators
 	CustomVector2f operator+(const CustomVector2f& other) const;
 	CustomVector2f operator-(const CustomVector2f& other) const;
+	CustomVector2f operator-() const;
 	CustomVector2f operator*(const CustomVector2f& other) const;
 	CustomVector2f operator/(const CustomVector2f& other) const;
 
@@ -43,6 +46,8 @@ struct CustomVector2f
 	CustomVector2f& operator-=(const CustomVector2f& other);
 	CustomVector2f& operator*=(const CustomVector2f& other);
 	CustomVector2f& operator/=(const CustomVector2f& other);
+
+	operator sf::Vector2f() const;
 
 	CustomVector2f operator+(const float& other) const;
 	CustomVector2f operator-(const float& other) const;

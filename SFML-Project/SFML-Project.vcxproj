@@ -140,12 +140,14 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HUDManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LightningNode.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PoolManager.cpp" />
     <ClCompile Include="SFML-Project.cpp" />
     <ClCompile Include="ShooterEnemy.cpp" />
+    <ClCompile Include="SingleLightning.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,11 +162,13 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HUDManager.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LightningNode.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PoolManager.h" />
     <ClInclude Include="ShooterEnemy.h" />
+    <ClInclude Include="SingleLightning.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

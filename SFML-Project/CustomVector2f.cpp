@@ -37,6 +37,11 @@ CustomVector2f CustomVector2f::operator-(const CustomVector2f& other) const
 	return CustomVector2f(x - other.x, y - other.y);
 }
 
+CustomVector2f CustomVector2f::operator-() const
+{
+	return CustomVector2f(-x, -y);
+}
+
 CustomVector2f CustomVector2f::operator*(const CustomVector2f& other) const
 {
 	return CustomVector2f(x * other.x, y * other.y);
@@ -82,7 +87,12 @@ bool CustomVector2f::operator==(const CustomVector2f& other) const
 
 bool CustomVector2f::operator!=(const CustomVector2f& other) const
 {
-	return x != other.x && y != other.y;
+	return x != other.x || y != other.y;
+}
+
+CustomVector2f::operator sf::Vector2f() const
+{ 
+	return sf::Vector2f(x, y);
 }
 
 // With float
