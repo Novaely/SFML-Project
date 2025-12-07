@@ -60,6 +60,13 @@ void GameManager::Draw(sf::RenderWindow& window)
 {
 	player->Draw(window);
 
+	auto lightningIt = lightnings.begin();
+	while (lightningIt != lightnings.end())
+	{
+		(*lightningIt)->Draw(window);
+		lightningIt++;
+	}
+
 	std::list<Bullet*>::iterator it = bullets.begin();
 	while (it != bullets.end()) {
 		(*it)->Draw(window);
@@ -166,6 +173,13 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 
 void GameManager::UpdateAll(float deltaTime) {
 	player->Update(deltaTime);
+
+	auto lightningIt = lightnings.begin();
+	while (lightningIt != lightnings.end())
+	{
+		(*lightningIt)->Update(deltaTime);
+		lightningIt++;
+	}
 
 	std::list<Bullet*>::iterator it = bullets.begin();
 	while (it != bullets.end()) {

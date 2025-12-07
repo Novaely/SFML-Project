@@ -14,7 +14,6 @@ public :
     //Singleton
     static GameManager* GetInstance();
 
-
     int score;
     int multiplicateur;
 	float timerBonusScore;
@@ -29,6 +28,7 @@ public :
 	std::list<ShooterEnemy*> shooterEnemy;
 	std::list<Bullet*> bullets;
     std::list<Collectible*> collectibles;
+    std::list<LightningNode*> lightnings;
 
     void Update(float deltaTime, CustomVector2f windowSize);
     void Draw(sf::RenderWindow& window);
@@ -36,7 +36,7 @@ public :
     void PlayerShoot();
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
-    void CreateCollectible(); //not implement
+    void CreateCollectible(); //not implemented
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void SpawnEnemy(CustomVector2f windowSize);
