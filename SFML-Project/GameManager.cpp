@@ -117,6 +117,10 @@ void GameManager::BonusScore(float timer, int multiplicateur)
 void GameManager::BonusVie(float vieRegen)
 {
 	(*player).health += vieRegen;
+	if ((*player).health > 3)
+	{
+		(*player).health = 3;
+	}
 }
 
 void GameManager::BonusTir()
