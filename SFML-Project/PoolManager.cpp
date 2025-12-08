@@ -143,6 +143,12 @@ void PoolManager::ReturnEnemy(CACEnemy* enemy)
 
 	indexOfFirstCACEnemy--;
 
+	if (indexOfFirstCACEnemy < 0)
+	{
+		std::cout << "Returned a cac enemy but pool is full" << std::endl;
+		indexOfFirstCACEnemy = 0;
+	}
+
 	cacEnemyPool[indexOfFirstCACEnemy] = enemy;
 }
 
@@ -196,6 +202,12 @@ void PoolManager::ReturnEnemy(ShooterEnemy* enemy)
 	enemy->Desactive();
 
 	indexOfFirstShooterEnemy--;
+
+	if (indexOfFirstShooterEnemy < 0)
+	{
+		std::cout << "Returned a shooter enemy but pool is full" << std::endl;
+		indexOfFirstShooterEnemy = 0;
+	}
 
 	shooterEnemyPool[indexOfFirstShooterEnemy] = enemy;
 }

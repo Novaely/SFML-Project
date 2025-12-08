@@ -8,14 +8,20 @@ HUDManager::HUDManager()
 
 	score.setFont(font);                // Police
 	timer.setFont(font);                // Police
+	multiplicateur.setFont(font);                // Police
 	score.setString("Bonjour SFML !");  // Contenu
 	timer.setString("Bonjour SFML !");  // Contenu
+	multiplicateur.setString("Bonjour SFML !");  // Contenu
 	score.setCharacterSize(28);         // Taille du texte
 	timer.setCharacterSize(28);         // Taille du texte
+	multiplicateur.setCharacterSize(28);         // Taille du texte
 	score.setFillColor(sf::Color::White);   // Couleur
 	timer.setFillColor(sf::Color::White);   // Couleur
+	multiplicateur.setFillColor(sf::Color::White);   // Couleur
 	score.setPosition(50, 60);             // Position dans la fenêtre
 	timer.setPosition(50, 25);             // Position dans la fenêtre
+	multiplicateur.setPosition(170, 60);             // Position dans la fenêtre
+
 }
 
 void HUDManager::Draw(sf::RenderWindow& window)
@@ -28,6 +34,11 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	window.draw(score);
 	timer.setString("Time : " + std::to_string((int)gameManager->GetTime()));
 	window.draw(timer);
+	if ( gameManager->GetMultiplicateur() > 1)
+	{
+		multiplicateur.setString("x" + std::to_string(gameManager->GetMultiplicateur()));
+		window.draw(multiplicateur);
+	}
 }
 
 void HUDManager::CreateLifePoint(CustomVector2f position, sf::RenderWindow& window)

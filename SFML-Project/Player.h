@@ -1,10 +1,12 @@
 #pragma once
 #include "Character.h"
+#include "LightningNode.h"
 
 class Player : public Character
 {
 private:
     int _levelShooter = 1;
+    int _levelShooterMax = 3;
 protected:
     void Damage(float dmg) override;
 
@@ -19,8 +21,4 @@ public:
     void SwitchColor();
     void Shoot();
     void OnCollisionEnter(GameObject* other) override;
-
-
-
 };
-

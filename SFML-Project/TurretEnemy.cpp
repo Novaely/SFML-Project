@@ -24,3 +24,14 @@ void TurretEnemy::TryShoot()
 		OnShoot(*this);
 	}
 }
+
+void TurretEnemy::Damage(float dmg)
+{
+	ShooterEnemy::Damage(dmg);
+
+	if (!isAlive && lastLightningShooted != nullptr && lastLightningShooted->isAlive)
+	{
+		lastLightningShooted->StopLightning();
+		lastLightningShooted = nullptr;
+	}
+}

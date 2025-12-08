@@ -35,6 +35,7 @@ int Player::GetlevelShooter() const {
 void Player::SetlevelShooter(int val) {
 	if (val > 0) {
 		_levelShooter = val;
+		Math::Clamp(_levelShooter, 0, _levelShooterMax);
 	}
 }
 
@@ -72,26 +73,26 @@ void Player::OnCollisionEnter(GameObject* other)
 		if (Other.team == Team::Enemy)
 		{
 			//std::cout << "Player hit by bullet Enemy" << std::endl;
-			Damage(1);
+			Damage(((Movable*)other)->damage);
 		}
 	}
 
 	if (Other.characterType == CharaType::CACEnemy)
 	{
 		//std::cout << "Player hit by CAC Enemy" << std::endl;
-		Damage(1);
+		Damage(((Movable*)other)->damage);
 	}
 
 	if (Other.characterType == CharaType::ShooterEnemy)
 	{
 		//std::cout << "Player hit by Shooter Enemy" << std::endl;
-		Damage(1);
+		Damage(((Movable*)other)->damage);
 	}
 
 	if (Other.characterType == CharaType::Lighting)
 	{
 		//std::cout << "Player hit by Lightning" << std::endl;
-		Damage(1);
+		Damage(((LightningNode*)other)->damages);
 	}
 }
 
@@ -101,7 +102,7 @@ void Player::Damage(float dmg)
 	if (health <= 0)
 	{
 		isAlive = false;
-		std::cout << "fin du jeu" << std::endl;
+		//std::cout << "fin du jeu" << std::endl;
 		//cut le jeu
 	}
 }

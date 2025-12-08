@@ -13,6 +13,7 @@ ShooterEnemy::ShooterEnemy() {
 	pShape->setPoint(1, sf::Vector2f{ -7.5f, 7.5f });
 	pShape->setPoint(2, sf::Vector2f{ -7.5f, -7.5f });
 	bulletSpawnPos = CustomVector2f(2, 0);
+	damage = 1.0f;
 
 	maxInputSpeed = 100;
 	acceleration = 400;

@@ -27,7 +27,8 @@ void Bullet::Desactive()
 void Bullet::OnCollisionEnter(GameObject* other)
 {
 	if (other == nullptr) {
-			pDie(this);
+		isAlive = false;
+		pDie(this);
 	}
 	else {
 		const GameObject& Other = *(other);
@@ -36,7 +37,8 @@ void Bullet::OnCollisionEnter(GameObject* other)
 		{
 			if (Other.characterType == CharaType::Player)
 			{
-				std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
+				//std::cout << "Enemy Bullet encountered Player (Destroy)" << std::endl;
+				isAlive = false;
 				pDie(this);
 			}
 		}
@@ -47,12 +49,14 @@ void Bullet::OnCollisionEnter(GameObject* other)
 			{
 				if (Other.characterType == CharaType::CACEnemy)
 				{
-					std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
+					//std::cout << "Player Bullet encountered CACEnemy (Destroy)" << std::endl;
+					isAlive = false;
 					pDie(this);
 				}
 				if (Other.characterType == CharaType::ShooterEnemy)
 				{
-					std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
+					//std::cout << "Player Bullet encountered ShooterEnemy (Destroy)" << std::endl;
+					isAlive = false;
 					pDie(this);
 				}
 			}
