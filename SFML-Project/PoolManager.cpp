@@ -4,7 +4,6 @@ PoolManager::PoolManager()
 	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, nullptr),
 	shooterEnemyPool(startNumShooterEnemy, nullptr), turretEnemyPool(startNumTurretEnemy, nullptr)
 {
-	std::cout << "plpuyt" << std::endl;
 	for (int i = 0; i < startNumBullets; i++)
 	{
 		bulletPool[i] = new Bullet();
@@ -84,6 +83,12 @@ void PoolManager::ReturnBullet(Bullet* bullet)
 	bullet->Desactive();
 
 	indexOfFirstBullet--;
+
+	if (indexOfFirstBullet < 0)
+	{
+		std::cout << "Returned a bullet but pool is full" << std::endl;
+		indexOfFirstBullet = 0;
+	}
 
 	bulletPool[indexOfFirstBullet] = bullet;
 }

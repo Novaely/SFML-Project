@@ -4,8 +4,8 @@
 #include <iostream>
 #include <cmath>
 
-enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet };
-enum class ColorType { None = 0, Rouge = 1, Bleu = 2, Vert = 3 };
+enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet, Lighting };
+enum class ColorType { None = 0, Red = 1, Blue = 2, Green = 3 };
 enum class Team { None, Player, Enemy };
 int RandomInt(int min, int max);
 float RandomFloat(float min, float max);

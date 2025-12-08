@@ -2,7 +2,7 @@
 
 Player::Player() : Character() {
 	characterType = CharaType::Player;
-	Color = ColorType::Rouge;
+	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
 	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
@@ -41,16 +41,16 @@ void Player::SwitchColor()
 {
 	switch (_color) {
 		default : 
-			Color = ColorType::Rouge;
+			Color = ColorType::Red;
 			break;
-		case ColorType::Rouge : 
-			Color = ColorType::Bleu;
+		case ColorType::Red : 
+			Color = ColorType::Blue;
 			break;
-		case ColorType::Bleu : 
-			Color = ColorType::Vert;
+		case ColorType::Blue : 
+			Color = ColorType::Green;
 			break;
-		case ColorType::Vert : 
-			Color = ColorType::Rouge;
+		case ColorType::Green : 
+			Color = ColorType::Red;
 			break;
 	}
 }
@@ -85,6 +85,11 @@ void Player::OnCollisionEnter(GameObject* other)
 	{
 		std::cout << "Player hit by Shooter Enemy" << std::endl;
 		Damage(10);
+	}
+
+	if (Other.characterType == CharaType::Lighting)
+	{
+		std::cout << "Player hit by Lightning";
 	}
 }
 

@@ -61,6 +61,11 @@ void SingleLightning::Draw(sf::RenderWindow& window)
 		DrawLine(window, firstSeg);
 		DrawLine(window, secondSeg);
 	}
+	else
+	{
+		DrawLine(window, firstSeg);
+		DrawLine(window, secondSeg);
+	}
 	
 	for (SegmentInfos& seg : listSegInfos)
 	{
@@ -72,8 +77,8 @@ void SingleLightning::Draw(sf::RenderWindow& window)
 
 void SingleLightning::DrawLine(sf::RenderWindow& window, SegmentInfos& segInfo)
 {
-	Vec2f startP = _parameters->startPoint + Math::RotatePoint((*segInfo.startPoint),startPoint, rotation);
-	Vec2f vecDirec = _parameters->startPoint + Math::RotatePoint((*segInfo.endPoint), startPoint, rotation) - startP;
+	Vec2f startP = _parameters->startPoint + Math::RotatePoint((*segInfo.startPoint), Vec2f::zero, rotation);
+	Vec2f vecDirec = _parameters->startPoint + Math::RotatePoint((*segInfo.endPoint), Vec2f::zero, rotation) - startP;
 	float angle = Math::ToDegree(vecDirec.GetAngle()) + rotation;
 
 	Vec2f recPos = startP + vecDirec * 0.5f;
@@ -244,6 +249,7 @@ void SingleLightning::Destroying(float deltaTime)
 		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 		point += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 	}
+	startPoint += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 
 	// If destroying but end not reached, go as far as possible and stop at the end
 	/*if (endPoint != _parameters->endPoint)
@@ -308,4 +314,14 @@ SingleLightning::~SingleLightning()
 bool SingleLightning::IsFinish()
 {
 	return _isFinished;
+}
+
+float SingleLightning::GetLightningLength()
+{
+	return endPoint.x - startPoint.x;
+}
+
+Vec2f SingleLightning::GetGLobalStartPoint()
+{
+	return _parameters->startPoint + Math::RotatePoint(startPoint, Vec2f::zero, rotation);
 }

@@ -54,6 +54,8 @@ class SingleLightning : public GameObject
         void Stop();
 
         bool IsFinish();
+        float GetLightningLength();
+        Vec2f GetGLobalStartPoint();
 
 	private:
         struct SegmentInfos

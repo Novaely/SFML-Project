@@ -54,8 +54,6 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 	{
 		multiplicateur = 1;
 	}
-
-	std::cout << lightnings.size() << std::endl;
 }
 
 void GameManager::Draw(sf::RenderWindow& window)
@@ -269,13 +267,13 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	ColorType color = ColorType::None;
 	switch (RandomInt(0, 2)) {
 		default:
-		color = ColorType::Rouge;
+		color = ColorType::Red;
 			break;
 		case 1 : 
-			color = ColorType::Bleu;
+			color = ColorType::Blue;
 			break;
 		case 2 : 
-			color = ColorType::Vert;
+			color = ColorType::Green;
 			break;
 	}
 	switch (RandomInt(0, 4))
@@ -292,6 +290,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 			break;
 	}
+	//CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 }
 
 void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
@@ -379,6 +378,7 @@ void GameManager::UpdateDestroyItem() {
 		{
 			if ((*itLightning) == (*itToDestroyLightning))
 			{
+				delete *itLightning;
 				itLightning = lightnings.erase(itLightning);
 			}
 			else

@@ -37,5 +37,5 @@ class GameObject
 	protected:
 		bool _isActive = false;
 		ColorType _color = ColorType::None;
-		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Black}, {ColorType::Rouge , sf::Color::Red} , {ColorType::Bleu , sf::Color::Blue} , {ColorType::Vert , sf::Color::Green} };
+		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Black}, {ColorType::Red , sf::Color::Red} , {ColorType::Blue , sf::Color::Blue} , {ColorType::Green , sf::Color::Green} };
 };

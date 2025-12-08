@@ -1,6 +1,11 @@
 #include "LightningNode.h"
 
-LightningNode::LightningNode() : allLightnings(numLightning, nullptr) {}
+LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
+{
+	characterType = CharaType::Lighting;
+	sf::RectangleShape* pShape = new sf::RectangleShape;
+	shape = pShape;
+}
 
 void LightningNode::Update(float deltaTime)
 {
@@ -22,6 +27,17 @@ void LightningNode::Update(float deltaTime)
 			singleLightIt++;
 		}
 	}
+
+	if (allLightnings.size() > 0)
+	{
+		sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
+		pShape->setSize(Vec2f(allLightnings.front()->GetLightningLength(), parameters.width));
+		Vec2f pos = allLightnings.front()->GetGLobalStartPoint();
+		pos.y += parameters.width * 0.5f;
+		pShape->setPosition(pos);
+		pShape->setRotation(Math::ToDegree(parameters.rotation));
+		pShape->setFillColor(sf::Color::White);
+	}
 }
 
 void LightningNode::Draw(sf::RenderWindow& window)
@@ -32,6 +48,8 @@ void LightningNode::Draw(sf::RenderWindow& window)
 		(*singleLightIt)->Draw(window);
 		singleLightIt++;
 	}
+
+	//window.draw(*shape);
 }
 
 void LightningNode::StartLightning()
