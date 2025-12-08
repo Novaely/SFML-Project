@@ -35,6 +35,7 @@ int Player::GetlevelShooter() const {
 void Player::SetlevelShooter(int val) {
 	if (val > 0) {
 		_levelShooter = val;
+		Math::Clamp(_levelShooter, 0, _levelShooterMax);
 	}
 }
 

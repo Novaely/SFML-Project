@@ -229,7 +229,7 @@ void GameManager::DestroyCacEnemy(GameObject* item)
 	CACEnemy* cacEnemy = (CACEnemy*)item;
 	poolManager->ReturnEnemy(cacEnemy);
 	_cacEnemyToDestroy.push_back(cacEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(cacEnemy->position);
 	}
@@ -240,7 +240,7 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
 	poolManager->ReturnEnemy(shooterEnemy);
 	_shooterEnemyToDestroy.push_back(shooterEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(shooterEnemy->position);
 	}
@@ -251,7 +251,7 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
 	poolManager->ReturnEnemy(turretEnemy);
 	_turretEnemyToDestroy.push_back(turretEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(turretEnemy->position);
 	}
