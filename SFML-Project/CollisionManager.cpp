@@ -24,6 +24,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<CACEnemy*>::iterator cacEnemyIt = (*cacEnemy).begin();
 	while (cacEnemyIt != (*cacEnemy).end()) 
 	{
+		if (!(*cacEnemyIt)->isAlive) {
+			cacEnemyIt++;
+			continue;
+		}
+
 		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*cacEnemyIt)->shape;
 
 		if (CheckCollisionsSquareTriangle(*cacEnemyShape, *pShape))
@@ -38,6 +43,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<ShooterEnemy*>::iterator shooterEnemyIt = (*shooterEnemy).begin();
 	while (shooterEnemyIt != (*shooterEnemy).end())
 	{
+		if (!(*shooterEnemyIt)->isAlive) {
+			shooterEnemyIt++;
+			continue;
+		}
+
 		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyIt)->shape;
 		if (CheckCollisionsTriangleTriangle(*shooterEnemyShape, *pShape))
 		{
@@ -51,6 +61,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<TurretEnemy*>::iterator turretEnemyIt = (*turretEnemy).begin();
 	while (turretEnemyIt != (*turretEnemy).end())
 	{
+		if (!(*turretEnemyIt)->isAlive) {
+			turretEnemyIt++;
+			continue;
+		}
+
 		sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyIt)->shape;
 		if (CheckCollisionsTriangleTriangle(*turretEnemyShape, *pShape))
 		{
@@ -64,6 +79,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<Bullet*>::iterator bulletIt = (*bullets).begin();
 	while (bulletIt != (*bullets).end())
 	{
+		if (!(*bulletIt)->isAlive) {
+			bulletIt++;
+			continue;
+		}
+
 		// With player
 		sf::CircleShape* bulletShape = (sf::CircleShape*)(*bulletIt)->shape;
 		if (CheckCollisionsCircleTriangle(*bulletShape, *pShape))
@@ -76,6 +96,11 @@ void CollisionManager::Update(float deltaTime)
 		std::list<CACEnemy*>::iterator cacEnemyBulletsIt = (*cacEnemy).begin();
 		while (cacEnemyBulletsIt != (*cacEnemy).end())
 		{
+			if (!(*cacEnemyBulletsIt)->isAlive) {
+				cacEnemyBulletsIt++;
+				continue;
+			}
+
 			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*cacEnemyBulletsIt)->shape;
 			if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
 			{
@@ -88,6 +113,11 @@ void CollisionManager::Update(float deltaTime)
 		std::list<ShooterEnemy*>::iterator shooterEnemyBulletsIt = (*shooterEnemy).begin();
 		while (shooterEnemyBulletsIt != (*shooterEnemy).end())
 		{
+			if (!(*shooterEnemyBulletsIt)->isAlive) {
+				shooterEnemyBulletsIt++;
+				continue;
+			}
+
 			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyBulletsIt)->shape;
 			if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
 			{
@@ -101,6 +131,11 @@ void CollisionManager::Update(float deltaTime)
 		std::list<TurretEnemy*>::iterator turretEnemyBulletsIt = (*turretEnemy).begin();
 		while (turretEnemyBulletsIt != (*turretEnemy).end())
 		{
+			if (!(*turretEnemyBulletsIt)->isAlive) {
+				turretEnemyBulletsIt++;
+				continue;
+			}
+
 			sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyBulletsIt)->shape;
 			if (CheckCollisionsCircleTriangle(*bulletShape, *turretEnemyShape))
 			{
@@ -122,6 +157,11 @@ void CollisionManager::Update(float deltaTime)
 	std::list<Collectible*>::iterator collectibleIt = (*collectibles).begin();
 	while (collectibleIt != (*collectibles).end())
 	{
+		if (!(*collectibleIt)->isAlive) {
+			collectibleIt++;
+			continue;
+		}
+
 		sf::CircleShape* collectibles = (sf::CircleShape*)(*collectibleIt)->shape;
 
 		if (CheckCollisionsCircleTriangle(*collectibles, *pShape))

@@ -82,8 +82,8 @@ private:
 
     std::list<CACEnemy*> _cacEnemyToDestroy;
     std::list<ShooterEnemy*> _shooterEnemyToDestroy;
-    std::list<ShooterEnemy*> turretEnemyToDestroy;
-    std::list<LightningNode*> lightningToDestroy;
+    std::list<TurretEnemy*> _turretEnemyToDestroy;
+    std::list<LightningNode*> _lightningToDestroy;
     std::list<Bullet*> _bulletsToDestroy;
     std::list<Collectible*> _collectiblesToDestroy;
 };

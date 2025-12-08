@@ -130,6 +130,7 @@ void GameManager::PlayerShoot()
 void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType)
 {
 	Bullet* bullet = poolManager->GetBullet(team, position, speed, direction, damage, colorType);
+	bullet->isAlive = true;
 	bullet->pDie = [this](GameObject* go) { this->DestroyBullet(go); };
 	bullets.push_back(bullet);
 }
@@ -137,6 +138,7 @@ void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, 
 void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage)
 {
 	LightningNode* lightning = new LightningNode();
+	lightning->isAlive = true;
 	lightning->damages = damage;
 	lightning->team = team;
 	lightning->startPoint = position;
@@ -155,6 +157,7 @@ void GameManager::CreateCollectible() {
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
 
 	CACEnemy* enemy = (poolManager->GetCACEnemy(position, health, player));
+	enemy->isAlive = true;
 	enemy->pDie = [this](GameObject* go) { this->DestroyCacEnemy(go); };
 	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
@@ -162,6 +165,7 @@ void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
 	ShooterEnemy* enemy = poolManager->GetShooterEnemy(position, health, player);
+	enemy->isAlive = true;
 	enemy->pDie = [this](GameObject* go) { this->DestroyShooterEnemy(go); };
 	(*enemy).Color = color;
 
@@ -175,6 +179,7 @@ void GameManager::CreateShooterEnemy(CustomVector2f position, float health, Colo
 
 void GameManager::CreateTurretEnemy(CustomVector2f position, float health, ColorType color) {
 	TurretEnemy* enemy = poolManager->GetTurretEnemy(position, health, player);
+	enemy->isAlive = true;
 	enemy->pDie = [this](GameObject* go) { this->DestroyTurretEnemy(go); };
 	(*enemy).Color = color;
 
@@ -217,13 +222,13 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 {
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
 	poolManager->ReturnEnemy(turretEnemy);
-	turretEnemyToDestroy.push_back(turretEnemy);
+	_turretEnemyToDestroy.push_back(turretEnemy);
 }
 
 void GameManager::DestroyLightning(GameObject* item)
 {
 	LightningNode* lightning = (LightningNode*)item;
-	lightningToDestroy.push_back(lightning);
+	_lightningToDestroy.push_back(lightning);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -366,8 +371,8 @@ void GameManager::UpdateDestroyItem() {
 	}
 
 	//check destroy TurretEnemy
-	auto itToDestroyTurretEnemy = turretEnemyToDestroy.begin();
-	while (itToDestroyTurretEnemy != turretEnemyToDestroy.end()) {
+	auto itToDestroyTurretEnemy = _turretEnemyToDestroy.begin();
+	while (itToDestroyTurretEnemy != _turretEnemyToDestroy.end()) {
 		auto itTurretEnemy = turretEnemy.begin();
 		while (itTurretEnemy != turretEnemy.end()) {
 			if ((*itTurretEnemy) == (*itToDestroyTurretEnemy)) {
@@ -377,11 +382,11 @@ void GameManager::UpdateDestroyItem() {
 				itTurretEnemy++;
 			}
 		}
-		itToDestroyTurretEnemy = turretEnemyToDestroy.erase(itToDestroyTurretEnemy);
+		itToDestroyTurretEnemy = _turretEnemyToDestroy.erase(itToDestroyTurretEnemy);
 	}
 
-	auto itToDestroyLightning = lightningToDestroy.begin();
-	while (itToDestroyLightning != lightningToDestroy.end())
+	auto itToDestroyLightning = _lightningToDestroy.begin();
+	while (itToDestroyLightning != _lightningToDestroy.end())
 	{
 		auto itLightning = lightnings.begin();
 		while (itLightning != lightnings.end())
@@ -396,7 +401,7 @@ void GameManager::UpdateDestroyItem() {
 				itLightning++;
 			}
 		}
-		itToDestroyLightning = lightningToDestroy.erase(itToDestroyLightning);
+		itToDestroyLightning = _lightningToDestroy.erase(itToDestroyLightning);
 	}
 }
 

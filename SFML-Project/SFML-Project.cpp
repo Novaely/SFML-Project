@@ -14,8 +14,8 @@ int main()
 	CustomVector2f windowSize = {800, 600};
 	//initialisation de toutes les variables importantes
 	Player player;
-	float time = 0;
 	int tick = 0;
+	int boucle = 1;
 	GameManager gameManager;
 	InputManager inputManager;
 	PoolManager poolManager;
@@ -36,7 +36,6 @@ int main()
 	 // Game loop
 	while (window.isOpen()) {
 		deltaTime = clock.restart().asSeconds();
-		 time += deltaTime;
 
 		 //CHeck Input
 		sf::Event event;
@@ -55,6 +54,17 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
+		tick++;
+		if (gameManager.GetTime() >= boucle) {
+			std::cout << "FPS : " << tick << std::endl;
+			//std::cout << "nombre shooter enemy : " << gameManager.shooterEnemy.size() << std::endl;
+			//std::cout << "nombre cac enemy : " << gameManager.cacEnemy.size() << std::endl;
+			//std::cout << "nombre turret enemy : " << gameManager.turretEnemy.size() << std::endl;
+			//std::cout << "nombre bullet : " << gameManager.bullets.size() << std::endl;
+			//std::cout << "nombre laser : " << gameManager.lightnings.size() << std::endl;
+			boucle++;
+			tick = 0;
+		}
 		gameManager.Update(deltaTime, windowSize);
 		gameManager.UpdateDestroyItem();
 		collisionManager.Update(deltaTime);
@@ -65,15 +75,6 @@ int main()
 		gameManager.Draw(window);
 		hudManager.Draw(window);
 		window.display();
-
-		fpsTimer += deltaTime;
-		frameCount++;
-
-		if (fpsTimer >= 1.0f) {
-			std::cout << "FPS: " << frameCount << std::endl;
-			fpsTimer = 0.0f;
-			frameCount = 0;
-		}
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
 	}
