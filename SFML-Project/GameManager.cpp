@@ -38,6 +38,7 @@ GameManager::GameManager()
 	chronoSpawnEnemies = timerSpawnEnemies;
 	wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
+
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 {
 	_time += deltaTime;
@@ -98,6 +99,7 @@ void GameManager::Draw(sf::RenderWindow& window)
 	}
 }
 
+//fonction bonus
 void GameManager::BonusScore(float timer, int multiplicateur)
 {
 	multiplicateur = multiplicateur;
@@ -113,17 +115,6 @@ void GameManager::BonusVie(float vieRegen)
 void GameManager::BonusTir()
 {
 	(*player).LevelShooter += 1;
-}
-
-void GameManager::PlayerShoot()
-{
-	if (!player->CanShoot()) return;
-
-	player->Shoot();
-	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(player->bulletSpawnPos, CustomVector2f::zero, Math::ToRad(player->rotation));
-	CustomVector2f pos = player->position + bulletSpawnLocalPos;
-
-	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
 }
 
 //fonction Creatation
@@ -150,8 +141,25 @@ void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVect
 	lightning->StartLightning();
 }
 
-void GameManager::CreateCollectible() {
-	//collectibles.push_back
+void GameManager::CreateCollectible(CustomVector2f position) {
+	Collectible* collectible = new Collectible();
+	collectible->shape = new sf::CircleShape;
+	collectible->Color = ColorType::Yellow;
+	collectible->position = position;
+	collectible->isAlive = true;
+	collectible->pDie = [this](GameObject* go) { this->DestroyCollectible(go); };
+	switch (RandomInt(0, 2)) {
+		case 0:
+			collectible->pCollected = [this](GameObject* go) { this->BonusScore(0,0); }; //modifie les valeurs de bonus score
+			break;
+		case 1:
+			collectible->pCollected = [this](GameObject* go) { this->BonusVie(0); }; //modifie les valeurs de bonus vie
+			break;
+		case 2:
+			collectible->pCollected = [this](GameObject* go) { this->BonusTir(); };
+			break;
+	}
+	collectibles.push_back(collectible);
 }
 
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
@@ -199,6 +207,17 @@ void GameManager::DestroyBullet(GameObject* item)
 	_bulletsToDestroy.push_back(bullet);
 }
 
+void GameManager::DestroyLightning(GameObject* item)
+{
+	LightningNode* lightning = (LightningNode*)item;
+	_lightningToDestroy.push_back(lightning);
+}
+
+void GameManager::DestroyCollectible(GameObject* item) {
+	Collectible* collectible = (Collectible*)item;
+	_collectiblesToDestroy.push_back(collectible);
+}
+
 void GameManager::DestroyCacEnemy(GameObject* item)
 {
 	CACEnemy* cacEnemy = (CACEnemy*)item;
@@ -213,11 +232,6 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	_shooterEnemyToDestroy.push_back(shooterEnemy);
 }
 
-float GameManager::GetTime()
-{
-	return _time;
-}
-
 void GameManager::DestroyTurretEnemy(GameObject* item)
 {
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
@@ -225,12 +239,66 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	_turretEnemyToDestroy.push_back(turretEnemy);
 }
 
-void GameManager::DestroyLightning(GameObject* item)
-{
-	LightningNode* lightning = (LightningNode*)item;
-	_lightningToDestroy.push_back(lightning);
+
+void GameManager::SpawnEnemy(CustomVector2f windowSize) {
+	ColorType color = ColorType::None;
+	switch (RandomInt(0, 2)) {
+		default:
+		color = ColorType::Red;
+			break;
+		case 1 : 
+			color = ColorType::Blue;
+			break;
+		case 2 : 
+			color = ColorType::Green;
+			break;
+	}
+	switch (RandomInt(0, 4))
+	{
+		case 0:
+		case 1:
+			CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			break;
+		case 2:
+		case 3:
+			CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			break;
+		case 4:
+			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			break;
+	}
+	//CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 }
 
+//fonction shot
+void GameManager::PlayerShoot()
+{
+	if (!player->CanShoot()) return;
+
+	player->Shoot();
+	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(player->bulletSpawnPos, CustomVector2f::zero, Math::ToRad(player->rotation));
+	CustomVector2f pos = player->position + bulletSpawnLocalPos;
+
+	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
+}
+
+void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
+{
+	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
+	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
+
+	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), enemy.damage, enemy.GetColor());
+}
+
+void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)
+{
+	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
+	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
+
+	CreateLightning(Team::Enemy, pos, enemy.GetLookDirection(), 10);
+}
+
+//fonction update
 void GameManager::UpdateAll(float deltaTime) {
 	player->Update(deltaTime);
 
@@ -274,52 +342,6 @@ void GameManager::UpdateAll(float deltaTime) {
 		(*itemIt)->Update(deltaTime);
 		itemIt++;
 	}
-}
-
-void GameManager::SpawnEnemy(CustomVector2f windowSize) {
-	ColorType color = ColorType::None;
-	switch (RandomInt(0, 2)) {
-		default:
-		color = ColorType::Red;
-			break;
-		case 1 : 
-			color = ColorType::Blue;
-			break;
-		case 2 : 
-			color = ColorType::Green;
-			break;
-	}
-	switch (RandomInt(0, 4))
-	{
-		case 0:
-		case 1:
-			CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
-			break;
-		case 2:
-		case 3:
-			CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
-			break;
-		case 4:
-			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
-			break;
-	}
-	//CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
-}
-
-void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
-{
-	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
-	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
-
-	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), enemy.damage, enemy.GetColor());
-}
-
-void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)
-{
-	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
-	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
-
-	CreateLightning(Team::Enemy, pos, enemy.GetLookDirection(), 10);
 }
 
 void GameManager::UpdateDestroyItem() {
@@ -385,6 +407,7 @@ void GameManager::UpdateDestroyItem() {
 		itToDestroyTurretEnemy = _turretEnemyToDestroy.erase(itToDestroyTurretEnemy);
 	}
 
+	//check destroy lightning
 	auto itToDestroyLightning = _lightningToDestroy.begin();
 	while (itToDestroyLightning != _lightningToDestroy.end())
 	{
@@ -403,9 +426,35 @@ void GameManager::UpdateDestroyItem() {
 		}
 		itToDestroyLightning = _lightningToDestroy.erase(itToDestroyLightning);
 	}
+
+	//check destroy collectible
+	auto itToDestroyCollectible = _collectiblesToDestroy.begin();
+	while (itToDestroyCollectible != _collectiblesToDestroy.end())
+	{
+		auto itCollectible = collectibles.begin();
+		while (itCollectible != collectibles.end())
+		{
+			if ((*itCollectible) == (*itToDestroyCollectible))
+			{
+				delete* itCollectible;
+				itCollectible = collectibles.erase(itCollectible);
+			}
+			else
+			{
+				itCollectible++;
+			}
+		}
+		itToDestroyCollectible = _collectiblesToDestroy.erase(itToDestroyCollectible);
+	}
 }
 
+//fonction get
 int GameManager::GetPlayerHealth() const
 {
 	return player->health;
+}
+
+float GameManager::GetTime()
+{
+	return _time;
 }

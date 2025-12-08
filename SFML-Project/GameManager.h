@@ -39,7 +39,7 @@ public :
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
     void CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage);
-    void CreateCollectible(); //not implemented
+    void CreateCollectible(CustomVector2f position); //not implemented
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
@@ -47,10 +47,11 @@ public :
     //fonction destruction
     void UpdateDestroyItem();
     void DestroyBullet(GameObject* item);
+    void DestroyLightning(GameObject* item);
+    void DestroyCollectible(GameObject* item);
     void DestroyCacEnemy(GameObject* item);
     void DestroyShooterEnemy(GameObject* item);
     void DestroyTurretEnemy(GameObject* item);
-    void DestroyLightning(GameObject* item);
 
     int GetPlayerHealth() const; 
 

@@ -3,7 +3,13 @@
 
 class Collectible : public GameObject
 {
+	public :
+		Collectible();
+
+		std::function<void(GameObject*)> pCollected;
+
 	private :
-		float lifeTime;
+		float _lifeTime;
+		float _chrono = 0;
 };
 
