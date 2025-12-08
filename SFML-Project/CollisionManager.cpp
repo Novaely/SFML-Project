@@ -149,7 +149,6 @@ void CollisionManager::Update(float deltaTime)
 		{
 			(*bulletIt)->OnCollisionEnter(nullptr);
 		}
-
 		bulletIt++;
 	}
 

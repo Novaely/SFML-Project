@@ -6,3 +6,11 @@ Collectible::Collectible() : GameObject() {
 
 	((sf::CircleShape*)shape)->setRadius(5);
 }
+
+void Collectible::OnCollisionEnter(GameObject* other) {
+
+
+	pCollected(this);
+	this->isAlive = false;
+	pDie(this);
+}
