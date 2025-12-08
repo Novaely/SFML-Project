@@ -196,9 +196,14 @@ float CustomVector2f::DistanceTo(const CustomVector2f& other) const
 	return vecDirec.GetMagnitude();
 }
 
-CustomVector2f CustomVector2f::GetNormal() const
+CustomVector2f CustomVector2f::GetNormalCounterClockWise() const
 {
 	return CustomVector2f(-y, x);
+}
+
+CustomVector2f CustomVector2f::GetNormalClockWise() const
+{
+	return CustomVector2f(y, -x);
 }
 
 CustomVector2f CustomVector2f::DirectionTo(const CustomVector2f& other) const

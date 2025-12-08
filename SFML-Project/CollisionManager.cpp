@@ -13,7 +13,7 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 	turretEnemy = &(gm->turretEnemy);
 	collectibles = &(gm->collectibles);
 	bullets = &(gm->bullets);
-	
+	lightnings = &(gm->lightnings);
 }
 
 void CollisionManager::Update(float deltaTime)
@@ -58,6 +58,37 @@ void CollisionManager::Update(float deltaTime)
 			(*turretEnemyIt)->OnCollisionEnter(player);
 		}
 		turretEnemyIt++;
+	}
+
+	// Lightning with Player
+	auto lightningIt = (*lightnings).begin();
+	while (lightningIt != (*lightnings).end())
+	{
+		sf::RectangleShape* lightningShape = (sf::RectangleShape*)(*lightningIt)->shape;
+		//std::cout << "New it" << std::endl;
+		//std::cout << (lightningShape->getPoint(0) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(0) + lightningShape->getPosition()).y << std::endl;
+		//std::cout << (lightningShape->getPoint(1) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(1) + lightningShape->getPosition()).y << std::endl;
+		//std::cout << (lightningShape->getPoint(2) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(2) + lightningShape->getPosition()).y << std::endl;
+		//std::cout << (lightningShape->getPoint(3) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(3) + lightningShape->getPosition()).y << std::endl;
+		//std::cout << lightningShape->getOrigin().x << " Y:" << lightningShape->getOrigin().y << std::endl;
+
+		Vec2f pos = lightningShape->getPosition();
+		Vec2f p0 = Math::RotatePoint(lightningShape->getPoint(0), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
+		Vec2f p1 = Math::RotatePoint(lightningShape->getPoint(1), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
+		Vec2f p2 = Math::RotatePoint(lightningShape->getPoint(2), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
+		Vec2f p3 = Math::RotatePoint(lightningShape->getPoint(3), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
+
+		//std::cout << "X: " << p0.x << " Y: " << p0.y << std::endl;
+		//std::cout << "X: " << p1.x << " Y: " << p1.y << std::endl;
+		//std::cout << "X: " << p2.x << " Y: " << p2.y << std::endl;
+		//std::cout << "X: " << p3.x << " Y: " << p3.y << std::endl;
+
+		if (CheckCollisionsSquareTriangle(*lightningShape, *pShape))
+		{
+			player->OnCollisionEnter((*lightningIt));
+			(*lightningIt)->OnCollisionEnter(player);
+		}
+		lightningIt++;
 	}
 
 	// Others with Bullets
@@ -133,40 +164,67 @@ void CollisionManager::Update(float deltaTime)
 	}
 }
 
-bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf::ConvexShape trian)
+bool CollisionManager::IsPointInConvexShape(Vec2f point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals)
 {
-	sf::Vector2f rectPos = rect.getPosition();
-	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
-	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
-	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
-	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
-	vector2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
+	Vec2f vecToPoint;
+	for (int i = 0; i < numNormals; i++) 
+	{
+		vecToPoint = point - shapePoints[i];
+		if (vecToPoint.Dot(convNormals[i]) > 0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 
-	
+bool CollisionManager::CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian)
+{
+	// Get Rectangle Points & Normals
+	Vec2f rectPos = rect.getPosition();
+	float rectRotation = Math::ToRad(rect.getRotation());
 
-	sf::Vector2f trianPos = trian.getPosition();
-	vector2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y}, {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
+	Vec2f rectP1 = Math::RotatePoint(rect.getPoint(0), Vec2f::zero, rectRotation) + rectPos;
+	Vec2f rectP2 = Math::RotatePoint(rect.getPoint(1), Vec2f::zero, rectRotation) + rectPos;
+	Vec2f rectP3 = Math::RotatePoint(rect.getPoint(2), Vec2f::zero, rectRotation) + rectPos;
+	Vec2f rectP4 = Math::RotatePoint(rect.getPoint(3), Vec2f::zero, rectRotation) + rectPos;
 
+	Vec2f rectS1Normal = (rectP2 - rectP1).GetNormalClockWise();
+	Vec2f rectS2Normal = (rectP3 - rectP2).GetNormalClockWise();
+	Vec2f rectS3Normal = (rectP4 - rectP3).GetNormalClockWise();
+	Vec2f rectS4Normal = (rectP1 - rectP4).GetNormalClockWise();
 
-	float rw = square[1].x - square[0].x; // width
-	float rh = square[3].y - square[0].y; // height
-	float rx = square[0].x; // x position
-	float ry = square[0].y; // y position
+	Vec2f squarePoints[4] = { rectP1, rectP2, rectP3, rectP4 };
+	Vec2f squareSidesNormals[4] = { rectS1Normal, rectS2Normal, rectS3Normal, rectS4Normal };
+
+	// Get Triangle Points
+	Vec2f trianPos = trian.getPosition();
+	float trianRotation = Math::ToRad(trian.getRotation());
+
+	Vec2f trianP1 = Math::RotatePoint(trian.getPoint(0), Vec2f::zero, trianRotation) + trianPos;
+	Vec2f trianP2 = Math::RotatePoint(trian.getPoint(1), Vec2f::zero, trianRotation) + trianPos;
+	Vec2f trianP3 = Math::RotatePoint(trian.getPoint(2), Vec2f::zero, trianRotation) + trianPos;
+
+	Vec2f trianS1Normal = (trianP2 - trianP1).GetNormalClockWise();
+	Vec2f trianS2Normal = (trianP3 - trianP2).GetNormalClockWise();
+	Vec2f trianS3Normal = (trianP1 - trianP3).GetNormalClockWise();
+
+	Vec2f trianglePoints[3] = {trianP1, trianP2, trianP3};
+	Vec2f triangleSidesNormals[3] = { trianS1Normal , trianS2Normal, trianS3Normal };
 
 	// Square -> Triangle
 	for (int i = 0; i < 4; i++)
 	{
-
-        if (IsPointInTriangle(square[i], triangle))
-        {
+		if (IsPointInConvexShape(squarePoints[i], trianglePoints, triangleSidesNormals, 3))
+		{
 			return true;
-        }
+		}
 	}
 
 	// Triangle -> Square
 	for (int i = 0; i < 3; i++)
 	{
-		if ((triangle[i].y >= ry && triangle[i].y <= rh + ry) && (triangle[i].x >= rx && triangle[i].x <= rw + rx))
+		if (IsPointInConvexShape(trianglePoints[i], squarePoints, squareSidesNormals, 4))
 		{
 			return true;
 		}
@@ -174,6 +232,7 @@ bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf
 
 	return false;
 }
+
 bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2)
 {
 	sf::Vector2f trianPos1 = trian1.getPosition();
@@ -263,9 +322,6 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 
 	return false;
 }
-
-
-
 
 float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
 {
