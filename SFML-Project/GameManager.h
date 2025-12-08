@@ -46,7 +46,12 @@ public :
     void DestroyCacEnemy(GameObject* item);
     void DestroyShooterEnemy(GameObject* item);
 
+    float GetTime();
+
 private: 
+
+    float _time = 0;
+
     /// <summary>
     /// score *2 sur x temps
     /// regen vie
@@ -66,9 +71,9 @@ private:
     //Singleton
     static GameManager* _instance;
 
-    std::list<CACEnemy*> cacEnemyToDestroy;
-    std::list<ShooterEnemy*> shooterEnemyToDestroy;
-    std::list<Bullet*> bulletsToDestroy;
-    std::list<Collectible*> collectiblesToDestroy;
+    std::list<CACEnemy*> _cacEnemyToDestroy;
+    std::list<ShooterEnemy*> _shooterEnemyToDestroy;
+    std::list<Bullet*> _bulletsToDestroy;
+    std::list<Collectible*> _collectiblesToDestroy;
 };
 
