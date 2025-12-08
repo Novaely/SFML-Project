@@ -150,10 +150,10 @@ void GameManager::CreateCollectible(CustomVector2f position) {
 	collectible->pDie = [this](GameObject* go) { this->DestroyCollectible(go); };
 	switch (RandomInt(0, 2)) {
 		case 0:
-			collectible->pCollected = [this](GameObject* go) { this->BonusScore(0,0); }; //modifie les valeurs de bonus score
+			collectible->pCollected = [this](GameObject* go) { this->BonusScore(5,2); }; 
 			break;
 		case 1:
-			collectible->pCollected = [this](GameObject* go) { this->BonusVie(0); }; //modifie les valeurs de bonus vie
+			collectible->pCollected = [this](GameObject* go) { this->BonusVie(1); }; 
 			break;
 		case 2:
 			collectible->pCollected = [this](GameObject* go) { this->BonusTir(); };
@@ -223,6 +223,10 @@ void GameManager::DestroyCacEnemy(GameObject* item)
 	CACEnemy* cacEnemy = (CACEnemy*)item;
 	poolManager->ReturnEnemy(cacEnemy);
 	_cacEnemyToDestroy.push_back(cacEnemy);
+	score += scoreUpdate * multiplicateur;
+	if (RandomInt(0, 13) == 0) {
+		CreateCollectible(cacEnemy->position);
+	}
 }
 
 void GameManager::DestroyShooterEnemy(GameObject* item)
@@ -230,6 +234,10 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
 	poolManager->ReturnEnemy(shooterEnemy);
 	_shooterEnemyToDestroy.push_back(shooterEnemy);
+	score += scoreUpdate * multiplicateur;
+	if (RandomInt(0, 13) == 0) {
+		CreateCollectible(shooterEnemy->position);
+	}
 }
 
 void GameManager::DestroyTurretEnemy(GameObject* item)
@@ -237,6 +245,10 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
 	poolManager->ReturnEnemy(turretEnemy);
 	_turretEnemyToDestroy.push_back(turretEnemy);
+	score += scoreUpdate * multiplicateur;
+	if (RandomInt(0, 13) == 0) {
+		CreateCollectible(turretEnemy->position);
+	}
 }
 
 
@@ -367,7 +379,6 @@ void GameManager::UpdateDestroyItem() {
 		while (itCacEnemy != cacEnemy.end()) {
 			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
 				itCacEnemy = cacEnemy.erase(itCacEnemy);
-				score += scoreUpdate * multiplicateur;
 			}
 			else {
 				itCacEnemy++;
@@ -383,7 +394,6 @@ void GameManager::UpdateDestroyItem() {
 		while (itShooterEnemy != shooterEnemy.end()) {
 			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
 				itShooterEnemy = shooterEnemy.erase(itShooterEnemy);
-				score += scoreUpdate * multiplicateur;
 			}
 			else {
 				itShooterEnemy++;
