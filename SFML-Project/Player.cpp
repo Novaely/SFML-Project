@@ -20,7 +20,7 @@ Player::Player() : Character() {
 	stopFriction = 400;
 	///turnBackFriction = 800;
 
-	rotationSpeed = 250;
+	rotationSpeed = 200;
 	timerShootAgain = 0.1f;
 	speedBullet = 150;
 	chronoShootAgain = timerShootAgain;

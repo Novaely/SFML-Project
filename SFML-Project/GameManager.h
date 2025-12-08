@@ -49,6 +49,7 @@ public :
     void DestroyCacEnemy(GameObject* item);
     void DestroyShooterEnemy(GameObject* item);
     void DestroyTurretEnemy(GameObject* item);
+    void DestroyLightning(GameObject* item);
 
 private: 
     /// <summary>
@@ -74,6 +75,7 @@ private:
     std::list<CACEnemy*> cacEnemyToDestroy;
     std::list<ShooterEnemy*> shooterEnemyToDestroy;
     std::list<ShooterEnemy*> turretEnemyToDestroy;
+    std::list<LightningNode*> lightningToDestroy;
     std::list<Bullet*> bulletsToDestroy;
     std::list<Collectible*> collectiblesToDestroy;
 };

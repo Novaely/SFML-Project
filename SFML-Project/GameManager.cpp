@@ -54,6 +54,8 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 	{
 		multiplicateur = 1;
 	}
+
+	std::cout << lightnings.size() << std::endl;
 }
 
 void GameManager::Draw(sf::RenderWindow& window)
@@ -139,6 +141,9 @@ void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVect
 	lightning->startPoint = position;
 	lightning->endPoint = position + direction * 1000;
 	lightnings.push_back(lightning);
+
+	lightning->pDie = [this](GameObject* go) { this->DestroyLightning(go); };
+
 	lightning->StartLightning();
 }
 
@@ -207,6 +212,12 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
 	poolManager->ReturnEnemy(turretEnemy);
 	turretEnemyToDestroy.push_back(turretEnemy);
+}
+
+void GameManager::DestroyLightning(GameObject* item)
+{
+	LightningNode* lightning = (LightningNode*)item;
+	lightningToDestroy.push_back(lightning);
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -358,5 +369,23 @@ void GameManager::UpdateDestroyItem() {
 			}
 		}
 		itToDestroyTurretEnemy = turretEnemyToDestroy.erase(itToDestroyTurretEnemy);
+	}
+
+	auto itToDestroyLightning = lightningToDestroy.begin();
+	while (itToDestroyLightning != lightningToDestroy.end())
+	{
+		auto itLightning = lightnings.begin();
+		while (itLightning != lightnings.end())
+		{
+			if ((*itLightning) == (*itToDestroyLightning))
+			{
+				itLightning = lightnings.erase(itLightning);
+			}
+			else
+			{
+				itLightning++;
+			}
+		}
+		itToDestroyLightning = lightningToDestroy.erase(itToDestroyLightning);
 	}
 }

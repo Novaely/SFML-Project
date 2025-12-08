@@ -12,6 +12,10 @@ void LightningNode::Update(float deltaTime)
 		{
 			delete *singleLightIt;
 			singleLightIt = allLightnings.erase(singleLightIt);
+			if (allLightnings.size() <= 0)
+			{
+				pDie(this);
+			}
 		}
 		else
 		{
