@@ -14,11 +14,11 @@ class CollisionManager :
 		Player* player = nullptr;
 		std::list<CACEnemy*>* cacEnemy;
 		std::list<ShooterEnemy*>* shooterEnemy;
+		std::list<TurretEnemy*>* turretEnemy;
 		std::list<Bullet*>* bullets;
 		std::list<Collectible*>* collectibles;
 		sf::ConvexShape* pShape;
 		sf::Shape* windowShape;
-
 
 		GameManager* gameManager;
 		void Update( float deltaTime);
