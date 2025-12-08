@@ -113,7 +113,7 @@ void GameManager::BonusVie(float vieRegen)
 }
 
 void GameManager::BonusTir()
-{
+{	
 	(*player).LevelShooter += 1;
 }
 
@@ -224,7 +224,7 @@ void GameManager::DestroyCacEnemy(GameObject* item)
 	poolManager->ReturnEnemy(cacEnemy);
 	_cacEnemyToDestroy.push_back(cacEnemy);
 	score += scoreUpdate * multiplicateur;
-	if (RandomInt(0, 13) == 0) {
+	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(cacEnemy->position);
 	}
 }
@@ -235,7 +235,7 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	poolManager->ReturnEnemy(shooterEnemy);
 	_shooterEnemyToDestroy.push_back(shooterEnemy);
 	score += scoreUpdate * multiplicateur;
-	if (RandomInt(0, 13) == 0) {
+	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(shooterEnemy->position);
 	}
 }
@@ -246,7 +246,7 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	poolManager->ReturnEnemy(turretEnemy);
 	_turretEnemyToDestroy.push_back(turretEnemy);
 	score += scoreUpdate * multiplicateur;
-	if (RandomInt(0, 13) == 0) {
+	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(turretEnemy->position);
 	}
 }

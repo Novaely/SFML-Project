@@ -7,6 +7,7 @@ class Collectible : public GameObject
 		Collectible();
 
 		std::function<void(GameObject*)> pCollected;
+		void OnCollisionEnter(GameObject* other) override;
 
 	private :
 		float _lifeTime;
