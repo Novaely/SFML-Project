@@ -311,7 +311,7 @@ void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
 	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(enemy.bulletSpawnPos, CustomVector2f::zero, Math::ToRad(enemy.rotation));
 	CustomVector2f pos = enemy.position + bulletSpawnLocalPos;
 
-	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), 10, enemy.GetColor());
+	CreateBullet(Team::Enemy, pos, enemy.speedBullet, enemy.GetLookDirection(), enemy.damage, enemy.GetColor());
 }
 
 void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)

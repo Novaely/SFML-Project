@@ -7,7 +7,7 @@ CACEnemy::CACEnemy() : Enemy()
 	shape->setFillColor(sf::Color::Red);
 
 	((sf::RectangleShape*)shape)->setSize({ 5,5 });
-	damage = 10.0f;
+	damage = 1.0f;
 
 	maxInputSpeed = 150;
 	acceleration = 400;

@@ -6,7 +6,6 @@ class CACEnemy :
 {
     public:
         CACEnemy();
-        float damage = 0.0f;
 
         void Active() override;
         void Desactive() override;
