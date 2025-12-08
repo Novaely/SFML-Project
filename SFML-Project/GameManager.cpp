@@ -97,6 +97,13 @@ void GameManager::Draw(sf::RenderWindow& window)
 		(*turretIt)->Draw(window);
 		turretIt++;
 	}
+
+	auto collectibleIt = collectibles.begin();
+	while (collectibleIt != collectibles.end())
+	{
+		(*collectibleIt)->Draw(window);
+		collectibleIt++;
+	}
 }
 
 //fonction bonus
@@ -143,7 +150,6 @@ void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVect
 
 void GameManager::CreateCollectible(CustomVector2f position) {
 	Collectible* collectible = new Collectible();
-	collectible->shape = new sf::CircleShape;
 	collectible->Color = ColorType::Yellow;
 	collectible->position = position;
 	collectible->isAlive = true;
