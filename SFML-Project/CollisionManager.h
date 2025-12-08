@@ -3,8 +3,6 @@
 #include "Utils.h"
 #include "GameManager.h"
 
-using vector2f = CustomVector2f;
-
 class CollisionManager :
     public Manager
 {
@@ -30,8 +28,8 @@ class CollisionManager :
 		bool CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf::ConvexShape& trian);
 
 		bool IsPointInConvexShape(Vec2f point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals);
-		bool IsPointInTriangle(vector2f point, vector2f triangle[3]);
-		float DistancePointToSegment(vector2f point, vector2f start, vector2f end);
+		bool IsPointInTriangle(Vec2f point, Vec2f triangle[3]);
+		float DistancePointToSegment(Vec2f point, Vec2f start, Vec2f end);
 		float dotProduct(float vx1, float vy1, float vx2, float vy2);
 };
 

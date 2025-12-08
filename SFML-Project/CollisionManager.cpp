@@ -238,8 +238,8 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	sf::Vector2f trianPos1 = trian1.getPosition();
 	sf::Vector2f trianPos2 = trian2.getPosition();
 
-	vector2f triangle1[3] = { {(trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y}, {(trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y}, {(trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y} };
-	vector2f triangle2[3] = { {(trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y}, {(trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y}, {(trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y} };
+	Vec2f triangle1[3] = { {(trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y}, {(trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y}, {(trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y} };
+	Vec2f triangle2[3] = { {(trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y}, {(trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y}, {(trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y} };
 
 
 	for (int i = 0; i < 3; i++)
@@ -263,7 +263,7 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
 	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
 	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
-	vector2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
+	Vec2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
 
 	float rw = square[1].x - square[0].x; // width
 	float rh = square[3].y - square[0].y; // height
@@ -298,12 +298,12 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 {
 	sf::Vector2f trianPos = trian.getPosition();
 
-	vector2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y},  {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
+	Vec2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y},  {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
 
 	float cr = circle.getRadius(); // circle radius
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
-	vector2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
+	Vec2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
 
 	if (IsPointInTriangle(centerCircle, triangle))
 	{
@@ -323,11 +323,11 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 	return false;
 }
 
-float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, vector2f end)
+float CollisionManager::DistancePointToSegment(Vec2f point, Vec2f start, Vec2f end)
 {
 	// Vecteur du segment et vecteur du point par rapport au début du segment
-	vector2f AB = end - start;
-	vector2f AP = point - start;
+	Vec2f AB = end - start;
+	Vec2f AP = point - start;
 
 	// Longueur au carré du segment (évite sqrt inutile)
 	float len2 = AB.Dot(AB);
@@ -348,7 +348,7 @@ float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, v
 	else if (t > 1.0f) t = 1.0f;
 
 	// Point projeté sur le segment
-	vector2f projection = start + AB * t;
+	Vec2f projection = start + AB * t;
 
 	// Distance entre le point et la projection
 	float dx = point.x - projection.x;
@@ -357,19 +357,19 @@ float CollisionManager::DistancePointToSegment(vector2f point, vector2f start, v
 }
 
 
-bool CollisionManager::IsPointInTriangle(vector2f point, vector2f triangle[3])
+bool CollisionManager::IsPointInTriangle(Vec2f point, Vec2f triangle[3])
 {
-	vector2f AB = triangle[1] - triangle[0];
-	vector2f BC = triangle[2] - triangle[1];
-	vector2f CA = triangle[0] - triangle[2];
+	Vec2f AB = triangle[1] - triangle[0];
+	Vec2f BC = triangle[2] - triangle[1];
+	Vec2f CA = triangle[0] - triangle[2];
 
-	vector2f ABP = point - triangle[0] + AB * 0.5f;
-	vector2f BCP = point - triangle[1] + BC * 0.5f;
-	vector2f CAP = point - triangle[2] + CA * 0.5f;
+	Vec2f ABP = point - triangle[0] + AB * 0.5f;
+	Vec2f BCP = point - triangle[1] + BC * 0.5f;
+	Vec2f CAP = point - triangle[2] + CA * 0.5f;
 
-	vector2f n1 = vector2f(-AB.y, AB.x);
-	vector2f n2 = vector2f(-BC.y, BC.x);
-	vector2f n3 = vector2f(-CA.y, CA.x);
+	Vec2f n1 = Vec2f(-AB.y, AB.x);
+	Vec2f n2 = Vec2f(-BC.y, BC.x);
+	Vec2f n3 = Vec2f(-CA.y, CA.x);
 
 	if (dotProduct(ABP.x, ABP.y, n1.x, n1.y) < 0)
 	{

@@ -35,9 +35,9 @@ void LightningNode::Update(float deltaTime)
 		Vec2f pos = allLightnings.front()->GetGLobalStartPoint();
 
 		Vec2f direction = Math::Polar2Cart(parameters.rotation, 1);
-		Vec2f normal = Vec2f(-direction.y, direction.x);
+		Vec2f normal = direction.GetNormalClockWise();
 
-		pos -= normal * parameters.width * 0.5f;
+		pos += normal * parameters.width * 0.5f;
 
 		pShape->setPosition(pos);
 		pShape->setRotation(Math::ToDegree(parameters.rotation));
@@ -54,7 +54,7 @@ void LightningNode::Draw(sf::RenderWindow& window)
 		singleLightIt++;
 	}
 
-	window.draw(*shape);
+	//window.draw(*shape);
 }
 
 void LightningNode::StartLightning()

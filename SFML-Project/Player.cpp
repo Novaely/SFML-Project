@@ -71,26 +71,27 @@ void Player::OnCollisionEnter(GameObject* other)
 	{
 		if (Other.team == Team::Enemy)
 		{
-			std::cout << "Player hit by bullet Enemy" << std::endl;
+			//std::cout << "Player hit by bullet Enemy" << std::endl;
 			Damage(1);
 		}
 	}
 
 	if (Other.characterType == CharaType::CACEnemy)
 	{
-		std::cout << "Player hit by CAC Enemy" << std::endl;
+		//std::cout << "Player hit by CAC Enemy" << std::endl;
 		Damage(1);
 	}
 
 	if (Other.characterType == CharaType::ShooterEnemy)
 	{
-		std::cout << "Player hit by Shooter Enemy" << std::endl;
+		//std::cout << "Player hit by Shooter Enemy" << std::endl;
 		Damage(1);
 	}
 
 	if (Other.characterType == CharaType::Lighting)
 	{
-		std::cout << "Player hit by Lightning" << std::endl;
+		//std::cout << "Player hit by Lightning" << std::endl;
+		Damage(1);
 	}
 }
 

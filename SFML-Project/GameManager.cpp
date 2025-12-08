@@ -283,7 +283,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			color = ColorType::Green;
 			break;
 	}
-	/*switch (RandomInt(0, 4))
+	switch (RandomInt(0, 4))
 	{
 		case 0:
 		case 1:
@@ -296,8 +296,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 		case 4:
 			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 			break;
-	}*/
-	if (turretEnemy.size() < 1) CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+	}
 }
 
 void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
