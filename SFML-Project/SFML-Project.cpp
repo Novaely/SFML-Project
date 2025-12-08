@@ -5,7 +5,7 @@
 #include "PoolManager.h"
 #include "GameManager.h"
 #include "CollisionManager.h"
-#include "LightningNode.h"
+#include "HUDManager.h"
 
 const float FPS_60 = 1.0f / 60.0f;
 
@@ -22,6 +22,7 @@ int main()
 	gameManager.player = &player;
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(&gameManager, windowSize);
+	HUDManager hudManager;
 
 	sf::Clock clock;
 	float deltaTime = 0;
@@ -62,6 +63,7 @@ int main()
 		//Render
 		window.clear();
 		gameManager.Draw(window);
+		hudManager.Draw(window);
 		window.display();
 
 		fpsTimer += deltaTime;

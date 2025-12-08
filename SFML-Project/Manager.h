@@ -10,7 +10,10 @@
 #include "Collectible.h"
 #include "LightningNode.h"
 
-class Manager
+class Manager 
 {
+public:
+    virtual void Draw(sf::RenderWindow& window);
+
 };
 

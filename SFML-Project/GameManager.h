@@ -32,7 +32,7 @@ public :
     std::list<LightningNode*> lightnings;
 
     void Update(float deltaTime, CustomVector2f windowSize);
-    void Draw(sf::RenderWindow& window);
+    void Draw(sf::RenderWindow& window) override;
 
     void PlayerShoot();
     //fonction creation
@@ -51,7 +51,14 @@ public :
     void DestroyTurretEnemy(GameObject* item);
     void DestroyLightning(GameObject* item);
 
+    int GetPlayerHealth() const; 
+
+    float GetTime();
+
 private: 
+
+    float _time = 0;
+
     /// <summary>
     /// score *2 sur x temps
     /// regen vie
@@ -72,11 +79,11 @@ private:
     //Singleton
     static GameManager* _instance;
 
-    std::list<CACEnemy*> cacEnemyToDestroy;
-    std::list<ShooterEnemy*> shooterEnemyToDestroy;
+    std::list<CACEnemy*> _cacEnemyToDestroy;
+    std::list<ShooterEnemy*> _shooterEnemyToDestroy;
     std::list<ShooterEnemy*> turretEnemyToDestroy;
     std::list<LightningNode*> lightningToDestroy;
-    std::list<Bullet*> bulletsToDestroy;
-    std::list<Collectible*> collectiblesToDestroy;
+    std::list<Bullet*> _bulletsToDestroy;
+    std::list<Collectible*> _collectiblesToDestroy;
 };
 

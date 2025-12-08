@@ -24,6 +24,7 @@ Player::Player() : Character() {
 	timerShootAgain = 0.1f;
 	speedBullet = 150;
 	chronoShootAgain = timerShootAgain;
+	health = 3;
 	Active();
 }
 
@@ -71,20 +72,20 @@ void Player::OnCollisionEnter(GameObject* other)
 		if (Other.team == Team::Enemy)
 		{
 			std::cout << "Player hit by bullet Enemy" << std::endl;
-			Damage(10);
+			Damage(1);
 		}
 	}
 
 	if (Other.characterType == CharaType::CACEnemy)
 	{
 		std::cout << "Player hit by CAC Enemy" << std::endl;
-		Damage(10);
+		Damage(1);
 	}
 
 	if (Other.characterType == CharaType::ShooterEnemy)
 	{
 		std::cout << "Player hit by Shooter Enemy" << std::endl;
-		Damage(10);
+		Damage(1);
 	}
 
 	if (Other.characterType == CharaType::Lighting)
