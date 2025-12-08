@@ -15,13 +15,6 @@ public :
     static GameManager* GetInstance();
 
     int score;
-	int scoreUpdate;
-    int multiplicateur;
-	float timerBonusScore;
-    float timerBonusScoreCheck;
-    float timerSpawnEnemies;
-    float chronoSpawnEnemies;
-    bool wantSpawnEnemy;
 
     Player* player = nullptr;
     PoolManager* poolManager = nullptr;
@@ -34,6 +27,7 @@ public :
 
     void Update(float deltaTime, CustomVector2f windowSize);
     void Draw(sf::RenderWindow& window) override;
+    void UpdateDestroyItem();
 
     void PlayerShoot();
     //fonction creation
@@ -44,8 +38,6 @@ public :
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
     void SpawnEnemy(CustomVector2f windowSize);
-    //fonction destruction
-    void UpdateDestroyItem();
 
     //fonction get
     int GetPlayerHealth() const;
@@ -54,6 +46,13 @@ public :
 private: 
 
     float _time = 0;
+    int _scoreUpdate;
+    int _multiplicateur;
+    float _timerBonusScore;
+    float _timerBonusScoreCheck;
+    float _timerSpawnEnemies;
+    float _chronoSpawnEnemies;
+    bool _wantSpawnEnemy;
 
     /// <summary>
     /// score *2 sur x temps

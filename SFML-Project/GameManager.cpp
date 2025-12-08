@@ -30,33 +30,33 @@ GameManager::GameManager()
 	}
 
 	score = 0;
-	scoreUpdate = 1;
-	multiplicateur = 1;
-	timerBonusScore = 0.0f;
-	timerBonusScoreCheck = 0.0f;
-	timerSpawnEnemies = 5;
-	chronoSpawnEnemies = timerSpawnEnemies;
-	wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
+	_scoreUpdate = 1;
+	_multiplicateur = 1;
+	_timerBonusScore = 0.0f;
+	_timerBonusScoreCheck = 0.0f;
+	_timerSpawnEnemies = 5;
+	_chronoSpawnEnemies = _timerSpawnEnemies;
+	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
 
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 {
 	_time += deltaTime;
 
-	if (wantSpawnEnemy) {
-		if (chronoSpawnEnemies <= timerSpawnEnemies) {
-			chronoSpawnEnemies += deltaTime;
+	if (_wantSpawnEnemy) {
+		if (_chronoSpawnEnemies <= _timerSpawnEnemies) {
+			_chronoSpawnEnemies += deltaTime;
 		}
 		else {
-			chronoSpawnEnemies = 0;
+			_chronoSpawnEnemies = 0;
 			SpawnEnemy(windowSize);
 		}
 	}
 	UpdateAll(deltaTime);
-	timerBonusScore += deltaTime;
-	if (timerBonusScore > timerBonusScoreCheck)
+	_timerBonusScore += deltaTime;
+	if (_timerBonusScore > _timerBonusScoreCheck)
 	{
-		multiplicateur = 1;
+		_multiplicateur = 1;
 	}
 }
 
@@ -110,8 +110,8 @@ void GameManager::Draw(sf::RenderWindow& window)
 void GameManager::BonusScore(float timer, int multiplicateur)
 {
 	multiplicateur = multiplicateur;
-	timerBonusScore = 0;
-	timerBonusScoreCheck = timer;
+	_timerBonusScore = 0;
+	_timerBonusScoreCheck = timer;
 }
 
 void GameManager::BonusVie(float vieRegen)
@@ -229,7 +229,7 @@ void GameManager::DestroyCacEnemy(GameObject* item)
 	CACEnemy* cacEnemy = (CACEnemy*)item;
 	poolManager->ReturnEnemy(cacEnemy);
 	_cacEnemyToDestroy.push_back(cacEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 13) == 0) {
 		CreateCollectible(cacEnemy->position);
 	}
@@ -240,7 +240,7 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
 	poolManager->ReturnEnemy(shooterEnemy);
 	_shooterEnemyToDestroy.push_back(shooterEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 13) == 0) {
 		CreateCollectible(shooterEnemy->position);
 	}
@@ -251,7 +251,7 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	TurretEnemy* turretEnemy = (TurretEnemy*)item;
 	poolManager->ReturnEnemy(turretEnemy);
 	_turretEnemyToDestroy.push_back(turretEnemy);
-	score += scoreUpdate * multiplicateur;
+	score += _scoreUpdate * _multiplicateur;
 	if (RandomInt(0, 13) == 0) {
 		CreateCollectible(turretEnemy->position);
 	}
