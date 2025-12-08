@@ -5,5 +5,8 @@ class TurretEnemy : public ShooterEnemy
 	public:
 		TurretEnemy();
 
-	private:	
+		std::function<void(TurretEnemy&)> OnShoot;
+
+	protected:
+		void TryShoot() override;
 };

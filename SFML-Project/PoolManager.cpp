@@ -2,7 +2,7 @@
 
 PoolManager::PoolManager()
 	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, nullptr),
-	shooterEnemyPool(startNumShooterEnemy, nullptr)
+	shooterEnemyPool(startNumShooterEnemy, nullptr), turretEnemyPool(startNumTurretEnemy, nullptr)
 {
 	std::cout << "plpuyt" << std::endl;
 	for (int i = 0; i < startNumBullets; i++)
@@ -22,6 +22,12 @@ PoolManager::PoolManager()
 		shooterEnemyPool[i] = new ShooterEnemy();
 	}
 	currentNumShooterEnemy = startNumShooterEnemy;
+
+	for (int i = 0; i < startNumTurretEnemy; i++)
+	{
+		turretEnemyPool[i] = new TurretEnemy();
+	}
+	currentNumTurretEnemy = startNumTurretEnemy;
 }
 
 #pragma region Bullets

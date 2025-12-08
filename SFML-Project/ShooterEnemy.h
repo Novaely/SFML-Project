@@ -13,7 +13,7 @@ class ShooterEnemy :
 
         void Update(float deltaTime) override;
 
-    private:
-        void TryShoot();
+    protected:
+        virtual void TryShoot();
 };
 

@@ -14,3 +14,13 @@ TurretEnemy::TurretEnemy() : ShooterEnemy()
 	timerShootAgain = 5.0f;
 	chronoShootAgain = timerShootAgain;
 }
+
+void TurretEnemy::TryShoot()
+{
+	if (chronoShootAgain >= timerShootAgain)
+	{
+		chronoShootAgain = 0;
+		_canShoot = false;
+		OnShoot(*this);
+	}
+}

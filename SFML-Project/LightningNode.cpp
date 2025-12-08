@@ -6,7 +6,7 @@ void LightningNode::Update(float deltaTime)
 {
 	auto singleLightIt = allLightnings.begin();
 	while (singleLightIt != allLightnings.end())
-	{
+	{		
 		(*singleLightIt)->Update(deltaTime);
 		if ((*singleLightIt)->IsFinish())
 		{
@@ -50,7 +50,7 @@ void LightningNode::StartLightning()
 	{
 		newLighting = new SingleLightning(parameters, allColors[i % sizeof(allColors)], innerLineColor);
 		newLighting->sideDirection = i % 2 == 0 ? 1 : -1;
-
+		
 		allLightnings[i] = newLighting;
 	}
 }
