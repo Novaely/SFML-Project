@@ -42,6 +42,7 @@ public :
     //fonction get
     int GetPlayerHealth() const;
     float GetTime();
+    int GetMultiplicateur() const;
 
 private: 
 

@@ -17,6 +17,7 @@ class HUDManager :
 
 		sf::Text score;
 		sf::Text timer;
+		sf::Text multiplicateur;
 		sf::Font font;
 };
 

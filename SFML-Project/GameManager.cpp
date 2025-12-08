@@ -109,18 +109,21 @@ void GameManager::Draw(sf::RenderWindow& window)
 //fonction bonus
 void GameManager::BonusScore(float timer, int multiplicateur)
 {
-	multiplicateur = multiplicateur;
+	std::cout << "Bonus Score x" << multiplicateur << " for " << timer << " seconds." << std::endl;
+	_multiplicateur = multiplicateur;
 	_timerBonusScore = 0;
 	_timerBonusScoreCheck = timer;
 }
 
 void GameManager::BonusVie(float vieRegen)
 {
+	std::cout << "Bonus Vie +" << vieRegen << std::endl;
 	(*player).health += vieRegen;
 }
 
 void GameManager::BonusTir()
 {	
+	std::cout << "Bonus Tir Level +" << 1 << std::endl;
 	(*player).LevelShooter += 1;
 }
 
@@ -473,4 +476,9 @@ int GameManager::GetPlayerHealth() const
 float GameManager::GetTime()
 {
 	return _time;
+}
+
+int GameManager::GetMultiplicateur() const
+{
+	return _multiplicateur;
 }
