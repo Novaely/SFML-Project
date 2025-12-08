@@ -90,7 +90,7 @@ void Player::OnCollisionEnter(GameObject* other)
 
 	if (Other.characterType == CharaType::Lighting)
 	{
-		std::cout << "Player hit by Lightning";
+		std::cout << "Player hit by Lightning" << std::endl;
 	}
 }
 

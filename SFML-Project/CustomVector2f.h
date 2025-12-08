@@ -19,6 +19,7 @@ struct CustomVector2f
 	CustomVector2f();
 	CustomVector2f(float _xy);
 	CustomVector2f(float _x, float _y);
+	CustomVector2f(const sf::Vector2f& v);
 
 	// Methods
 
@@ -30,7 +31,7 @@ struct CustomVector2f
 	float AngleTo(const CustomVector2f& other) const;
 	float SquaredDistanceTo(const CustomVector2f& other) const;
 	float DistanceTo(const CustomVector2f& other) const;
-
+	CustomVector2f GetNormal() const;
 	CustomVector2f DirectionTo(const CustomVector2f& other) const;
 
 	float Dot(const CustomVector2f& other) const;

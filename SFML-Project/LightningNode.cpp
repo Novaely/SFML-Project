@@ -33,7 +33,12 @@ void LightningNode::Update(float deltaTime)
 		sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
 		pShape->setSize(Vec2f(allLightnings.front()->GetLightningLength(), parameters.width));
 		Vec2f pos = allLightnings.front()->GetGLobalStartPoint();
-		pos.y += parameters.width * 0.5f;
+
+		Vec2f direction = Math::Polar2Cart(parameters.rotation, 1);
+		Vec2f normal = Vec2f(-direction.y, direction.x);
+
+		pos -= normal * parameters.width * 0.5f;
+
 		pShape->setPosition(pos);
 		pShape->setRotation(Math::ToDegree(parameters.rotation));
 		pShape->setFillColor(sf::Color::White);
@@ -49,7 +54,7 @@ void LightningNode::Draw(sf::RenderWindow& window)
 		singleLightIt++;
 	}
 
-	//window.draw(*shape);
+	window.draw(*shape);
 }
 
 void LightningNode::StartLightning()

@@ -11,7 +11,7 @@ TurretEnemy::TurretEnemy() : ShooterEnemy()
 
 	maxInputSpeed = 0.0f;
 
-	timerShootAgain = 5.0f;
+	timerShootAgain = 10;
 	chronoShootAgain = timerShootAgain;
 }
 

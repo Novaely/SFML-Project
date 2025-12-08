@@ -20,6 +20,7 @@ const CustomVector2f CustomVector2f::up = CustomVector2f(0, 1);
 CustomVector2f::CustomVector2f() : x(0.0f), y(0.0f) {}
 CustomVector2f::CustomVector2f(float _xy) : x(_xy), y(_xy) {}
 CustomVector2f::CustomVector2f(float _x, float _y) : x(_x), y(_y) {}
+CustomVector2f::CustomVector2f(const sf::Vector2f& v) : x(v.x), y(v.y) {}
 
 #pragma endregion
 
@@ -193,6 +194,11 @@ float CustomVector2f::DistanceTo(const CustomVector2f& other) const
 {
 	CustomVector2f vecDirec = other - *this;
 	return vecDirec.GetMagnitude();
+}
+
+CustomVector2f CustomVector2f::GetNormal() const
+{
+	return CustomVector2f(-y, x);
 }
 
 CustomVector2f CustomVector2f::DirectionTo(const CustomVector2f& other) const
