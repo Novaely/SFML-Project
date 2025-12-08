@@ -10,6 +10,7 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 	pShape = (sf::ConvexShape*)player->shape;
 	cacEnemy = &(gm->cacEnemy);
 	shooterEnemy = &(gm->shooterEnemy);
+	turretEnemy = &(gm->turretEnemy);
 	collectibles = &(gm->collectibles);
 	bullets = &(gm->bullets);
 	
@@ -19,86 +20,117 @@ void CollisionManager::Update(float deltaTime)
 {
 	sf::Vector2f playerPos = pShape->getPosition();
 
-	std::list<CACEnemy*>::iterator it = (*cacEnemy).begin();
-	while (it != (*cacEnemy).end()) 
+	// CACEnemy with Player
+	std::list<CACEnemy*>::iterator cacEnemyIt = (*cacEnemy).begin();
+	while (cacEnemyIt != (*cacEnemy).end()) 
 	{
-		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*it)->shape;
+		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*cacEnemyIt)->shape;
 
 		if (CheckCollisionsSquareTriangle(*cacEnemyShape, *pShape))
 		{
-			player->OnCollisionEnter((*it));
-			(*it)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*cacEnemyIt));
+			(*cacEnemyIt)->OnCollisionEnter(player);
 		}
-		it++;
+		cacEnemyIt++;
 	}
 
-	std::list<ShooterEnemy*>::iterator it2 = (*shooterEnemy).begin();
-	while (it2 != (*shooterEnemy).end())
+	// ShooterEnemy with Player
+	std::list<ShooterEnemy*>::iterator shooterEnemyIt = (*shooterEnemy).begin();
+	while (shooterEnemyIt != (*shooterEnemy).end())
 	{
-		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*it2)->shape;
+		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyIt)->shape;
 		if (CheckCollisionsTriangleTriangle(*shooterEnemyShape, *pShape))
 		{
-			player->OnCollisionEnter((*it2));
-			(*it2)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*shooterEnemyIt));
+			(*shooterEnemyIt)->OnCollisionEnter(player);
 		}
-		it2++;
+		shooterEnemyIt++;
 	}
 
-	std::list<Bullet*>::iterator it3 = (*bullets).begin();
-	while (it3 != (*bullets).end())
+	// TurretEnemy with Player
+	std::list<TurretEnemy*>::iterator turretEnemyIt = (*turretEnemy).begin();
+	while (turretEnemyIt != (*turretEnemy).end())
 	{
-		sf::CircleShape* bulletShape = (sf::CircleShape*)(*it3)->shape;
+		sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyIt)->shape;
+		if (CheckCollisionsTriangleTriangle(*turretEnemyShape, *pShape))
+		{
+			player->OnCollisionEnter((*turretEnemyIt));
+			(*turretEnemyIt)->OnCollisionEnter(player);
+		}
+		turretEnemyIt++;
+	}
+
+	// Others with Bullets
+	std::list<Bullet*>::iterator bulletIt = (*bullets).begin();
+	while (bulletIt != (*bullets).end())
+	{
+		// With player
+		sf::CircleShape* bulletShape = (sf::CircleShape*)(*bulletIt)->shape;
 		if (CheckCollisionsCircleTriangle(*bulletShape, *pShape))
 		{
-			player->OnCollisionEnter((*it3));
-			(*it3)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*bulletIt));
+			(*bulletIt)->OnCollisionEnter(player);
 		}
 
-		std::list<CACEnemy*>::iterator it4 = (*cacEnemy).begin();
-		while (it4 != (*cacEnemy).end())
+		// With CacEnemy
+		std::list<CACEnemy*>::iterator cacEnemyBulletsIt = (*cacEnemy).begin();
+		while (cacEnemyBulletsIt != (*cacEnemy).end())
 		{
-			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*it4)->shape;
+			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*cacEnemyBulletsIt)->shape;
 			if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
 			{
-				(*it4)->OnCollisionEnter((*it3));
-				(*it3)->OnCollisionEnter((*it4));
+				(*cacEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
+				(*bulletIt)->OnCollisionEnter((*cacEnemyBulletsIt));
 			}
-			it4++;
+			cacEnemyBulletsIt++;
 		}
 
-		std::list<ShooterEnemy*>::iterator it5 = (*shooterEnemy).begin();
-		while (it5 != (*shooterEnemy).end())
+		std::list<ShooterEnemy*>::iterator shooterEnemyBulletsIt = (*shooterEnemy).begin();
+		while (shooterEnemyBulletsIt != (*shooterEnemy).end())
 		{
-			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*it5)->shape;
+			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyBulletsIt)->shape;
 			if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
 			{
-				(*it5)->OnCollisionEnter((*it3));
-				(*it3)->OnCollisionEnter((*it5));
+				(*shooterEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
+				(*bulletIt)->OnCollisionEnter((*shooterEnemyBulletsIt));
 			}
-			it5++;
+			shooterEnemyBulletsIt++;
+		}
+
+		// With TurretEnemy
+		std::list<TurretEnemy*>::iterator turretEnemyBulletsIt = (*turretEnemy).begin();
+		while (turretEnemyBulletsIt != (*turretEnemy).end())
+		{
+			sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyBulletsIt)->shape;
+			if (CheckCollisionsCircleTriangle(*bulletShape, *turretEnemyShape))
+			{
+				(*turretEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
+				(*bulletIt)->OnCollisionEnter((*turretEnemyBulletsIt));
+			}
+			turretEnemyBulletsIt++;
 		}
 
 		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
 		{
-			(*it3)->OnCollisionEnter(nullptr);
+			(*bulletIt)->OnCollisionEnter(nullptr);
 		}
 
-		it3++;
+		bulletIt++;
 	}
 
-	std::list<Collectible*>::iterator it6 = (*collectibles).begin();
-	while (it6 != (*collectibles).end())
+	// Collectibles with Player
+	std::list<Collectible*>::iterator collectibleIt = (*collectibles).begin();
+	while (collectibleIt != (*collectibles).end())
 	{
-		sf::CircleShape* collectibles = (sf::CircleShape*)(*it6)->shape;
+		sf::CircleShape* collectibles = (sf::CircleShape*)(*collectibleIt)->shape;
 
 		if (CheckCollisionsCircleTriangle(*collectibles, *pShape))
 		{
-			player->OnCollisionEnter((*it6));
-			(*it6)->OnCollisionEnter(player);
+			player->OnCollisionEnter((*collectibleIt));
+			(*collectibleIt)->OnCollisionEnter(player);
 		}
-		it6++;
+		collectibleIt++;
 	}
-
 }
 
 bool CollisionManager::CheckCollisionsSquareTriangle(sf::RectangleShape rect, sf::ConvexShape trian)

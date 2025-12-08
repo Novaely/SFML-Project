@@ -9,28 +9,28 @@ using Vec2f = CustomVector2f;
 struct LightningParameters
 {
     // Parameters to change before play
-    float unitSize = 50;
+    float unitSize = 75;
 
     float minAngle = 30.0f;
     float maxAngle = 80.0f;
 
-    int numSegmentPerUnit = 3;
+    int numSegmentPerUnit = 2;
 
-    float spawnSpeed = 200;
-    float movingSpeed = 200;
-    float destroyingSpeed = 200;
+    float spawnSpeed = 150;
+    float movingSpeed = 150;
+    float destroyingSpeed = 150;
 
     int marginStart = 10;
     int marginEnd = 10;
     int width = 15;
 
-    float randomRatioLengthMin = 0.5f;
+    float randomRatioLengthMin = 0.75f;
     float randomRatioLengthMax = 2.0f;
 
-    float linesWidth = 2.5f;
+    float linesWidth = 2.0f;
     float innerLineWidth = 1.0f;
 
-    float lifeTime = 5;
+    float lifeTime = 2.5f;
 
     // Parameters automatically updated
     float rotation = 0;
@@ -54,6 +54,8 @@ class SingleLightning : public GameObject
         void Stop();
 
         bool IsFinish();
+        float GetLightningLength();
+        Vec2f GetGLobalStartPoint();
 
 	private:
         struct SegmentInfos
@@ -79,6 +81,7 @@ class SingleLightning : public GameObject
 
         Vec2f startPoint;
         Vec2f endPoint;
+        Vec2f finalEndPoint;
 
         Vec2f firstPoint;
         Vec2f firstPointVector;

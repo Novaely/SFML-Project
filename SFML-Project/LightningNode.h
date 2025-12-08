@@ -5,6 +5,8 @@
 class LightningNode : public GameObject
 {
 	public:
+        float damages = 0;
+
         Vec2f startPoint = Vec2f::zero;
         Vec2f endPoint = Vec2f::zero;
 

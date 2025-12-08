@@ -6,8 +6,11 @@ SingleLightning::SingleLightning(LightningParameters& params, sf::Color color, s
 	_color = color;
 	_innerLineColor = &innerColor;
 	rotation = _parameters->rotation;
-	startPoint = _parameters->startPoint;
-	endPoint = startPoint + _parameters->vecDirection * (_parameters->marginStart + _parameters->marginEnd);
+	//startPoint = _parameters->startPoint;
+	startPoint = Vec2f::zero;
+	//endPoint = startPoint + _parameters->vecDirection * (_parameters->marginStart + _parameters->marginEnd);
+	endPoint = startPoint + Vec2f::right * (_parameters->marginStart + _parameters->marginEnd);
+	finalEndPoint = startPoint + Vec2f::right * (_parameters->endPoint - _parameters->startPoint).GetMagnitude();
 
 	ComputeFirstPoint();
 	points.push_back(endPoint);
@@ -45,20 +48,25 @@ void SingleLightning::Update(float deltaTime)
 		_isDestroying = true;
 		_currentState = &SingleLightning::Destroying;
 	}
-
+	
 	(this->*_currentState)(deltaTime);
 }
 
 void SingleLightning::Draw(sf::RenderWindow& window)
 {
 	if (_isFinished) return;
-
+	
 	if (!_isDestroying)
 	{
 		DrawLine(window, firstSeg);
 		DrawLine(window, secondSeg);
 	}
-
+	else
+	{
+		DrawLine(window, firstSeg);
+		DrawLine(window, secondSeg);
+	}
+	
 	for (SegmentInfos& seg : listSegInfos)
 	{
 		DrawLine(window, seg);
@@ -69,12 +77,13 @@ void SingleLightning::Draw(sf::RenderWindow& window)
 
 void SingleLightning::DrawLine(sf::RenderWindow& window, SegmentInfos& segInfo)
 {
-	Vec2f vecDirec = (*segInfo.endPoint) - (*segInfo.startPoint);
+	Vec2f startP = _parameters->startPoint + Math::RotatePoint((*segInfo.startPoint), Vec2f::zero, rotation);
+	Vec2f vecDirec = _parameters->startPoint + Math::RotatePoint((*segInfo.endPoint), Vec2f::zero, rotation) - startP;
 	float angle = Math::ToDegree(vecDirec.GetAngle()) + rotation;
 
-	Vec2f recPos = (*segInfo.startPoint) + vecDirec * 0.5f;	
+	Vec2f recPos = startP + vecDirec * 0.5f;
 	float length = vecDirec.GetMagnitude();
-
+	
 	Vec2f recSize = Vec2f(length + _parameters->linesWidth, _parameters->linesWidth);
 	Vec2f recOrigin = recSize * 0.5f;
 	Vec2f innerRecSize = Vec2f(length + _parameters->innerLineWidth, _parameters->innerLineWidth);
@@ -102,15 +111,17 @@ void SingleLightning::ComputeFirstPoint()
 	angle *= sideDirection;
 	sideDirection *= -1;
 	float lengthRatio = RandomFloat(_parameters->randomRatioLengthMin, _parameters->randomRatioLengthMax);
-	float length = _parameters->vecDirector.GetMagnitude() / _parameters->numSegmentPerUnit * lengthRatio;
+	//float length = _parameters->vecDirector.GetMagnitude() / _parameters->numSegmentPerUnit * lengthRatio;
+	float length = _parameters->unitSize / _parameters->numSegmentPerUnit * lengthRatio;
 	firstPointVector = -(Math::Polar2Cart(Math::ToRad(angle), length));
 }
 
 void SingleLightning::ClampFirstPoint()
 {
 	const Vec2f& startP = startPoint;
-	firstPoint = Math::RotatePoint(points.back(), startP, -Math::ToRad(rotation)) + firstPointVector;
-	
+	//firstPoint = Math::RotatePoint(points.back(), startP, -Math::ToRad(rotation)) + firstPointVector;
+	firstPoint = points.back() + firstPointVector;
+
 	// Clamp height
 	if (firstPoint.y > startP.y + _parameters->width * 0.5f)
 	{
@@ -130,7 +141,7 @@ void SingleLightning::ClampFirstPoint()
 
 void SingleLightning::CreateNewPoint()
 {
-	firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
+	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 	points.push_back(firstPoint);
 
 	ComputeFirstPoint();
@@ -153,32 +164,42 @@ void SingleLightning::Spawning(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		point += Vec2f::right * _parameters->spawnSpeed * deltaTime;
 	}
-	endPoint += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+	//endPoint += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+	endPoint += Vec2f::right * _parameters->spawnSpeed * deltaTime;
 
 	// Compute next point
 	ClampFirstPoint();
 
-	if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
+	//if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
+	if (firstPoint.x > startPoint.x + _parameters->marginStart)
 	{
 		CreateNewPoint();
 	}
 
-	firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
+	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 
 	// If end reached, go in Moving state
-	if ((points.front() - _parameters->endPoint).GetMagnitude() <= _parameters->marginEnd)
+	//if (points.size() < 1 && (points.front() - _parameters->endPoint).GetMagnitude() <= _parameters->marginEnd)
+	if (points.size() > 1 && points.front().x > finalEndPoint.x + _parameters->marginEnd)
 	{
 		_currentState = &SingleLightning::Moving;
-		endPoint = _parameters->endPoint;
+		//endPoint = _parameters->endPoint;
+		endPoint = finalEndPoint;
 	}
 }
 
 void SingleLightning::CheckLastSeg()
 {
-	Vec2f rotatedLastPoint = Math::RotatePoint(points.front(), startPoint, -Math::ToRad(rotation));
-	Vec2f rotatedEndPoint = Math::RotatePoint(_parameters->endPoint, startPoint, -Math::ToRad(rotation));
+	if (points.size() < 1 || listSegInfos.size() < 1) return;
+
+	//Vec2f rotatedLastPoint = Math::RotatePoint(points.front(), startPoint, -Math::ToRad(rotation));
+	//Vec2f rotatedEndPoint = Math::RotatePoint(_parameters->endPoint, startPoint, -Math::ToRad(rotation));
+
+	Vec2f rotatedLastPoint = points.front();
+	Vec2f rotatedEndPoint = finalEndPoint;
 
 	if (rotatedLastPoint.x < rotatedEndPoint.x) return;
 
@@ -195,18 +216,20 @@ void SingleLightning::Moving(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		point += Vec2f::right * _parameters->movingSpeed * deltaTime;
 	}
 
 	// Compute next point
 	ClampFirstPoint();
 
-	if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
+	//if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
+	if (firstPoint.x > startPoint.x + _parameters->marginStart)
 	{
 		CreateNewPoint();
 	}
 
-	firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
+	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 
 	CheckLastSeg();
 }
@@ -223,23 +246,33 @@ void SingleLightning::Destroying(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
+		point += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 	}
+	startPoint += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 
 	// If destroying but end not reached, go as far as possible and stop at the end
-	if (endPoint != _parameters->endPoint)
+	/*if (endPoint != _parameters->endPoint)
 	{
-		std::cout << "enter " << std::endl;
 		if ((endPoint - startPoint).GetMagnitude() < (_parameters->endPoint - startPoint).GetMagnitude())
 		{
 			endPoint += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 		}
 		else endPoint = _parameters->endPoint;
+	}*/
+
+	if (endPoint != finalEndPoint)
+	{
+		if ((endPoint - startPoint).GetMagnitude() < (finalEndPoint - startPoint).GetMagnitude())
+		{
+			endPoint += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
+		}
+		else endPoint = finalEndPoint;
 	}
 
 	ClampFirstPoint();
 
-	firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
+	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 
 	CheckLastSeg();
 }
@@ -281,4 +314,14 @@ SingleLightning::~SingleLightning()
 bool SingleLightning::IsFinish()
 {
 	return _isFinished;
+}
+
+float SingleLightning::GetLightningLength()
+{
+	return endPoint.x - startPoint.x;
+}
+
+Vec2f SingleLightning::GetGLobalStartPoint()
+{
+	return _parameters->startPoint + Math::RotatePoint(startPoint, Vec2f::zero, rotation);
 }

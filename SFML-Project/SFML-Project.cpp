@@ -27,6 +27,9 @@ int main()
 	sf::Clock clock;
 	float deltaTime = 0;
 
+	float fpsTimer = 0.0f;
+	int frameCount = 0;
+
 	sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "SFML-Project");
 	// Initialise everything below
 	// 
@@ -62,6 +65,15 @@ int main()
 		gameManager.Draw(window);
 		hudManager.Draw(window);
 		window.display();
+
+		fpsTimer += deltaTime;
+		frameCount++;
+
+		if (fpsTimer >= 1.0f) {
+			std::cout << "FPS: " << frameCount << std::endl;
+			fpsTimer = 0.0f;
+			frameCount = 0;
+		}
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
 	}

@@ -14,7 +14,6 @@ public :
     //Singleton
     static GameManager* GetInstance();
 
-
     int score;
 	int scoreUpdate;
     int multiplicateur;
@@ -28,8 +27,10 @@ public :
     PoolManager* poolManager = nullptr;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
+    std::list<TurretEnemy*> turretEnemy;
 	std::list<Bullet*> bullets;
     std::list<Collectible*> collectibles;
+    std::list<LightningNode*> lightnings;
 
     void Update(float deltaTime, CustomVector2f windowSize);
     void Draw(sf::RenderWindow& window) override;
@@ -37,15 +38,19 @@ public :
     void PlayerShoot();
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
-    void CreateCollectible(); //not implement
+    void CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage);
+    void CreateCollectible(); //not implemented
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
+    void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
     void SpawnEnemy(CustomVector2f windowSize);
     //fonction destruction
     void UpdateDestroyItem();
     void DestroyBullet(GameObject* item);
     void DestroyCacEnemy(GameObject* item);
     void DestroyShooterEnemy(GameObject* item);
+    void DestroyTurretEnemy(GameObject* item);
+    void DestroyLightning(GameObject* item);
 
     int GetPlayerHealth() const; 
 
@@ -70,12 +75,15 @@ private:
     void UpdateAll(float deltaTime);
 
     void OnEnemyShoot(ShooterEnemy& enemy);
+    void OnTurretEnemyShoot(TurretEnemy& enemy);
 
     //Singleton
     static GameManager* _instance;
 
     std::list<CACEnemy*> _cacEnemyToDestroy;
     std::list<ShooterEnemy*> _shooterEnemyToDestroy;
+    std::list<ShooterEnemy*> turretEnemyToDestroy;
+    std::list<LightningNode*> lightningToDestroy;
     std::list<Bullet*> _bulletsToDestroy;
     std::list<Collectible*> _collectiblesToDestroy;
 };

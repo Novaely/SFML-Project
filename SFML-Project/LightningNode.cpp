@@ -1,22 +1,42 @@
 #include "LightningNode.h"
 
-LightningNode::LightningNode() : allLightnings(numLightning, nullptr) {}
+LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
+{
+	characterType = CharaType::Lighting;
+	sf::RectangleShape* pShape = new sf::RectangleShape;
+	shape = pShape;
+}
 
 void LightningNode::Update(float deltaTime)
 {
 	auto singleLightIt = allLightnings.begin();
 	while (singleLightIt != allLightnings.end())
-	{
+	{		
 		(*singleLightIt)->Update(deltaTime);
 		if ((*singleLightIt)->IsFinish())
 		{
 			delete *singleLightIt;
 			singleLightIt = allLightnings.erase(singleLightIt);
+			if (allLightnings.size() <= 0)
+			{
+				pDie(this);
+			}
 		}
 		else
 		{
 			singleLightIt++;
 		}
+	}
+
+	if (allLightnings.size() > 0)
+	{
+		sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
+		pShape->setSize(Vec2f(allLightnings.front()->GetLightningLength(), parameters.width));
+		Vec2f pos = allLightnings.front()->GetGLobalStartPoint();
+		pos.y += parameters.width * 0.5f;
+		pShape->setPosition(pos);
+		pShape->setRotation(Math::ToDegree(parameters.rotation));
+		pShape->setFillColor(sf::Color::White);
 	}
 }
 
@@ -28,6 +48,8 @@ void LightningNode::Draw(sf::RenderWindow& window)
 		(*singleLightIt)->Draw(window);
 		singleLightIt++;
 	}
+
+	//window.draw(*shape);
 }
 
 void LightningNode::StartLightning()
@@ -50,7 +72,7 @@ void LightningNode::StartLightning()
 	{
 		newLighting = new SingleLightning(parameters, allColors[i % sizeof(allColors)], innerLineColor);
 		newLighting->sideDirection = i % 2 == 0 ? 1 : -1;
-
+		
 		allLightnings[i] = newLighting;
 	}
 }

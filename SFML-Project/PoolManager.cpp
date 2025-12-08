@@ -2,7 +2,7 @@
 
 PoolManager::PoolManager()
 	: bulletPool(startNumBullets, nullptr), cacEnemyPool(startNumCACEnemy, nullptr),
-	shooterEnemyPool(startNumShooterEnemy, nullptr)
+	shooterEnemyPool(startNumShooterEnemy, nullptr), turretEnemyPool(startNumTurretEnemy, nullptr)
 {
 	for (int i = 0; i < startNumBullets; i++)
 	{
@@ -21,6 +21,12 @@ PoolManager::PoolManager()
 		shooterEnemyPool[i] = new ShooterEnemy();
 	}
 	currentNumShooterEnemy = startNumShooterEnemy;
+
+	for (int i = 0; i < startNumTurretEnemy; i++)
+	{
+		turretEnemyPool[i] = new TurretEnemy();
+	}
+	currentNumTurretEnemy = startNumTurretEnemy;
 }
 
 #pragma region Bullets
@@ -77,6 +83,12 @@ void PoolManager::ReturnBullet(Bullet* bullet)
 	bullet->Desactive();
 
 	indexOfFirstBullet--;
+
+	if (indexOfFirstBullet < 0)
+	{
+		std::cout << "Returned a bullet but pool is full" << std::endl;
+		indexOfFirstBullet = 0;
+	}
 
 	bulletPool[indexOfFirstBullet] = bullet;
 }
@@ -189,6 +201,61 @@ void PoolManager::ReturnEnemy(ShooterEnemy* enemy)
 }
 
 #pragma endregion
+
+#pragma region TurretEnemy
+
+TurretEnemy* PoolManager::ExtractTurretEnemy()
+{
+	if (indexOfFirstTurretEnemy >= currentNumTurretEnemy) AddTurretEnemyInPool();
+
+	TurretEnemy* pEnemy = turretEnemyPool[indexOfFirstTurretEnemy];
+
+	turretEnemyPool[indexOfFirstTurretEnemy] = nullptr;
+	indexOfFirstTurretEnemy++;
+
+	return pEnemy;
+}
+
+TurretEnemy* PoolManager::GetTurretEnemy(CustomVector2f position, float health, Player* player)
+{
+	TurretEnemy* pEnemy = ExtractTurretEnemy();
+
+	pEnemy->team = Team::Enemy;
+	pEnemy->position = position;
+	pEnemy->shape->setPosition(position.x, position.y);
+
+	pEnemy->health;
+
+	pEnemy->targetPos = &(player->position);
+
+	pEnemy->Active();
+
+	return pEnemy;
+}
+
+void PoolManager::AddTurretEnemyInPool()
+{
+	currentNumTurretEnemy += 10;
+
+	turretEnemyPool.resize(currentNumTurretEnemy, nullptr);
+
+	for (int i = indexOfFirstTurretEnemy; i < currentNumTurretEnemy; i++)
+	{
+		turretEnemyPool[i] = new TurretEnemy();
+	}
+}
+
+void PoolManager::ReturnEnemy(TurretEnemy* enemy)
+{
+	enemy->Desactive();
+
+	indexOfFirstTurretEnemy--;
+
+	turretEnemyPool[indexOfFirstTurretEnemy] = enemy;
+}
+
+#pragma endregion
+
 
 PoolManager::~PoolManager()
 {

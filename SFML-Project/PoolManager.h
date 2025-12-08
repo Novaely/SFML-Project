@@ -11,14 +11,16 @@ class PoolManager : public Manager
 		Bullet* GetBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
 		CACEnemy* GetCACEnemy(CustomVector2f position, float health, Player* player);
 		ShooterEnemy* GetShooterEnemy(CustomVector2f position, float health, Player* player);
+		TurretEnemy* GetTurretEnemy(CustomVector2f position, float health, Player* player);
 
 		void ReturnBullet(Bullet* bullet);
 		void ReturnEnemy(CACEnemy* enemy);
 		void ReturnEnemy(ShooterEnemy* enemy);
+		void ReturnEnemy(TurretEnemy* enemy);
 
 	private:
 		// Bullets
-		int startNumBullets = 500;
+		int startNumBullets = 100;
 
 		int indexOfFirstBullet = 0;
 		int currentNumBullets;
@@ -28,7 +30,7 @@ class PoolManager : public Manager
 		void AddBulletInPool();
 
 		// CACEnemy
-		int startNumCACEnemy = 100;
+		int startNumCACEnemy = 50;
 
 		int indexOfFirstCACEnemy = 0;
 		int currentNumCACEnemy;
@@ -38,7 +40,7 @@ class PoolManager : public Manager
 		void AddCACEnemyInPool();
 
 		// ShooterEnemy
-		int startNumShooterEnemy = 100;
+		int startNumShooterEnemy = 20;
 
 		int indexOfFirstShooterEnemy = 0;
 		int currentNumShooterEnemy;
@@ -46,4 +48,14 @@ class PoolManager : public Manager
 		
 		ShooterEnemy* ExtractShooterEnemy();
 		void AddShooterEnemyInPool();
+
+		// TurretEnemy
+		int startNumTurretEnemy = 10;
+
+		int indexOfFirstTurretEnemy = 0;
+		int currentNumTurretEnemy;
+		std::vector<TurretEnemy*> turretEnemyPool;
+
+		TurretEnemy* ExtractTurretEnemy();
+		void AddTurretEnemyInPool();
 };

@@ -2,7 +2,7 @@
 
 ShooterEnemy::ShooterEnemy() {
 	characterType = CharaType::ShooterEnemy;
-	Color = ColorType::Rouge;
+	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
 	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
@@ -12,7 +12,7 @@ ShooterEnemy::ShooterEnemy() {
 	pShape->setPoint(0, sf::Vector2f{ 2, 0 });
 	pShape->setPoint(1, sf::Vector2f{ -7.5f, 7.5f });
 	pShape->setPoint(2, sf::Vector2f{ -7.5f, -7.5f });
-	bulletSpawnPos = CustomVector2f(10, 0);
+	bulletSpawnPos = CustomVector2f(2, 0);
 
 	maxInputSpeed = 100;
 	acceleration = 400;
