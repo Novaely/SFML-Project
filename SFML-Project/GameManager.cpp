@@ -119,6 +119,10 @@ void GameManager::BonusVie(float vieRegen)
 {
 	std::cout << "Bonus Vie +" << vieRegen << std::endl;
 	(*player).health += vieRegen;
+	if ((*player).health > 3)
+	{
+		(*player).health = 3;
+	}
 }
 
 void GameManager::BonusTir()
