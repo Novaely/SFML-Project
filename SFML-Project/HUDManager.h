@@ -15,7 +15,8 @@ class HUDManager :
 	    void Draw(sf::RenderWindow& window) override;
         void CreateLifePoint(CustomVector2f position, sf::RenderWindow& window);
 
-		sf::Text text;
+		sf::Text score;
+		sf::Text timer;
 		sf::Font font;
 };
 
