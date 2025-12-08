@@ -30,6 +30,7 @@ GameManager::GameManager()
 	}
 
 	score = 0;
+	scoreUpdate = 1;
 	multiplicateur = 1;
 	timerBonusScore = 0.0f;
 	timerBonusScoreCheck = 0.0f;
@@ -256,6 +257,7 @@ void GameManager::UpdateDestroyItem() {
 		while (itCacEnemy != cacEnemy.end()) {
 			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
 				itCacEnemy = cacEnemy.erase(itCacEnemy);
+				score += scoreUpdate * multiplicateur;
 			}
 			else {
 				itCacEnemy++;
@@ -271,6 +273,7 @@ void GameManager::UpdateDestroyItem() {
 		while (itShooterEnemy != shooterEnemy.end()) {
 			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
 				itShooterEnemy = shooterEnemy.erase(itShooterEnemy);
+				score += scoreUpdate * multiplicateur;
 			}
 			else {
 				itShooterEnemy++;

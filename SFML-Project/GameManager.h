@@ -16,6 +16,7 @@ public :
 
 
     int score;
+	int scoreUpdate;
     int multiplicateur;
 	float timerBonusScore;
     float timerBonusScoreCheck;
