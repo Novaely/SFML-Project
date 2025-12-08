@@ -46,15 +46,9 @@ public :
     void SpawnEnemy(CustomVector2f windowSize);
     //fonction destruction
     void UpdateDestroyItem();
-    void DestroyBullet(GameObject* item);
-    void DestroyLightning(GameObject* item);
-    void DestroyCollectible(GameObject* item);
-    void DestroyCacEnemy(GameObject* item);
-    void DestroyShooterEnemy(GameObject* item);
-    void DestroyTurretEnemy(GameObject* item);
 
-    int GetPlayerHealth() const; 
-
+    //fonction get
+    int GetPlayerHealth() const;
     float GetTime();
 
 private: 
@@ -67,16 +61,24 @@ private:
     /// power up direction de tir 
     /// </summary>
 
-    void BonusScore(float timer, int multiplicateur);
-
-	void BonusVie(float vieRegen);
-
-    void BonusTir();
-
     void UpdateAll(float deltaTime);
 
+    //foncion bonus
+    void BonusScore(float timer, int multiplicateur);
+	void BonusVie(float vieRegen);
+    void BonusTir();
+
+    //fonction shoot
     void OnEnemyShoot(ShooterEnemy& enemy);
     void OnTurretEnemyShoot(TurretEnemy& enemy);
+
+    //fonction destroy
+    void DestroyBullet(GameObject* item);
+    void DestroyLightning(GameObject* item);
+    void DestroyCollectible(GameObject* item);
+    void DestroyCacEnemy(GameObject* item);
+    void DestroyShooterEnemy(GameObject* item);
+    void DestroyTurretEnemy(GameObject* item);
 
     //Singleton
     static GameManager* _instance;
