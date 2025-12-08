@@ -33,12 +33,14 @@ GameManager::GameManager()
 	multiplicateur = 1;
 	timerBonusScore = 0.0f;
 	timerBonusScoreCheck = 0.0f;
-	timerSpawnEnemies = 5;
+	timerSpawnEnemies = 0;
 	chronoSpawnEnemies = timerSpawnEnemies;
 	wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 {
+	_time += deltaTime;
+
 	if (wantSpawnEnemy) {
 		if (chronoSpawnEnemies <= timerSpawnEnemies) {
 			chronoSpawnEnemies += deltaTime;
@@ -147,21 +149,26 @@ void GameManager::DestroyBullet(GameObject* item)
 {
 	Bullet* bullet = (Bullet*)item;
 	poolManager->ReturnBullet(bullet);
-	bulletsToDestroy.push_back(bullet);
+	_bulletsToDestroy.push_back(bullet);
 }
 
 void GameManager::DestroyCacEnemy(GameObject* item)
 {
 	CACEnemy* cacEnemy = (CACEnemy*)item;
 	poolManager->ReturnEnemy(cacEnemy);
-	cacEnemyToDestroy.push_back(cacEnemy);
+	_cacEnemyToDestroy.push_back(cacEnemy);
 }
 
 void GameManager::DestroyShooterEnemy(GameObject* item)
 {
 	ShooterEnemy* shooterEnemy = (ShooterEnemy*)item;
 	poolManager->ReturnEnemy(shooterEnemy);
-	shooterEnemyToDestroy.push_back(shooterEnemy);
+	_shooterEnemyToDestroy.push_back(shooterEnemy);
+}
+
+float GameManager::GetTime()
+{
+	return _time;
 }
 
 void GameManager::UpdateAll(float deltaTime) {
@@ -228,8 +235,8 @@ void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
 
 void GameManager::UpdateDestroyItem() {
 	//check destroy Bullets
-	auto itToDestroyBullets = bulletsToDestroy.begin();
-	while (itToDestroyBullets != bulletsToDestroy.end()) {
+	auto itToDestroyBullets = _bulletsToDestroy.begin();
+	while (itToDestroyBullets != _bulletsToDestroy.end()) {
 		auto itBullets = bullets.begin();
 		while (itBullets != bullets.end()) {
 			if ((*itBullets) == (*itToDestroyBullets)) {
@@ -239,12 +246,12 @@ void GameManager::UpdateDestroyItem() {
 				itBullets++;
 			}
 		}
-		itToDestroyBullets = bulletsToDestroy.erase(itToDestroyBullets);
+		itToDestroyBullets = _bulletsToDestroy.erase(itToDestroyBullets);
 	}
 
 	//check destroy CacEnemy
-	auto itToDestroyCacEnemy = cacEnemyToDestroy.begin();
-	while (itToDestroyCacEnemy != cacEnemyToDestroy.end()) {
+	auto itToDestroyCacEnemy = _cacEnemyToDestroy.begin();
+	while (itToDestroyCacEnemy != _cacEnemyToDestroy.end()) {
 		auto itCacEnemy = cacEnemy.begin();
 		while (itCacEnemy != cacEnemy.end()) {
 			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
@@ -254,12 +261,12 @@ void GameManager::UpdateDestroyItem() {
 				itCacEnemy++;
 			}
 		}
-		itToDestroyCacEnemy = cacEnemyToDestroy.erase(itToDestroyCacEnemy);
+		itToDestroyCacEnemy = _cacEnemyToDestroy.erase(itToDestroyCacEnemy);
 	}
 
 	//check destroy ShooterEnemy
-	auto itToDestroyShooterEnemy = shooterEnemyToDestroy.begin();
-	while (itToDestroyShooterEnemy != shooterEnemyToDestroy.end()) {
+	auto itToDestroyShooterEnemy = _shooterEnemyToDestroy.begin();
+	while (itToDestroyShooterEnemy != _shooterEnemyToDestroy.end()) {
 		auto itShooterEnemy = shooterEnemy.begin();
 		while (itShooterEnemy != shooterEnemy.end()) {
 			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
@@ -269,7 +276,7 @@ void GameManager::UpdateDestroyItem() {
 				itShooterEnemy++;
 			}
 		}
-		itToDestroyShooterEnemy = shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
+		itToDestroyShooterEnemy = _shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
 	}
 }
 
