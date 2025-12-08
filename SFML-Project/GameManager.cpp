@@ -452,7 +452,6 @@ void GameManager::UpdateDestroyItem() {
 		{
 			if ((*itCollectible) == (*itToDestroyCollectible))
 			{
-				delete (*itCollectible)->shape;
 				delete* itCollectible;
 				itCollectible = collectibles.erase(itCollectible);
 			}
