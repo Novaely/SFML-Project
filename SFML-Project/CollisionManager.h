@@ -23,13 +23,13 @@ class CollisionManager :
 		void Update( float deltaTime);
 	private: 
 		bool CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian);
-		bool CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2);
-		bool CheckCollisionsCircleSquare(sf::CircleShape circle, sf::RectangleShape rect);
-		bool CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf::ConvexShape& trian);
+		bool CheckCollisionsTriangleTriangle(const sf::ConvexShape& trian1, const sf::ConvexShape& trian2);
+		bool CheckCollisionsCircleSquare(const sf::CircleShape& circle, const sf::RectangleShape& rect);
+		bool CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian);
 
-		bool IsPointInConvexShape(Vec2f point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals);
-		bool IsPointInTriangle(Vec2f point, Vec2f triangle[3]);
-		float DistancePointToSegment(Vec2f point, Vec2f start, Vec2f end);
+		bool IsPointInConvexShape(const Vec2f& point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals);
+		bool IsPointInTriangle(const Vec2f& point, Vec2f triangle[3]);
+		float DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end);
 		float dotProduct(float vx1, float vy1, float vx2, float vy2);
 };
 

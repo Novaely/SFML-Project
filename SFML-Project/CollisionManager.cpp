@@ -4,7 +4,7 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 {
 	windowShape = new sf::RectangleShape();
 	((sf::RectangleShape*)windowShape)->setSize({ windowSize.x, windowSize.y});
-
+	
 	gameManager = gm;
 	player = gm->player;
 	pShape = (sf::ConvexShape*)player->shape;
@@ -203,7 +203,7 @@ void CollisionManager::Update(float deltaTime)
 	}
 }
 
-bool CollisionManager::IsPointInConvexShape(Vec2f point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals)
+bool CollisionManager::IsPointInConvexShape(const Vec2f& point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals)
 {
 	Vec2f vecToPoint;
 	for (int i = 0; i < numNormals; i++) 
@@ -272,7 +272,7 @@ bool CollisionManager::CheckCollisionsSquareTriangle(const sf::RectangleShape& r
 	return false;
 }
 
-bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, sf::ConvexShape trian2)
+bool CollisionManager::CheckCollisionsTriangleTriangle(const sf::ConvexShape& trian1, const sf::ConvexShape& trian2)
 {
 	sf::Vector2f trianPos1 = trian1.getPosition();
 	sf::Vector2f trianPos2 = trian2.getPosition();
@@ -295,7 +295,7 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(sf::ConvexShape trian1, s
 	return false;
 }
 
-bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::RectangleShape rect)
+bool CollisionManager::CheckCollisionsCircleSquare(const sf::CircleShape& circle, const sf::RectangleShape& rect)
 {
 	sf::Vector2f rectPos = rect.getPosition();
 	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
@@ -333,7 +333,7 @@ bool CollisionManager::CheckCollisionsCircleSquare(sf::CircleShape circle, sf::R
 	return false;
 }
 
-bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf::ConvexShape& trian)
+bool CollisionManager::CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian)
 {
 	sf::Vector2f trianPos = trian.getPosition();
 
@@ -362,7 +362,7 @@ bool CollisionManager::CheckCollisionsCircleTriangle(sf::CircleShape& circle, sf
 	return false;
 }
 
-float CollisionManager::DistancePointToSegment(Vec2f point, Vec2f start, Vec2f end)
+float CollisionManager::DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end)
 {
 	// Vecteur du segment et vecteur du point par rapport au début du segment
 	Vec2f AB = end - start;
@@ -396,7 +396,7 @@ float CollisionManager::DistancePointToSegment(Vec2f point, Vec2f start, Vec2f e
 }
 
 
-bool CollisionManager::IsPointInTriangle(Vec2f point, Vec2f triangle[3])
+bool CollisionManager::IsPointInTriangle(const Vec2f& point, Vec2f triangle[3])
 {
 	Vec2f AB = triangle[1] - triangle[0];
 	Vec2f BC = triangle[2] - triangle[1];

@@ -34,7 +34,7 @@ GameManager::GameManager()
 	_multiplicateur = 1;
 	_timerBonusScore = 0.0f;
 	_timerBonusScoreCheck = 0.0f;
-	_timerSpawnEnemies = 5;
+	_timerSpawnEnemies = 0;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
