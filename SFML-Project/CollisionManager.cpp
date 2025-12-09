@@ -203,13 +203,12 @@ void CollisionManager::Update(float deltaTime)
 	}
 }
 
-bool CollisionManager::IsPointInConvexShape(const Vec2f& point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals)
+bool CollisionManager::IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals)
 {
-	Vec2f vecToPoint;
-	for (int i = 0; i < numNormals; i++) 
+	int numPoints = shapePoints.size();
+	for (int i = 0; i < numPoints; i++) 
 	{
-		vecToPoint = point - shapePoints[i];
-		if (vecToPoint.Dot(convNormals[i]) > 0)
+		if (convNormals[i].Dot(point - shapePoints[i]) > 0)
 		{
 			return false;
 		}
@@ -223,47 +222,55 @@ bool CollisionManager::CheckCollisionsSquareTriangle(const sf::RectangleShape& r
 	Vec2f rectPos = rect.getPosition();
 	float rectRotation = Math::ToRad(rect.getRotation());
 
-	Vec2f rectP1 = Math::RotatePoint(rect.getPoint(0), Vec2f::zero, rectRotation) + rectPos;
-	Vec2f rectP2 = Math::RotatePoint(rect.getPoint(1), Vec2f::zero, rectRotation) + rectPos;
-	Vec2f rectP3 = Math::RotatePoint(rect.getPoint(2), Vec2f::zero, rectRotation) + rectPos;
-	Vec2f rectP4 = Math::RotatePoint(rect.getPoint(3), Vec2f::zero, rectRotation) + rectPos;
+	int rectNumPoints = rect.getPointCount();
+	std::vector<Vec2f> rectPoints(rectNumPoints, Vec2f::zero);
+	std::vector<Vec2f> rectNormals(rectNumPoints, Vec2f::zero);
 
-	Vec2f rectS1Normal = (rectP2 - rectP1).GetNormalClockWise();
-	Vec2f rectS2Normal = (rectP3 - rectP2).GetNormalClockWise();
-	Vec2f rectS3Normal = (rectP4 - rectP3).GetNormalClockWise();
-	Vec2f rectS4Normal = (rectP1 - rectP4).GetNormalClockWise();
+	for (int i = 0; i < rectNumPoints; i++)
+	{
+		rectPoints[i] = Math::RotatePoint(rect.getPoint(i), Vec2f::zero, rectRotation) + rectPos;
+	}
 
-	Vec2f squarePoints[4] = { rectP1, rectP2, rectP3, rectP4 };
-	Vec2f squareSidesNormals[4] = { rectS1Normal, rectS2Normal, rectS3Normal, rectS4Normal };
+	int rectNextIndex;
+	for (int i = 0; i < rectNumPoints; i++)
+	{
+		rectNextIndex = (i + 1) % rectNumPoints;
+		rectNormals[i] = (rectPoints[rectNextIndex] - rectPoints[i]).GetNormalClockWise().GetNormalised();
+	}
 
-	// Get Triangle Points
+	// Get Triangle Points & Normals
 	Vec2f trianPos = trian.getPosition();
 	float trianRotation = Math::ToRad(trian.getRotation());
 
-	Vec2f trianP1 = Math::RotatePoint(trian.getPoint(0), Vec2f::zero, trianRotation) + trianPos;
-	Vec2f trianP2 = Math::RotatePoint(trian.getPoint(1), Vec2f::zero, trianRotation) + trianPos;
-	Vec2f trianP3 = Math::RotatePoint(trian.getPoint(2), Vec2f::zero, trianRotation) + trianPos;
+	int trianNumPoints = trian.getPointCount();
+	std::vector<Vec2f> trianPoints(trianNumPoints, Vec2f::zero);
+	std::vector<Vec2f> trianNormals(trianNumPoints, Vec2f::zero);
 
-	Vec2f trianS1Normal = (trianP2 - trianP1).GetNormalClockWise();
-	Vec2f trianS2Normal = (trianP3 - trianP2).GetNormalClockWise();
-	Vec2f trianS3Normal = (trianP1 - trianP3).GetNormalClockWise();
+	for (int i = 0; i < trianNumPoints; i++)
+	{
+		trianPoints[i] = Math::RotatePoint(trian.getPoint(i), Vec2f::zero, trianRotation) + trianPos;
+	}
 
-	Vec2f trianglePoints[3] = {trianP1, trianP2, trianP3};
-	Vec2f triangleSidesNormals[3] = { trianS1Normal , trianS2Normal, trianS3Normal };
+	int trianNextIndex;
+	for (int i = 0; i < trianNumPoints; i++)
+	{
+		trianNextIndex = (i + 1) % trianNumPoints;
+		trianNormals[i] = (trianPoints[trianNextIndex] - trianPoints[i]).GetNormalClockWise().GetNormalised();
+	}
 
 	// Square -> Triangle
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < rectNumPoints; i++)
 	{
-		if (IsPointInConvexShape(squarePoints[i], trianglePoints, triangleSidesNormals, 3))
+		if (IsPointInConvexShape(rectPoints[i], trianPoints, trianNormals))
 		{
 			return true;
 		}
 	}
 
 	// Triangle -> Square
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < trianNumPoints; i++)
 	{
-		if (IsPointInConvexShape(trianglePoints[i], squarePoints, squareSidesNormals, 4))
+		if (IsPointInConvexShape(trianPoints[i], rectPoints, rectNormals))
 		{
 			return true;
 		}

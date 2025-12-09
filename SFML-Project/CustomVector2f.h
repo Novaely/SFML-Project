@@ -64,3 +64,5 @@ struct CustomVector2f
 	bool operator==(const CustomVector2f& other) const;
 	bool operator!=(const CustomVector2f& other) const;
 };
+
+std::ostream& operator<<(std::ostream& os, const CustomVector2f& v);

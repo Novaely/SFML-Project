@@ -27,7 +27,7 @@ class CollisionManager :
 		bool CheckCollisionsCircleSquare(const sf::CircleShape& circle, const sf::RectangleShape& rect);
 		bool CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian);
 
-		bool IsPointInConvexShape(const Vec2f& point, Vec2f shapePoints[], Vec2f convNormals[], int numNormals);
+		bool IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals);
 		bool IsPointInTriangle(const Vec2f& point, Vec2f triangle[3]);
 		float DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end);
 		float dotProduct(float vx1, float vy1, float vx2, float vy2);

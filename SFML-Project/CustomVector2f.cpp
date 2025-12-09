@@ -146,6 +146,12 @@ CustomVector2f& CustomVector2f::operator/=(const float& other)
 	return *this;
 }
 
+std::ostream& operator<<(std::ostream& os, const CustomVector2f& v)
+{
+	os << "X: " << v.x << " Y: " << v.y;
+	return os;
+}
+
 #pragma endregion
 
 #pragma region Methods

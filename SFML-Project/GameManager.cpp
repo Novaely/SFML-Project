@@ -34,7 +34,7 @@ GameManager::GameManager()
 	_multiplicateur = 1;
 	_timerBonusScore = 0.0f;
 	_timerBonusScoreCheck = 0.0f;
-	_timerSpawnEnemies = 0;
+	_timerSpawnEnemies = 5;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
@@ -278,7 +278,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			color = ColorType::Green;
 			break;
 	}
-	switch (RandomInt(0, 4))
+	/*switch (RandomInt(0, 4))
 	{
 		case 0:
 		case 1:
@@ -291,8 +291,8 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 		case 4:
 			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 			break;
-	}
-	//CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+	}*/
+	CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 }
 
 //fonction shot

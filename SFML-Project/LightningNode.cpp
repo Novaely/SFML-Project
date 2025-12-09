@@ -80,6 +80,10 @@ void LightningNode::StartLightning()
 		
 		allLightnings[i] = newLighting;
 	}
+
+	sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
+	pShape->setSize(Vec2f(0, parameters.width));
+	pShape->setPosition(startPoint);
 }
 
 void LightningNode::StopLightning()
