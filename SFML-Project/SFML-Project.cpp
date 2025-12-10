@@ -55,23 +55,26 @@ int main()
 		inputManager.ContinuInputCheck(event, player);
 
 		//Update
-		tick++;
-		if (gameManager.GetTime() >= boucle) {
-			//std::cout << "FPS : " << tick << std::endl;
-			gameManager.fps = tick;
-			boucle++;
-			tick = 0;
-		}
-		gameManager.Update(deltaTime, windowSize);
-		gameManager.UpdateDestroyItem();
-		collisionManager.Update(deltaTime);
-		gameManager.UpdateDestroyItem();
+		if (gameManager.pause == false)
+		{
+			tick++;
+			if (gameManager.GetTime() >= boucle) {
+				//std::cout << "FPS : " << tick << std::endl;
+				gameManager.fps = tick;
+				boucle++;
+				tick = 0;
+			}
+			gameManager.Update(deltaTime, windowSize);
+			gameManager.UpdateDestroyItem();
+			collisionManager.Update(deltaTime);
+			gameManager.UpdateDestroyItem();
 
-		//Render
-		window.clear();
-		gameManager.Draw(window);
-		hudManager.Draw(window);
-		window.display();
+			//Render
+			window.clear();
+			gameManager.Draw(window);
+			hudManager.Draw(window);
+			window.display();
+		}
 
 		sf::sleep(sf::seconds(FPS_60 - deltaTime));
 	}

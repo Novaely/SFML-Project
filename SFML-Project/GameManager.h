@@ -16,6 +16,7 @@ public :
 
     int score;
     int fps;
+    bool pause = false;
 
     Player* player = nullptr;
 
