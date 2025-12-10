@@ -35,11 +35,13 @@ GameManager::GameManager()
 	_timerBonusScore = 0.0f;
 	_timerBonusScoreCheck = 0.0f;
 	_numberOfEnemyForWave = 5;
-	_numberOfEnemyUp = 2;
-	_numberOfWaveBeforeUpNumberOfEnemy = 3;
+	_numberOfEnemyUp = 1;
+	_numberOfWaveBeforeUpNumberOfEnemy = 5;
 	_timerSpawnEnemies = 10;
+	_wave = 0;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
+	_radiusSpawnEnemy = (150, 150);
 }
 
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
@@ -50,6 +52,10 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 		if (_enemies.size() == 0 || _chronoSpawnEnemies >= _timerSpawnEnemies) {
 			_chronoSpawnEnemies = 0;
 			SpawnWaveEnemy(windowSize);
+			_wave++;
+			if (_wave % _numberOfWaveBeforeUpNumberOfEnemy) {
+				_numberOfEnemyForWave += _numberOfEnemyUp;
+			}
 		}
 		else {
 			_chronoSpawnEnemies += deltaTime;
@@ -296,11 +302,11 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			color = ColorType::Green;
 			break;
 	}
-	/*switch (RandomInt(0, 4))
+	switch (RandomInt(0, 4))
 	{
 		case 0:
 		case 1:
-			CreateCacEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			CreateCacEnemy({ Math::Clamp(RandomFloat(0, windowSize.x),player->position.x - _radiusSpawnEnemy.x,windowSize.x),Math::Clamp(RandomFloat(0, windowSize.y),player->position.y - _radiusSpawnEnemy.y,windowSize.y) }, 100, color);
 			break;
 		case 2:
 		case 3:
@@ -309,8 +315,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 		case 4:
 			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 			break;
-	}*/
-	CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+	}
 }
 
 //fonction shot

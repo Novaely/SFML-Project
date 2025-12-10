@@ -20,6 +20,7 @@ int main()
 	InputManager inputManager;
 	PoolManager poolManager;
 	gameManager.player = &player;
+	player.position = { 400,300 };
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(&gameManager, windowSize);
 	HUDManager hudManager;

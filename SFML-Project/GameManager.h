@@ -59,6 +59,8 @@ private:
     float _timerSpawnEnemies;
     float _chronoSpawnEnemies;
     bool _wantSpawnEnemy;
+    int _wave;
+    CustomVector2f _radiusSpawnEnemy;
 
     /// <summary>
     /// score *2 sur x temps
