@@ -37,6 +37,7 @@ public :
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
+    void SpawnWaveEnemy(CustomVector2f windowSize);
     void SpawnEnemy(CustomVector2f windowSize);
 
     //fonction get
@@ -52,6 +53,9 @@ private:
     int _multiplicateur;
     float _timerBonusScore;
     float _timerBonusScoreCheck;
+    int _numberOfEnemyForWave;
+    int _numberOfEnemyUp;
+    int _numberOfWaveBeforeUpNumberOfEnemy;
     float _timerSpawnEnemies;
     float _chronoSpawnEnemies;
     bool _wantSpawnEnemy;
@@ -90,5 +94,7 @@ private:
     std::list<LightningNode*> _lightningToDestroy;
     std::list<Bullet*> _bulletsToDestroy;
     std::list<Collectible*> _collectiblesToDestroy;
+
+    std::list<Enemy*> _enemies;
 };
 

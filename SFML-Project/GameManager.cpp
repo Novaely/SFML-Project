@@ -34,7 +34,10 @@ GameManager::GameManager()
 	_multiplicateur = 1;
 	_timerBonusScore = 0.0f;
 	_timerBonusScoreCheck = 0.0f;
-	_timerSpawnEnemies = 5;
+	_numberOfEnemyForWave = 5;
+	_numberOfEnemyUp = 2;
+	_numberOfWaveBeforeUpNumberOfEnemy = 3;
+	_timerSpawnEnemies = 10;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 }
@@ -44,12 +47,12 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 	_time += deltaTime;
 
 	if (_wantSpawnEnemy) {
-		if (_chronoSpawnEnemies <= _timerSpawnEnemies) {
-			_chronoSpawnEnemies += deltaTime;
+		if (_enemies.size() == 0 || _chronoSpawnEnemies >= _timerSpawnEnemies) {
+			_chronoSpawnEnemies = 0;
+			SpawnWaveEnemy(windowSize);
 		}
 		else {
-			_chronoSpawnEnemies = 0;
-			SpawnEnemy(windowSize);
+			_chronoSpawnEnemies += deltaTime;
 		}
 	}
 	UpdateAll(deltaTime);
@@ -186,6 +189,7 @@ void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType
 	enemy->pDie = [this](GameObject* go) { this->DestroyCacEnemy(go); };
 	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
+	_enemies.push_back(enemy);
 }
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
@@ -200,6 +204,7 @@ void GameManager::CreateShooterEnemy(CustomVector2f position, float health, Colo
 	};
 
 	shooterEnemy.push_back(enemy);
+	_enemies.push_back(enemy);
 }
 
 void GameManager::CreateTurretEnemy(CustomVector2f position, float health, ColorType color) {
@@ -214,6 +219,7 @@ void GameManager::CreateTurretEnemy(CustomVector2f position, float health, Color
 		};
 
 	turretEnemy.push_back(enemy);
+	_enemies.push_back(enemy);
 }
 
 //fonction destruction
@@ -244,6 +250,7 @@ void GameManager::DestroyCacEnemy(GameObject* item)
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(cacEnemy->position);
 	}
+	_enemies.remove(cacEnemy);
 }
 
 void GameManager::DestroyShooterEnemy(GameObject* item)
@@ -255,6 +262,7 @@ void GameManager::DestroyShooterEnemy(GameObject* item)
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(shooterEnemy->position);
 	}
+	_enemies.remove(shooterEnemy);
 }
 
 void GameManager::DestroyTurretEnemy(GameObject* item)
@@ -266,8 +274,14 @@ void GameManager::DestroyTurretEnemy(GameObject* item)
 	if (RandomInt(0, 5) == 0) {
 		CreateCollectible(turretEnemy->position);
 	}
+	_enemies.remove(turretEnemy);
 }
 
+void GameManager::SpawnWaveEnemy(CustomVector2f windowSize) {
+	for (int i = 0; i < _numberOfEnemyForWave;i++) {
+		SpawnEnemy(windowSize);
+	}
+}
 
 void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	ColorType color = ColorType::None;
