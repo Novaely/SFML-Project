@@ -81,5 +81,8 @@ void GameObject::Destroy()
 {
 	_isActive = false;
 	isAlive = false;
-	pDie(this);
+	if (pDie != nullptr)
+	{
+		pDie(this);
+	}
 }

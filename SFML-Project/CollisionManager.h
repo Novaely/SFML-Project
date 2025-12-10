@@ -10,15 +10,6 @@ class CollisionManager :
 		CollisionManager(GameManager* gm, CustomVector2f windowSize);
 
 		std::list<GameObject*>* gameObjects;
-
-		Player* player = nullptr;
-		std::list<CACEnemy*>* cacEnemy;
-		std::list<ShooterEnemy*>* shooterEnemy;
-		std::list<TurretEnemy*>* turretEnemy;
-		std::list<Bullet*>* bullets;
-		std::list<LightningNode*>* lightnings;
-		std::list<Collectible*>* collectibles;
-		sf::ConvexShape* pShape;
 		sf::Shape* windowShape;
 
 		GameManager* gameManager;

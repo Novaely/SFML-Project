@@ -21,12 +21,6 @@ public :
     std::list<GameObject*> gameObjects;
 
     PoolManager* poolManager = nullptr;
-	std::list<CACEnemy*> cacEnemy;
-	std::list<ShooterEnemy*> shooterEnemy;
-    std::list<TurretEnemy*> turretEnemy;
-	std::list<Bullet*> bullets;
-    std::list<Collectible*> collectibles;
-    std::list<LightningNode*> lightnings;
 
     void Update(float deltaTime, CustomVector2f windowSize);
     void Draw(sf::RenderWindow& window) override;
@@ -35,12 +29,16 @@ public :
     void PlayerShoot();
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);
-    void CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage);
+    LightningNode* CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage);
     void CreateCollectible(CustomVector2f position); //not implemented
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
     void SpawnEnemy(CustomVector2f windowSize);
+
+    void DestroyCacEnemy(GameObject* item);
+    void DestroyShooterEnemy(GameObject* item);
+    void DestroyTurretEnemy(GameObject* item);
 
     //fonction get
     int GetPlayerHealth() const;
@@ -77,24 +75,9 @@ private:
     void OnEnemyShoot(ShooterEnemy& enemy);
     void OnTurretEnemyShoot(TurretEnemy& enemy);
 
-    //fonction destroy
-    void DestroyBullet(GameObject* item);
-    void DestroyLightning(GameObject* item);
-    void DestroyCollectible(GameObject* item);
-    void DestroyCacEnemy(GameObject* item);
-    void DestroyShooterEnemy(GameObject* item);
-    void DestroyTurretEnemy(GameObject* item);
-
     //Singleton
     static GameManager* _instance;
 
     void NewGameObjectCreated(GameObject* go);
-
-    std::list<CACEnemy*> _cacEnemyToDestroy;
-    std::list<ShooterEnemy*> _shooterEnemyToDestroy;
-    std::list<TurretEnemy*> _turretEnemyToDestroy;
-    std::list<LightningNode*> _lightningToDestroy;
-    std::list<Bullet*> _bulletsToDestroy;
-    std::list<Collectible*> _collectiblesToDestroy;
 };
 
