@@ -128,6 +128,10 @@ void GameManager::BonusVie(float vieRegen)
 void GameManager::BonusTir()
 {	
 	std::cout << "Bonus Tir Level +" << 1 << std::endl;
+	if((*player).LevelShooter >= 3)
+	{
+		return;
+	}
 	(*player).LevelShooter += 1;
 }
 
@@ -303,8 +307,23 @@ void GameManager::PlayerShoot()
 	player->Shoot();
 	CustomVector2f bulletSpawnLocalPos = Math::RotatePoint(player->bulletSpawnPos, CustomVector2f::zero, Math::ToRad(player->rotation));
 	CustomVector2f pos = player->position + bulletSpawnLocalPos;
-
-	CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
+	switch (player->LevelShooter)
+	{
+	case 1:
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
+		break;
+	case 2:
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection().Rotate(Math::ToRad(15)), 10, player->GetColor());
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection().Rotate(Math::ToRad(-15)), 10, player->GetColor());
+		break;
+	case 3:
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection().Rotate(Math::ToRad(15)), 10, player->GetColor());
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection(), 10, player->GetColor());
+		CreateBullet(Team::Player, pos, player->speedBullet, player->GetLookDirection().Rotate(Math::ToRad(-15)), 10, player->GetColor());
+		break;
+	default:
+		break;
+	}
 }
 
 void GameManager::OnEnemyShoot(ShooterEnemy& enemy)
