@@ -61,6 +61,10 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 	{
 		_multiplicateur = 1;
 	}
+	if(player->health == 0)
+	{
+		pause = true;
+	}
 }
 
 void GameManager::Draw(sf::RenderWindow& window)
