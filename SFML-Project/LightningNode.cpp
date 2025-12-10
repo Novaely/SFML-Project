@@ -49,6 +49,7 @@ void LightningNode::Update(float deltaTime)
 		pShape->setPosition(pos);
 		pShape->setRotation(Math::ToDegree(parameters.rotation));
 		pShape->setFillColor(sf::Color::White);
+		position = pos;
 	}
 }
 
@@ -91,6 +92,9 @@ void LightningNode::StartLightning()
 	sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
 	pShape->setSize(Vec2f(0, parameters.width));
 	pShape->setPosition(startPoint);
+	position = startPoint;
+
+	broadRadius = (endPoint - startPoint).GetMagnitude();
 }
 
 void LightningNode::StopLightning()

@@ -17,6 +17,7 @@ class GameObject
 		CharaType characterType = CharaType::None;
 		CollisionLayer layer = CollisionLayer::None;
 		LayerMask collisionMask = static_cast<LayerMask>(CollisionLayer::All);
+		float broadRadius = 0;
 		Team team = Team::None;
 
 		CustomVector2f position = CustomVector2f::zero;
@@ -50,4 +51,5 @@ class GameObject
 		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Black}, {ColorType::Red , sf::Color::Red} , {ColorType::Blue , sf::Color::Blue} , {ColorType::Green , sf::Color::Green} , {ColorType::Yellow , sf::Color::Yellow} };
 		
 		static std::map<int, std::function<void(GameObject*)>> _createListeners;
+		void SetBroadRadiusFromPoints(const Vec2f points[], int numPoints);
 };

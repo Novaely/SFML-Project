@@ -19,6 +19,9 @@ Player::Player() : Character() {
 	pShape->setPoint(1, sf::Vector2f{ -7.5f, 7.5f });
 	pShape->setPoint(2, sf::Vector2f{ -7.5f, -7.5f });
 
+	Vec2f points[3] = { pShape->getPoint(0), pShape->getPoint(1) , pShape->getPoint(2) };
+	SetBroadRadiusFromPoints(points, 3);
+
 	bulletSpawnPos = CustomVector2f(15, 0);
 
 	maxInputSpeed = 200;

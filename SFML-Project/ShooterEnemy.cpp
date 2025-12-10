@@ -16,6 +16,9 @@ ShooterEnemy::ShooterEnemy() {
 	bulletSpawnPos = CustomVector2f(2, 0);
 	damage = 1.0f;
 
+	Vec2f points[3] = { pShape->getPoint(0), pShape->getPoint(1) , pShape->getPoint(2) };
+	SetBroadRadiusFromPoints(points, 3);
+
 	maxInputSpeed = 100;
 	acceleration = 400;
 	stopFriction = 400;

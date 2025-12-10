@@ -7,6 +7,8 @@ Bullet::Bullet() : Movable()
 	shape = new sf::CircleShape();
 
 	((sf::CircleShape*)shape)->setRadius(5);
+	broadRadius = 5;
+
 	maxInputSpeed = 20;
 
 	Desactive();

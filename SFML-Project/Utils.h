@@ -5,6 +5,7 @@
 #include <cmath>
 
 using LayerMask = unsigned int;
+using Vec2f = CustomVector2f;
 
 enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet, Lighting };
 enum class ColorType { None = 0, Red = 1, Blue = 2, Green = 3 ,Yellow = 4};

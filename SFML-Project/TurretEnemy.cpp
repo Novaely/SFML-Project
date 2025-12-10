@@ -9,6 +9,9 @@ TurretEnemy::TurretEnemy() : ShooterEnemy()
 	pShape->setPoint(2, sf::Vector2f{ -15, -15 });
 	bulletSpawnPos = CustomVector2f(4, 0);
 
+	Vec2f points[3] = { pShape->getPoint(0), pShape->getPoint(1) , pShape->getPoint(2) };
+	SetBroadRadiusFromPoints(points, 3);
+
 	maxInputSpeed = 0.0f;
 
 	timerShootAgain = 5.f;

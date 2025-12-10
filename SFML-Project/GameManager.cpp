@@ -40,7 +40,7 @@ GameManager::GameManager()
 	_multiplicateur = 1;
 	_timerBonusScore = 0.0f;
 	_timerBonusScoreCheck = 0.0f;
-	_timerSpawnEnemies = 0;
+	_timerSpawnEnemies = 5;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 	_idGameObjectCreateListener = GameObject::AddCreateListener([this](GameObject* go)

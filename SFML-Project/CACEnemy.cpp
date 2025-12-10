@@ -7,8 +7,12 @@ CACEnemy::CACEnemy() : Enemy()
 	shape = new sf::RectangleShape();
 	shape->setFillColor(sf::Color::Red);
 
-	((sf::RectangleShape*)shape)->setSize({ 5,5 });
+	sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
+	pShape->setSize({ 5,5 });
 	damage = 1.0f;
+
+	Vec2f points[4] = { pShape->getPoint(0), pShape->getPoint(1) , pShape->getPoint(2), pShape->getPoint(3)};
+	SetBroadRadiusFromPoints(points, 3);
 
 	maxInputSpeed = 150;
 	acceleration = 400;
