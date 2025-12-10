@@ -19,7 +19,7 @@ void Character::Update(float deltaTime)
 
 void Character::Move(float deltaTime)
 {
-    if (inputDirection == CustomVector2f::zero)
+    /*if (inputDirection == CustomVector2f::zero)
     {
         speed -= stopFriction * deltaTime;
     }
@@ -41,7 +41,41 @@ void Character::Move(float deltaTime)
         }
     }
 
-    Movable::Move(deltaTime);
+    speed = Math::Clamp(speed, 0, maxInputSpeed);
+
+    Movable::Move(deltaTime);*/
+
+    // If no inputs, apply stop friction
+    if (inputDirection == Vec2f::zero && velocity != Vec2f::zero)
+    {
+        Vec2f frictionDir = -velocity.GetNormalised();
+        velocity += frictionDir * stopFriction * deltaTime;
+
+        if (velocity.Dot(velocity + frictionDir * stopFriction * deltaTime) < 0)
+        {
+            velocity = Vec2f::zero;
+        }
+    }
+    else
+    {
+        // If Inputs direction close to mvoe direction apply acceleration
+        if (inputDirection.Dot(moveDirection) >= 0)
+        {
+            velocity += inputDirection * acceleration * deltaTime;
+        }
+        // Else apply turn back friction
+        else
+        {
+            velocity += inputDirection * turnBackFriction * deltaTime;
+        }
+    }
+
+    if (velocity.GetSquaredMagnitude() > maxInputSpeed * maxInputSpeed)
+    {
+        velocity.SetMagnitude(maxInputSpeed);
+    }
+
+    position += velocity * deltaTime;
 }
 
 void Character::Rotate(float deltaTime)

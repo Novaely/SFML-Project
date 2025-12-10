@@ -13,11 +13,11 @@ public:
 
 	float acceleration = 0;
 	float stopFriction = 0;
-	//float turnBackFriction = 0;
+	float turnBackFriction = 0;
 
-	float diretionChangeTreshold = 0.05f;
+	/*float diretionChangeTreshold = 0.05f;
 	float directionChangeSpeed = 5;
-	float turnBackDirectionChangeSpeed = 2.5f;
+	float turnBackDirectionChangeSpeed = 2.5f;*/
 
 	float rotationSpeed = 0;
 	float rotationDirection = 0;
@@ -32,6 +32,8 @@ public:
 	CustomVector2f GetLookDirection();
 
 protected:
+	Vec2f velocity = Vec2f::zero;
+
 	bool _canShoot = true;
 	virtual void Damage(float dmg);
 };

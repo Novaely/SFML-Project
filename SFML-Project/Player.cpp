@@ -25,8 +25,9 @@ Player::Player() : Character() {
 	bulletSpawnPos = CustomVector2f(15, 0);
 
 	maxInputSpeed = 200;
-	acceleration = 400;
+	acceleration = 800;
 	stopFriction = 400;
+	turnBackFriction = 800;
 
 	rotationSpeed = 200;
 	timerShootAgain = 0.1f;

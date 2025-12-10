@@ -146,7 +146,7 @@ CustomVector2f& CustomVector2f::operator/=(const float& other)
 	return *this;
 }
 
-static std::ostream& operator<<(std::ostream& os, const CustomVector2f& v)
+std::ostream& operator<<(std::ostream& os, const CustomVector2f& v)
 {
 	os << "X: " << v.x << " Y: " << v.y;
 	return os;
@@ -164,6 +164,17 @@ float CustomVector2f::GetSquaredMagnitude() const
 float CustomVector2f::GetMagnitude() const 
 {
 	return std::sqrt(GetSquaredMagnitude());
+}
+
+void CustomVector2f::SetMagnitude(float mag)
+{
+	if (mag == 0)
+	{
+		*this = CustomVector2f::zero;
+		return;
+	}
+	CustomVector2f direction = GetNormalised();
+	*this = direction * mag;
 }
 
 CustomVector2f CustomVector2f::GetNormalised() const

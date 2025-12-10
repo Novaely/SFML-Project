@@ -54,7 +54,6 @@ Bullet* PoolManager::GetBullet(Team team, CustomVector2f position, float speed, 
 	pBullet->team = team;
 	pBullet->position = position;
 	pBullet->shape->setPosition(position.x, position.y);
-	//pBullet->speed = CustomVector2f(speed);
 	pBullet->speed = speed;
 	pBullet->maxInputSpeed = speed;
 	pBullet->moveDirection = direction;

@@ -25,6 +25,7 @@ struct CustomVector2f
 
 	float GetSquaredMagnitude() const;
 	float GetMagnitude() const;
+	void SetMagnitude(float mag);
 	CustomVector2f GetNormalised() const;
 	void Normalise();
 	float GetAngle() const;
