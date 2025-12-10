@@ -10,18 +10,22 @@ HUDManager::HUDManager()
 	_timer.setFont(_font);                // Police
 	_level.setFont(_font);                // Police
 	_multiplicateur.setFont(_font);                // Police
+	_fps.setFont(_font);                // Police
 	_score.setCharacterSize(28);         // Taille du texte
 	_timer.setCharacterSize(28);         // Taille du texte
 	_level.setCharacterSize(28);         // Taille du texte
 	_multiplicateur.setCharacterSize(28);         // Taille du texte
+	_fps.setCharacterSize(28);         // Taille du texte
 	_score.setFillColor(sf::Color::White);   // Couleur
 	_timer.setFillColor(sf::Color::White);   // Couleur
 	_level.setFillColor(sf::Color::White);   // Couleur
 	_multiplicateur.setFillColor(sf::Color::White);   // Couleur
+	_fps.setFillColor(sf::Color::White);   // Couleur
 	_score.setPosition(50, 60);             // Position dans la fenêtre
 	_timer.setPosition(50, 25);             // Position dans la fenêtre
 	_level.setPosition(50, 95);             // Position dans la fenêtre
 	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
+	_fps.setPosition(650, 550);             // Position dans la fenêtre
 
 }
 
@@ -42,6 +46,8 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	}
 	_level.setString("Level : " + std::to_string(gameManager->GetLevel()));
 	window.draw(_level);
+	_fps.setString("FPS : " + std::to_string(gameManager->GetFPS()));
+	window.draw(_fps);
 }
 
 void HUDManager::CreateLifePoint(CustomVector2f position, sf::RenderWindow& window)
