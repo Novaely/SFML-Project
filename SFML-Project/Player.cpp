@@ -98,8 +98,12 @@ void Player::OnCollisionEnter(GameObject* other)
 
 void Player::Damage(float dmg)
 {
-	if (!- _isInvicible)
+	if (!_isInvicible)
 	{
+		if(_levelShooter != 1)
+		{
+			_levelShooter -= 1;
+		}
 		health -= dmg;
 		_isInvicible = true;
 		_timeSinceInvincible = 0.0f;
