@@ -20,7 +20,7 @@ HUDManager::HUDManager()
 	multiplicateur.setFillColor(sf::Color::White);   // Couleur
 	score.setPosition(50, 60);             // Position dans la fenêtre
 	timer.setPosition(50, 25);             // Position dans la fenêtre
-	multiplicateur.setPosition(170, 60);             // Position dans la fenêtre
+	multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
 
 }
 
