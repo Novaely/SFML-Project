@@ -13,6 +13,7 @@ private:
 		sf::Text _level;
 		sf::Text _fps;
 		sf::Font _font;
+		sf::RectangleShape _button;
 
     public:
 		HUDManager();

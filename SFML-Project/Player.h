@@ -28,4 +28,5 @@ public:
     void SwitchColor();
     void Shoot();
     void OnCollisionEnter(GameObject* other) override;
+    float GetMaxHealth() const;
 };

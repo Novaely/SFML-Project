@@ -27,6 +27,10 @@ HUDManager::HUDManager()
 	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
 	_fps.setPosition(650, 550);             // Position dans la fenêtre
 
+	_button.setFillColor(sf::Color::Blue);
+	_button.setSize({200, 35});
+	_button.setPosition({300, 275});
+
 }
 
 void HUDManager::Draw(sf::RenderWindow& window)
@@ -53,15 +57,20 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	}
 	else
 	{
-		_level.setPosition(300, 150);
+		_level.setPosition(320, 150);
 		_level.setCharacterSize(32);  
 		_level.setFillColor(sf::Color::Red);  
 		_level.setString("Game Over");
-		_score.setPosition(300,200);
+		_score.setPosition(315,200);
 		_score.setString("Score final : " + std::to_string(gameManager->score));
+		_multiplicateur.setPosition(350, 275);
+		_multiplicateur.setString("Restart");
+
 
 		window.draw(_score);
 		window.draw(_level);
+		window.draw(_button);
+		window.draw(_multiplicateur);
 	}
 }
 
