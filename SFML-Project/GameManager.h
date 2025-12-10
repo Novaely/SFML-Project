@@ -14,8 +14,8 @@ public :
     //Singleton
     static GameManager* GetInstance();
 
-    int score;
-    int fps;
+    int score = 0;
+    int fps = 0;
     bool pause = false;
 
     Player* player = nullptr;
@@ -24,7 +24,7 @@ public :
 
     PoolManager* poolManager = nullptr;
 
-    void Update(float deltaTime, CustomVector2f windowSize);
+    void Update(float deltaTime, CustomVector2f& windowSize);
     void Draw(sf::RenderWindow& window) override;
     void UpdateDestroyItem();
 
@@ -74,7 +74,9 @@ private:
     /// power up direction de tir 
     /// </summary>
 
-    void UpdateAll(float deltaTime);
+    void UpdateAll(float deltaTime, CustomVector2f& windowSize);
+
+    bool IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds);
 
     //foncion bonus
     void BonusScore(float timer, int multiplicateur);

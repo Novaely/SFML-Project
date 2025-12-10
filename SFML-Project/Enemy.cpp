@@ -1,6 +1,5 @@
 #include "Enemy.h"
 
-
 class Player;
 
 Enemy::Enemy() : Character()

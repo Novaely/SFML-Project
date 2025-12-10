@@ -22,7 +22,6 @@ ShooterEnemy::ShooterEnemy() {
 	maxInputSpeed = 100;
 	acceleration = 400;
 	stopFriction = 400;
-	//turnBackFriction = 800;
 	rotationSpeed = 100;
 
 	attackRadius = 100;

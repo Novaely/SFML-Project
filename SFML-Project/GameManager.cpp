@@ -59,7 +59,7 @@ void GameManager::NewGameObjectCreated(GameObject* go)
 	gameObjects.push_back(go);
 }
 
-void GameManager::Update(float deltaTime, CustomVector2f windowSize)
+void GameManager::Update(float deltaTime, CustomVector2f& windowSize)
 {
 	_time += deltaTime;
 
@@ -76,7 +76,7 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 			_chronoSpawnEnemies += deltaTime;
 		}
 	}
-	UpdateAll(deltaTime);
+	UpdateAll(deltaTime, windowSize);
 	_timerBonusScore += deltaTime;
 	if (_timerBonusScore > _timerBonusScoreCheck)
 	{
@@ -314,13 +314,29 @@ void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)
 	enemy.lastLightningShooted = CreateLightning(Team::Enemy, pos, enemy.GetLookDirection(), 1);
 }
 
+bool GameManager::IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds)
+{
+	if (pos.x < 0) return true;
+	if (pos.x > bounds.x) return true;
+	if (pos.y < 0) return true;
+	if (pos.y > bounds.y) return true;
+	return false;
+}
+
 //fonction update
-void GameManager::UpdateAll(float deltaTime)
+void GameManager::UpdateAll(float deltaTime, CustomVector2f& windowSize)
 {
 	auto goIt = gameObjects.begin();
 	while (goIt != gameObjects.end())
 	{
 		(*goIt)->Update(deltaTime);
+		if ((*goIt)->characterType == CharaType::Bullet)
+		{
+			if (IsPosOutOfBounds((*goIt)->position, windowSize))
+			{
+				(*goIt)->Destroy();
+			}
+		}
 		goIt++;
 	}
 }
