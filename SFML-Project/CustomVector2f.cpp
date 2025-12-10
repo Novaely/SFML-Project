@@ -223,5 +223,15 @@ float CustomVector2f::Dot(const CustomVector2f& other) const
 	return x * other.x + y * other.y;
 }
 
+CustomVector2f CustomVector2f::Rotate(float angle) const
+{
+	float c = std::cos(angle);
+	float s = std::sin(angle);
+	return {
+		x * c - y * s,
+		x * s + y * c
+	};
+}
+
 #pragma endregion
 

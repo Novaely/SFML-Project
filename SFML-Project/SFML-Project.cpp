@@ -20,6 +20,7 @@ int main()
 	InputManager inputManager;
 	PoolManager poolManager;
 	gameManager.player = &player;
+	player.position = { 400,300 };
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(&gameManager, windowSize);
 	HUDManager hudManager;
@@ -56,13 +57,8 @@ int main()
 		//Update
 		tick++;
 		if (gameManager.GetTime() >= boucle) {
-			std::cout << "FPS : " << tick << std::endl;
-			/*std::cout << "nombre shooter enemy : " << gameManager.shooterEnemy.size() << std::endl;
-			std::cout << "nombre cac enemy : " << gameManager.cacEnemy.size() << std::endl;
-			std::cout << "nombre turret enemy : " << gameManager.turretEnemy.size() << std::endl;
-			std::cout << "nombre bullet : " << gameManager.bullets.size() << std::endl;
-			std::cout << "nombre laser : " << gameManager.lightnings.size() << std::endl;*/
-			std::cout << "Num GameObjects : " << gameManager.gameObjects.size() << std::endl;
+			//std::cout << "FPS : " << tick << std::endl;
+			gameManager.fps = tick;
 			boucle++;
 			tick = 0;
 		}

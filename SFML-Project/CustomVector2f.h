@@ -34,6 +34,7 @@ struct CustomVector2f
 	CustomVector2f GetNormalCounterClockWise() const;
 	CustomVector2f GetNormalClockWise() const;
 	CustomVector2f DirectionTo(const CustomVector2f& other) const;
+	CustomVector2f Rotate(float angle) const;
 
 	float Dot(const CustomVector2f& other) const;
 

@@ -15,6 +15,7 @@ public :
     static GameManager* GetInstance();
 
     int score;
+    int fps;
 
     Player* player = nullptr;
 
@@ -34,6 +35,7 @@ public :
     void CreateCacEnemy(CustomVector2f position, float health, ColorType color);
     void CreateShooterEnemy(CustomVector2f position, float health, ColorType color);
     void CreateTurretEnemy(CustomVector2f position, float health, ColorType color);
+    void SpawnWaveEnemy(CustomVector2f windowSize);
     void SpawnEnemy(CustomVector2f windowSize);
 
     void DestroyCacEnemy(GameObject* item);
@@ -44,6 +46,8 @@ public :
     int GetPlayerHealth() const;
     float GetTime();
     int GetMultiplicateur() const;
+    int GetLevel() const;
+    int GetFPS() const;
 
 private: 
 
@@ -52,9 +56,14 @@ private:
     int _multiplicateur;
     float _timerBonusScore;
     float _timerBonusScoreCheck;
+    int _numberOfEnemyForWave;
+    int _numberOfEnemyUp;
+    int _numberOfWaveBeforeUpNumberOfEnemy;
     float _timerSpawnEnemies;
     float _chronoSpawnEnemies;
     bool _wantSpawnEnemy;
+    int _wave;
+    CustomVector2f _radiusSpawnEnemy;
 
     int _idGameObjectCreateListener = -1;
 
@@ -77,6 +86,8 @@ private:
 
     //Singleton
     static GameManager* _instance;
+
+    std::list<Enemy*> _enemies;
 
     void NewGameObjectCreated(GameObject* go);
 };

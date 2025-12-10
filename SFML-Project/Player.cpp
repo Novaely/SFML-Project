@@ -107,11 +107,49 @@ void Player::OnCollisionEnter(GameObject* other)
 
 void Player::Damage(float dmg)
 {
-	health -= dmg;
-	if (health <= 0)
+	if (!_isInvicible)
 	{
-		//isAlive = false;
-		//std::cout << "fin du jeu" << std::endl;
-		//cut le jeu
+		if(_levelShooter != 1)
+		{
+			_levelShooter -= 1;
+		}
+		health -= dmg;
+		_isInvicible = true;
+		_timeSinceInvincible = 0.0f;
+		if (health <= 0)
+		{
+			isAlive = false;
+			//std::cout << "fin du jeu" << std::endl;
+			//cut le jeu
+		}
+	}
+}
+
+void Player::Update(float deltaTime)
+{
+	Character::Update(deltaTime);
+	if (_isInvicible)
+	{
+		_timeSinceInvincible += deltaTime;
+		_timeSinceColorChange += deltaTime;
+		if (_timeSinceColorChange >= 0.1f)
+		{
+			_timeSinceColorChange = 0.0f;
+			if (shape->getFillColor() == sf::Color::White)
+			{
+				shape->setFillColor(_colors[_color]);
+			}
+			else
+			{
+				shape->setFillColor(sf::Color::White);
+			}
+		}
+			
+		if(_timeSinceInvincible >= _invicibleTime)
+		{
+			_isInvicible = false;
+			_timeSinceInvincible = 0.0f;
+			shape->setFillColor(_colors[_color]);
+		}
 	}
 }

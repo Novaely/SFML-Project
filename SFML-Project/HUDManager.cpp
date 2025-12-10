@@ -4,23 +4,28 @@
 HUDManager::HUDManager()
 {
 	gameManager = GameManager::GetInstance();
-	font.loadFromFile("ARIAL.TTF");
+	_font.loadFromFile("ARIAL.TTF");
 
-	score.setFont(font);                // Police
-	timer.setFont(font);                // Police
-	multiplicateur.setFont(font);                // Police
-	score.setString("Bonjour SFML !");  // Contenu
-	timer.setString("Bonjour SFML !");  // Contenu
-	multiplicateur.setString("Bonjour SFML !");  // Contenu
-	score.setCharacterSize(28);         // Taille du texte
-	timer.setCharacterSize(28);         // Taille du texte
-	multiplicateur.setCharacterSize(28);         // Taille du texte
-	score.setFillColor(sf::Color::White);   // Couleur
-	timer.setFillColor(sf::Color::White);   // Couleur
-	multiplicateur.setFillColor(sf::Color::White);   // Couleur
-	score.setPosition(50, 60);             // Position dans la fenêtre
-	timer.setPosition(50, 25);             // Position dans la fenêtre
-	multiplicateur.setPosition(170, 60);             // Position dans la fenêtre
+	_score.setFont(_font);                // Police
+	_timer.setFont(_font);                // Police
+	_level.setFont(_font);                // Police
+	_multiplicateur.setFont(_font);                // Police
+	_fps.setFont(_font);                // Police
+	_score.setCharacterSize(28);         // Taille du texte
+	_timer.setCharacterSize(28);         // Taille du texte
+	_level.setCharacterSize(28);         // Taille du texte
+	_multiplicateur.setCharacterSize(28);         // Taille du texte
+	_fps.setCharacterSize(28);         // Taille du texte
+	_score.setFillColor(sf::Color::White);   // Couleur
+	_timer.setFillColor(sf::Color::White);   // Couleur
+	_level.setFillColor(sf::Color::White);   // Couleur
+	_multiplicateur.setFillColor(sf::Color::White);   // Couleur
+	_fps.setFillColor(sf::Color::White);   // Couleur
+	_score.setPosition(50, 60);             // Position dans la fenêtre
+	_timer.setPosition(50, 25);             // Position dans la fenêtre
+	_level.setPosition(50, 95);             // Position dans la fenêtre
+	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
+	_fps.setPosition(650, 550);             // Position dans la fenêtre
 
 }
 
@@ -30,15 +35,19 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	{
 		CreateLifePoint({ (9.0f + i) * 40.0f, 25.0f }, window);
 	}
-	score.setString("Score : " + std::to_string(gameManager->score));
-	window.draw(score);
-	timer.setString("Time : " + std::to_string((int)gameManager->GetTime()));
-	window.draw(timer);
+	_score.setString("Score : " + std::to_string(gameManager->score));
+	window.draw(_score);
+	_timer.setString("Time : " + std::to_string((int)gameManager->GetTime()));
+	window.draw(_timer);
 	if ( gameManager->GetMultiplicateur() > 1)
 	{
-		multiplicateur.setString("x" + std::to_string(gameManager->GetMultiplicateur()));
-		window.draw(multiplicateur);
+		_multiplicateur.setString("x" + std::to_string(gameManager->GetMultiplicateur()));
+		window.draw(_multiplicateur);
 	}
+	_level.setString("Level : " + std::to_string(gameManager->GetLevel()));
+	window.draw(_level);
+	_fps.setString("FPS : " + std::to_string(gameManager->GetFPS()));
+	window.draw(_fps);
 }
 
 void HUDManager::CreateLifePoint(CustomVector2f position, sf::RenderWindow& window)
