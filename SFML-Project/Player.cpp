@@ -3,6 +3,11 @@
 Player::Player() : Character() {
 	characterType = CharaType::Player;
 	shapeType = ShapeType::Convex;
+
+	layer = CollisionLayer::Player;
+	collisionMask = static_cast<LayerMask>(CollisionLayer::BulletEnemy) |
+		static_cast<LayerMask>(CollisionLayer::Enemy) | static_cast<LayerMask>(CollisionLayer::Collectible);
+
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);

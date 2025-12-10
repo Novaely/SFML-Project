@@ -16,6 +16,8 @@ class CollisionManager :
 		void Update( float deltaTime);
 	private: 
 		bool CheckCollisionPair(GameObject* goA, GameObject* goB);
+		bool CanCollide(GameObject* goA, GameObject* goB);
+
 		bool CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian);
 		bool CheckCollisionsTriangleTriangle(const sf::ConvexShape& trian1, const sf::ConvexShape& trian2);
 		bool CheckCollisionsCircleRectangle(const sf::CircleShape& circle, const sf::RectangleShape& rect);

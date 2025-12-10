@@ -81,6 +81,11 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 	}
 }
 
+bool CollisionManager::CanCollide(GameObject* goA, GameObject* goB)
+{
+	return (static_cast<LayerMask>(goA->layer) & goB->collisionMask) && (static_cast<LayerMask>(goB->layer) & goA->collisionMask);
+}
+
 void CollisionManager::Update(float deltaTime)
 {
 	auto itGoA = (*gameObjects).begin();
@@ -90,7 +95,7 @@ void CollisionManager::Update(float deltaTime)
 		itGoB = std::next(itGoA);
 		while (itGoB != (*gameObjects).end())
 		{
-			if (CheckCollisionPair(*itGoA, *itGoB))
+			if (CanCollide(*itGoA, *itGoB) && CheckCollisionPair(*itGoA, *itGoB))
 			{
 				(*itGoA)->OnCollisionEnter(*itGoB);
 				(*itGoB)->OnCollisionEnter(*itGoA);

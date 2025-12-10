@@ -15,6 +15,8 @@ class GameObject
 		sf::Shape* shape = nullptr;
 		ShapeType shapeType = ShapeType::None;
 		CharaType characterType = CharaType::None;
+		CollisionLayer layer = CollisionLayer::None;
+		LayerMask collisionMask = static_cast<LayerMask>(CollisionLayer::All);
 		Team team = Team::None;
 
 		CustomVector2f position = CustomVector2f::zero;

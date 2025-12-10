@@ -16,6 +16,17 @@ void Bullet::Active()
 {
 	Movable::Active();
 	speed = 500.0f;
+
+	if (team == Team::Enemy)
+	{
+		layer = CollisionLayer::BulletEnemy;
+		collisionMask = static_cast<LayerMask>(CollisionLayer::Player);
+	}
+	else
+	{
+		layer = CollisionLayer::BulletPlayer;
+		collisionMask = static_cast<LayerMask>(CollisionLayer::Enemy);
+	}
 }
 
 void Bullet::Desactive()

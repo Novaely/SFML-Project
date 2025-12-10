@@ -73,8 +73,6 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 	{
 		_multiplicateur = 1;
 	}
-
-	std::cout << "Num GameObjects : " << gameObjects.size() << std::endl;
 }
 
 void GameManager::Draw(sf::RenderWindow& window)

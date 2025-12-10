@@ -5,6 +5,9 @@ class Player;
 
 Enemy::Enemy() : Character()
 {
+	layer = CollisionLayer::Enemy;
+	collisionMask = static_cast<LayerMask>(CollisionLayer::BulletPlayer) |
+		static_cast<LayerMask>(CollisionLayer::Player);
 }
 
 

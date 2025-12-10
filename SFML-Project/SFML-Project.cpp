@@ -62,6 +62,7 @@ int main()
 			std::cout << "nombre turret enemy : " << gameManager.turretEnemy.size() << std::endl;
 			std::cout << "nombre bullet : " << gameManager.bullets.size() << std::endl;
 			std::cout << "nombre laser : " << gameManager.lightnings.size() << std::endl;*/
+			std::cout << "Num GameObjects : " << gameManager.gameObjects.size() << std::endl;
 			boucle++;
 			tick = 0;
 		}
