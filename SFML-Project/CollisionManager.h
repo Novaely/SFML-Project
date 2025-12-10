@@ -9,6 +9,8 @@ class CollisionManager :
     public:
 		CollisionManager(GameManager* gm, CustomVector2f windowSize);
 
+		std::list<GameObject*>* gameObjects;
+
 		Player* player = nullptr;
 		std::list<CACEnemy*>* cacEnemy;
 		std::list<ShooterEnemy*>* shooterEnemy;
@@ -22,9 +24,10 @@ class CollisionManager :
 		GameManager* gameManager;
 		void Update( float deltaTime);
 	private: 
+		bool CheckCollisionPair(GameObject* goA, GameObject* goB);
 		bool CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian);
 		bool CheckCollisionsTriangleTriangle(const sf::ConvexShape& trian1, const sf::ConvexShape& trian2);
-		bool CheckCollisionsCircleSquare(const sf::CircleShape& circle, const sf::RectangleShape& rect);
+		bool CheckCollisionsCircleRectangle(const sf::CircleShape& circle, const sf::RectangleShape& rect);
 		bool CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian);
 
 		bool IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals);

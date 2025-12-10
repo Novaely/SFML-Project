@@ -2,6 +2,7 @@
 
 ShooterEnemy::ShooterEnemy() {
 	characterType = CharaType::ShooterEnemy;
+	shapeType = ShapeType::Convex;
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);

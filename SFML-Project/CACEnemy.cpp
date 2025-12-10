@@ -3,6 +3,7 @@
 CACEnemy::CACEnemy() : Enemy()
 {
 	characterType = CharaType::CACEnemy;
+	shapeType = ShapeType::Rectangle;
 	shape = new sf::RectangleShape();
 	shape->setFillColor(sf::Color::Red);
 

@@ -13,6 +13,7 @@ class GameObject
 		~GameObject();
 
 		sf::Shape* shape = nullptr;
+		ShapeType shapeType = ShapeType::None;
 		CharaType characterType = CharaType::None;
 		Team team = Team::None;
 

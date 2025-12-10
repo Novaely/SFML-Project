@@ -3,6 +3,7 @@
 LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
 {
 	characterType = CharaType::Lighting;
+	shapeType = ShapeType::Rectangle;
 	sf::RectangleShape* pShape = new sf::RectangleShape;
 	shape = pShape;
 }

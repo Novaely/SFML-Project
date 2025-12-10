@@ -17,6 +17,9 @@ public :
     int score;
 
     Player* player = nullptr;
+
+    std::list<GameObject*> gameObjects;
+
     PoolManager* poolManager = nullptr;
 	std::list<CACEnemy*> cacEnemy;
 	std::list<ShooterEnemy*> shooterEnemy;
@@ -86,8 +89,6 @@ private:
     static GameManager* _instance;
 
     void NewGameObjectCreated(GameObject* go);
-
-    std::list<GameObject*> _gameObjects;
 
     std::list<CACEnemy*> _cacEnemyToDestroy;
     std::list<ShooterEnemy*> _shooterEnemyToDestroy;

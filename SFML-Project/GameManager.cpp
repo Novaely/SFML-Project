@@ -51,7 +51,7 @@ GameManager::GameManager()
 
 void GameManager::NewGameObjectCreated(GameObject* go)
 {
-	_gameObjects.push_back(go);
+	gameObjects.push_back(go);
 }
 
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
@@ -77,8 +77,8 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 
 void GameManager::Draw(sf::RenderWindow& window)
 {
-	auto goIt = _gameObjects.begin();
-	while (goIt != _gameObjects.end()) 
+	auto goIt = gameObjects.begin();
+	while (goIt != gameObjects.end()) 
 	{
 		(*goIt)->Draw(window);
 		goIt++;
@@ -313,8 +313,8 @@ void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)
 //fonction update
 void GameManager::UpdateAll(float deltaTime)
 {
-	auto goIt = _gameObjects.begin();
-	while (goIt != _gameObjects.end())
+	auto goIt = gameObjects.begin();
+	while (goIt != gameObjects.end())
 	{
 		(*goIt)->Update(deltaTime);
 		goIt++;
@@ -323,12 +323,12 @@ void GameManager::UpdateAll(float deltaTime)
 
 void GameManager::UpdateDestroyItem()
 {
-	auto itGo = _gameObjects.begin();
-	while (itGo != _gameObjects.end())
+	auto itGo = gameObjects.begin();
+	while (itGo != gameObjects.end())
 	{
 		if (!(*itGo)->isAlive)
 		{
-			itGo = _gameObjects.erase(itGo);
+			itGo = gameObjects.erase(itGo);
 		}
 		else
 		{

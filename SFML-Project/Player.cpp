@@ -2,6 +2,7 @@
 
 Player::Player() : Character() {
 	characterType = CharaType::Player;
+	shapeType = ShapeType::Convex;
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);

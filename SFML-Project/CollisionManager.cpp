@@ -14,194 +14,98 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 	collectibles = &(gm->collectibles);
 	bullets = &(gm->bullets);
 	lightnings = &(gm->lightnings);
+
+	gameObjects = &(gm->gameObjects);
+}
+
+bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
+{
+	if (!goA->IsActive() || !goB->IsActive() || !goA->isAlive || !goB->isAlive) return false;
+
+	switch (goA->shapeType)
+	{
+	// Shape A is Circle
+	case ShapeType::Circle:
+	{
+		sf::CircleShape& goAShape = *static_cast<sf::CircleShape*>(goA->shape);
+
+		switch (goB->shapeType)
+		{
+		case ShapeType::Circle:
+			std::cout << "Coll Circle with Circle not supported" << std::endl;
+			return false;
+		case ShapeType::Rectangle:
+			return CheckCollisionsCircleRectangle(goAShape, *static_cast<sf::RectangleShape*>(goB->shape));
+		case ShapeType::Convex:
+			return CheckCollisionsCircleTriangle(goAShape, *static_cast<sf::ConvexShape*>(goB->shape));
+		default:
+			return false;
+		}
+
+		break;
+	}
+	// Shape A is Rectangle
+	case ShapeType::Rectangle:
+	{
+		sf::RectangleShape& goAShape = *static_cast<sf::RectangleShape*>(goA->shape);
+
+		switch (goB->shapeType)
+		{
+		case ShapeType::Circle:
+			return CheckCollisionsCircleRectangle(*static_cast<sf::CircleShape*>(goB->shape), goAShape);
+		case ShapeType::Rectangle:
+			std::cout << "Coll Rectangle with Rectangle not supported" << std::endl;
+			return false;
+		case ShapeType::Convex:
+			return CheckCollisionsSquareTriangle(goAShape, *static_cast<sf::ConvexShape*>(goB->shape));
+		default:
+			return false;
+		}
+
+		break;
+	}
+	// Shape A is Convex
+	case ShapeType::Convex:
+	{
+		sf::ConvexShape& goAShape = *static_cast<sf::ConvexShape*>(goA->shape);
+
+		switch (goB->shapeType)
+		{
+		case ShapeType::Circle:
+			return CheckCollisionsCircleTriangle(*static_cast<sf::CircleShape*>(goB->shape), goAShape);
+		case ShapeType::Rectangle:
+			return CheckCollisionsSquareTriangle(*static_cast<sf::RectangleShape*>(goB->shape), goAShape);
+		case ShapeType::Convex:
+			return CheckCollisionsTriangleTriangle(goAShape, *static_cast<sf::ConvexShape*>(goB->shape));
+		default:
+			return false;
+		}
+
+		break;
+	}		
+
+	default:
+		return false;
+	}
 }
 
 void CollisionManager::Update(float deltaTime)
 {
-	sf::Vector2f playerPos = pShape->getPosition();
-
-	// CACEnemy with Player
-	std::list<CACEnemy*>::iterator cacEnemyIt = (*cacEnemy).begin();
-	while (cacEnemyIt != (*cacEnemy).end()) 
+	auto itGoA = (*gameObjects).begin();
+	std::list<GameObject*>::iterator itGoB;
+	while (itGoA != (*gameObjects).end())
 	{
-		if (!(*cacEnemyIt)->isAlive) {
-			cacEnemyIt++;
-			continue;
-		}
-
-		sf::RectangleShape* cacEnemyShape = (sf::RectangleShape*)(*cacEnemyIt)->shape;
-
-		if (CheckCollisionsSquareTriangle(*cacEnemyShape, *pShape))
+		itGoB = std::next(itGoA);
+		while (itGoB != (*gameObjects).end())
 		{
-			player->OnCollisionEnter((*cacEnemyIt));
-			(*cacEnemyIt)->OnCollisionEnter(player);
-		}
-		cacEnemyIt++;
-	}
-
-	// ShooterEnemy with Player
-	std::list<ShooterEnemy*>::iterator shooterEnemyIt = (*shooterEnemy).begin();
-	while (shooterEnemyIt != (*shooterEnemy).end())
-	{
-		if (!(*shooterEnemyIt)->isAlive) {
-			shooterEnemyIt++;
-			continue;
-		}
-
-		sf::ConvexShape* shooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyIt)->shape;
-		if (CheckCollisionsTriangleTriangle(*shooterEnemyShape, *pShape))
-		{
-			player->OnCollisionEnter((*shooterEnemyIt));
-			(*shooterEnemyIt)->OnCollisionEnter(player);
-		}
-		shooterEnemyIt++;
-	}
-
-	// TurretEnemy with Player
-	std::list<TurretEnemy*>::iterator turretEnemyIt = (*turretEnemy).begin();
-	while (turretEnemyIt != (*turretEnemy).end())
-	{
-		if (!(*turretEnemyIt)->isAlive) {
-			turretEnemyIt++;
-			continue;
-		}
-
-		sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyIt)->shape;
-		if (CheckCollisionsTriangleTriangle(*turretEnemyShape, *pShape))
-		{
-			player->OnCollisionEnter((*turretEnemyIt));
-			(*turretEnemyIt)->OnCollisionEnter(player);
-		}
-		turretEnemyIt++;
-	}
-
-	// Lightning with Player
-	auto lightningIt = (*lightnings).begin();
-	while (lightningIt != (*lightnings).end())
-	{
-		sf::RectangleShape* lightningShape = (sf::RectangleShape*)(*lightningIt)->shape;
-		//std::cout << "New it" << std::endl;
-		//std::cout << (lightningShape->getPoint(0) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(0) + lightningShape->getPosition()).y << std::endl;
-		//std::cout << (lightningShape->getPoint(1) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(1) + lightningShape->getPosition()).y << std::endl;
-		//std::cout << (lightningShape->getPoint(2) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(2) + lightningShape->getPosition()).y << std::endl;
-		//std::cout << (lightningShape->getPoint(3) + lightningShape->getPosition()).x << " Y: " << (lightningShape->getPoint(3) + lightningShape->getPosition()).y << std::endl;
-		//std::cout << lightningShape->getOrigin().x << " Y:" << lightningShape->getOrigin().y << std::endl;
-
-		Vec2f pos = lightningShape->getPosition();
-		Vec2f p0 = Math::RotatePoint(lightningShape->getPoint(0), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
-		Vec2f p1 = Math::RotatePoint(lightningShape->getPoint(1), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
-		Vec2f p2 = Math::RotatePoint(lightningShape->getPoint(2), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
-		Vec2f p3 = Math::RotatePoint(lightningShape->getPoint(3), Vec2f::zero, Math::ToRad(lightningShape->getRotation())) + pos;
-
-		//std::cout << "X: " << p0.x << " Y: " << p0.y << std::endl;
-		//std::cout << "X: " << p1.x << " Y: " << p1.y << std::endl;
-		//std::cout << "X: " << p2.x << " Y: " << p2.y << std::endl;
-		//std::cout << "X: " << p3.x << " Y: " << p3.y << std::endl;
-
-		if (CheckCollisionsSquareTriangle(*lightningShape, *pShape))
-		{
-			player->OnCollisionEnter((*lightningIt));
-			(*lightningIt)->OnCollisionEnter(player);
-		}
-		lightningIt++;
-	}
-
-	// Others with Bullets
-	std::list<Bullet*>::iterator bulletIt = (*bullets).begin();
-	while (bulletIt != (*bullets).end())
-	{
-		if (!(*bulletIt)->isAlive) {
-			bulletIt++;
-			continue;
-		}
-
-		// With player
-		sf::CircleShape* bulletShape = (sf::CircleShape*)(*bulletIt)->shape;
-		if (CheckCollisionsCircleTriangle(*bulletShape, *pShape))
-		{
-			player->OnCollisionEnter((*bulletIt));
-			(*bulletIt)->OnCollisionEnter(player);
-		}
-
-		// With CacEnemy
-		std::list<CACEnemy*>::iterator cacEnemyBulletsIt = (*cacEnemy).begin();
-		while (cacEnemyBulletsIt != (*cacEnemy).end())
-		{
-			if (!(*cacEnemyBulletsIt)->isAlive) {
-				cacEnemyBulletsIt++;
-				continue;
-			}
-
-			sf::RectangleShape* CACEnemyShape = (sf::RectangleShape*)(*cacEnemyBulletsIt)->shape;
-			if (CheckCollisionsCircleSquare(*bulletShape, *CACEnemyShape))
+			if (CheckCollisionPair(*itGoA, *itGoB))
 			{
-				(*cacEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
-				(*bulletIt)->OnCollisionEnter((*cacEnemyBulletsIt));
+				(*itGoA)->OnCollisionEnter(*itGoB);
+				(*itGoB)->OnCollisionEnter(*itGoA);
 			}
-			cacEnemyBulletsIt++;
+			itGoB++;
 		}
-
-		// With shooter enemy
-		std::list<ShooterEnemy*>::iterator shooterEnemyBulletsIt = (*shooterEnemy).begin();
-		while (shooterEnemyBulletsIt != (*shooterEnemy).end())
-		{
-			if (!(*shooterEnemyBulletsIt)->isAlive) {
-				shooterEnemyBulletsIt++;
-				continue;
-			}
-
-			sf::ConvexShape* ShooterEnemyShape = (sf::ConvexShape*)(*shooterEnemyBulletsIt)->shape;
-			if (CheckCollisionsCircleTriangle(*bulletShape, *ShooterEnemyShape))
-			{
-				(*shooterEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
-				(*bulletIt)->OnCollisionEnter((*shooterEnemyBulletsIt));
-			}
-			shooterEnemyBulletsIt++;
-		}
-
-		// With TurretEnemy
-		std::list<TurretEnemy*>::iterator turretEnemyBulletsIt = (*turretEnemy).begin();
-		while (turretEnemyBulletsIt != (*turretEnemy).end())
-		{
-			if (!(*turretEnemyBulletsIt)->isAlive) {
-				turretEnemyBulletsIt++;
-				continue;
-			}
-
-			sf::ConvexShape* turretEnemyShape = (sf::ConvexShape*)(*turretEnemyBulletsIt)->shape;
-			if (CheckCollisionsCircleTriangle(*bulletShape, *turretEnemyShape))
-			{
-				(*turretEnemyBulletsIt)->OnCollisionEnter((*bulletIt));
-				(*bulletIt)->OnCollisionEnter((*turretEnemyBulletsIt));
-			}
-			turretEnemyBulletsIt++;
-		}
-
-		// With screen
-		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
-		{
-			(*bulletIt)->OnCollisionEnter(nullptr);
-		}
-		bulletIt++;
-	}
-
-	// Collectibles with Player
-	std::list<Collectible*>::iterator collectibleIt = (*collectibles).begin();
-	while (collectibleIt != (*collectibles).end())
-	{
-		if (!(*collectibleIt)->isAlive) {
-			collectibleIt++;
-			continue;
-		}
-
-		sf::CircleShape* collectibles = (sf::CircleShape*)(*collectibleIt)->shape;
-
-		if (CheckCollisionsCircleTriangle(*collectibles, *pShape))
-		{
-			player->OnCollisionEnter((*collectibleIt));
-			(*collectibleIt)->OnCollisionEnter(player);
-		}
-		collectibleIt++;
+		itGoA++;
 	}
 }
 
@@ -304,7 +208,7 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(const sf::ConvexShape& tr
 	return false;
 }
 
-bool CollisionManager::CheckCollisionsCircleSquare(const sf::CircleShape& circle, const sf::RectangleShape& rect)
+bool CollisionManager::CheckCollisionsCircleRectangle(const sf::CircleShape& circle, const sf::RectangleShape& rect)
 {
 	sf::Vector2f rectPos = rect.getPosition();
 	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
