@@ -43,6 +43,7 @@ public :
     int GetPlayerHealth() const;
     float GetTime();
     int GetMultiplicateur() const;
+    int GetLevel() const;
 
 private: 
 

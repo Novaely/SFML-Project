@@ -506,3 +506,7 @@ int GameManager::GetMultiplicateur() const
 {
 	return _multiplicateur;
 }
+int GameManager::GetLevel() const
+{
+	return player->LevelShooter;
+}
