@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include <map>
 #include <functional>
+#include <list>
 
 class GameObject
 {
@@ -34,8 +35,16 @@ class GameObject
 		virtual void OnCollisionEnter(GameObject* other);
 		std::function<void(GameObject*)> pDie;
 
+		static int AddCreateListener(const std::function<void(GameObject*)>& func);
+		static void RemoveCreateListener(const int id);
+		static void NotifyCreated(GameObject* go);
+
+		virtual void Destroy();
+
 	protected:
 		bool _isActive = false;
 		ColorType _color = ColorType::None;
 		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Black}, {ColorType::Red , sf::Color::Red} , {ColorType::Blue , sf::Color::Blue} , {ColorType::Green , sf::Color::Green} , {ColorType::Yellow , sf::Color::Yellow} };
+		
+		static std::map<int, std::function<void(GameObject*)>> _createListeners;
 };

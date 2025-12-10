@@ -32,4 +32,3 @@ class CollisionManager :
 		float DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end);
 		float dotProduct(float vx1, float vy1, float vx2, float vy2);
 };
-

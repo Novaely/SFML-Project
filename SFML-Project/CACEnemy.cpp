@@ -19,10 +19,12 @@ CACEnemy::CACEnemy() : Enemy()
 
 void CACEnemy::Active()
 {
+	Enemy::Active();
 }
 
 void CACEnemy::Desactive()
 {
+	Enemy::Active();
 }
 
 void CACEnemy::Update(float deltaTime)

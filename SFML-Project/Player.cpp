@@ -101,7 +101,7 @@ void Player::Damage(float dmg)
 	health -= dmg;
 	if (health <= 0)
 	{
-		isAlive = false;
+		//isAlive = false;
 		//std::cout << "fin du jeu" << std::endl;
 		//cut le jeu
 	}

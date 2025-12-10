@@ -10,10 +10,12 @@ Enemy::Enemy() : Character()
 
 void Enemy::Active()
 {
+	Character::Active();
 }
 
 void Enemy::Desactive()
 {
+	Character::Active();
 }
 
 void Enemy::OnCollisionEnter(GameObject* other)

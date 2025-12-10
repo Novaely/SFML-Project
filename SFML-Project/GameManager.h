@@ -55,6 +55,8 @@ private:
     float _chronoSpawnEnemies;
     bool _wantSpawnEnemy;
 
+    int _idGameObjectCreateListener = -1;
+
     /// <summary>
     /// score *2 sur x temps
     /// regen vie
@@ -82,6 +84,10 @@ private:
 
     //Singleton
     static GameManager* _instance;
+
+    void NewGameObjectCreated(GameObject* go);
+
+    std::list<GameObject*> _gameObjects;
 
     std::list<CACEnemy*> _cacEnemyToDestroy;
     std::list<ShooterEnemy*> _shooterEnemyToDestroy;

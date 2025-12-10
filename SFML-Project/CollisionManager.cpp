@@ -141,6 +141,7 @@ void CollisionManager::Update(float deltaTime)
 			cacEnemyBulletsIt++;
 		}
 
+		// With shooter enemy
 		std::list<ShooterEnemy*>::iterator shooterEnemyBulletsIt = (*shooterEnemy).begin();
 		while (shooterEnemyBulletsIt != (*shooterEnemy).end())
 		{
@@ -176,6 +177,7 @@ void CollisionManager::Update(float deltaTime)
 			turretEnemyBulletsIt++;
 		}
 
+		// With screen
 		if(!CheckCollisionsCircleSquare(*bulletShape, *(sf::RectangleShape*)windowShape))
 		{
 			(*bulletIt)->OnCollisionEnter(nullptr);

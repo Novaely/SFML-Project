@@ -13,10 +13,10 @@ int main()
 {
 	CustomVector2f windowSize = {800, 600};
 	//initialisation de toutes les variables importantes
+	GameManager gameManager;
 	Player player;
 	int tick = 0;
 	int boucle = 1;
-	GameManager gameManager;
 	InputManager inputManager;
 	PoolManager poolManager;
 	gameManager.player = &player;

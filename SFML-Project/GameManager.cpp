@@ -14,6 +14,12 @@ GameManager::~GameManager()
 	{
 		_instance = nullptr;
 	}
+
+	if (_idGameObjectCreateListener != -1)
+	{
+		GameObject::RemoveCreateListener(_idGameObjectCreateListener);
+		_idGameObjectCreateListener = -1;
+	}
 }
 
 GameManager::GameManager()
@@ -37,6 +43,15 @@ GameManager::GameManager()
 	_timerSpawnEnemies = 5;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
+	_idGameObjectCreateListener = GameObject::AddCreateListener([this](GameObject* go)
+		{
+			NewGameObjectCreated(go);
+		});
+}
+
+void GameManager::NewGameObjectCreated(GameObject* go)
+{
+	_gameObjects.push_back(go);
 }
 
 void GameManager::Update(float deltaTime, CustomVector2f windowSize)
@@ -62,47 +77,11 @@ void GameManager::Update(float deltaTime, CustomVector2f windowSize)
 
 void GameManager::Draw(sf::RenderWindow& window)
 {
-	player->Draw(window);
-
-	auto lightningIt = lightnings.begin();
-	while (lightningIt != lightnings.end())
+	auto goIt = _gameObjects.begin();
+	while (goIt != _gameObjects.end()) 
 	{
-		(*lightningIt)->Draw(window);
-		lightningIt++;
-	}
-
-	std::list<Bullet*>::iterator it = bullets.begin();
-	while (it != bullets.end()) {
-		(*it)->Draw(window);
-		it++;
-	}
-
-	std::list<CACEnemy*>::iterator cacIt = cacEnemy.begin();
-	while (cacIt != cacEnemy.end())
-	{
-		(*cacIt)->Draw(window);
-		cacIt++;
-	}
-
-	std::list<ShooterEnemy*>::iterator shooterIt = shooterEnemy.begin();
-	while (shooterIt != shooterEnemy.end())
-	{
-		(*shooterIt)->Draw(window);
-		shooterIt++;
-	}
-
-	std::list<TurretEnemy*>::iterator turretIt = turretEnemy.begin();
-	while (turretIt != turretEnemy.end())
-	{
-		(*turretIt)->Draw(window);
-		turretIt++;
-	}
-
-	auto collectibleIt = collectibles.begin();
-	while (collectibleIt != collectibles.end())
-	{
-		(*collectibleIt)->Draw(window);
-		collectibleIt++;
+		(*goIt)->Draw(window);
+		goIt++;
 	}
 }
 
@@ -138,6 +117,7 @@ void GameManager::CreateBullet(Team team, CustomVector2f position, float speed, 
 	bullet->isAlive = true;
 	bullet->pDie = [this](GameObject* go) { this->DestroyBullet(go); };
 	bullets.push_back(bullet);
+	//_gameObjects.push_back(bullet);
 }
 
 void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVector2f direction, float damage)
@@ -153,6 +133,8 @@ void GameManager::CreateLightning(Team team, CustomVector2f position, CustomVect
 	lightning->pDie = [this](GameObject* go) { this->DestroyLightning(go); };
 
 	lightning->StartLightning();
+	lightning->Active();
+	//_gameObjects.push_back(lightning);
 }
 
 void GameManager::CreateCollectible(CustomVector2f position) {
@@ -173,6 +155,7 @@ void GameManager::CreateCollectible(CustomVector2f position) {
 			break;
 	}
 	collectibles.push_back(collectible);
+	//_gameObjects.push_back(collectible);
 }
 
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {
@@ -182,6 +165,7 @@ void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType
 	enemy->pDie = [this](GameObject* go) { this->DestroyCacEnemy(go); };
 	(*enemy).Color = color;
 	cacEnemy.push_back(enemy);
+	//_gameObjects.push_back(enemy);
 }
 
 void GameManager::CreateShooterEnemy(CustomVector2f position, float health, ColorType color) {
@@ -196,6 +180,7 @@ void GameManager::CreateShooterEnemy(CustomVector2f position, float health, Colo
 	};
 
 	shooterEnemy.push_back(enemy);
+	//_gameObjects.push_back(enemy);
 }
 
 void GameManager::CreateTurretEnemy(CustomVector2f position, float health, ColorType color) {
@@ -210,6 +195,7 @@ void GameManager::CreateTurretEnemy(CustomVector2f position, float health, Color
 		};
 
 	turretEnemy.push_back(enemy);
+	//_gameObjects.push_back(enemy);
 }
 
 //fonction destruction
@@ -278,7 +264,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			color = ColorType::Green;
 			break;
 	}
-	/*switch (RandomInt(0, 4))
+	switch (RandomInt(0, 4))
 	{
 		case 0:
 		case 1:
@@ -291,8 +277,8 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 		case 4:
 			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 			break;
-	}*/
-	CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+	}
+	//CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
 }
 
 //fonction shot
@@ -325,150 +311,29 @@ void GameManager::OnTurretEnemyShoot(TurretEnemy& enemy)
 }
 
 //fonction update
-void GameManager::UpdateAll(float deltaTime) {
-	player->Update(deltaTime);
-
-	auto lightningIt = lightnings.begin();
-	while (lightningIt != lightnings.end())
+void GameManager::UpdateAll(float deltaTime)
+{
+	auto goIt = _gameObjects.begin();
+	while (goIt != _gameObjects.end())
 	{
-		(*lightningIt)->Update(deltaTime);
-		lightningIt++;
-	}
-
-	std::list<Bullet*>::iterator it = bullets.begin();
-	while (it != bullets.end()) {
-		(*it)->Update(deltaTime);
-		it++;
-	}
-
-	std::list<CACEnemy*>::iterator cacIt = cacEnemy.begin();
-	while (cacIt != cacEnemy.end())
-	{
-		(*cacIt)->Update(deltaTime);
-		cacIt++;
-	}
-
-	std::list<ShooterEnemy*>::iterator shooterIt = shooterEnemy.begin();
-	while (shooterIt != shooterEnemy.end())
-	{
-		(*shooterIt)->Update(deltaTime);
-		shooterIt++;
-	}
-
-	std::list<TurretEnemy*>::iterator turretIt = turretEnemy.begin();
-	while (turretIt != turretEnemy.end())
-	{
-		(*turretIt)->Update(deltaTime);
-		turretIt++;
-	}
-
-	std::list<Collectible*>::iterator itemIt = collectibles.begin();
-	while (itemIt != collectibles.end())
-	{
-		(*itemIt)->Update(deltaTime);
-		itemIt++;
+		(*goIt)->Update(deltaTime);
+		goIt++;
 	}
 }
 
-void GameManager::UpdateDestroyItem() {
-	//check destroy Bullets
-	auto itToDestroyBullets = _bulletsToDestroy.begin();
-	while (itToDestroyBullets != _bulletsToDestroy.end()) {
-		auto itBullets = bullets.begin();
-		while (itBullets != bullets.end()) {
-			if ((*itBullets) == (*itToDestroyBullets)) {
-				itBullets = bullets.erase(itBullets);
-			}
-			else {
-				itBullets++;
-			}
-		}
-		itToDestroyBullets = _bulletsToDestroy.erase(itToDestroyBullets);
-	}
-
-	//check destroy CacEnemy
-	auto itToDestroyCacEnemy = _cacEnemyToDestroy.begin();
-	while (itToDestroyCacEnemy != _cacEnemyToDestroy.end()) {
-		auto itCacEnemy = cacEnemy.begin();
-		while (itCacEnemy != cacEnemy.end()) {
-			if ((*itCacEnemy) == (*itToDestroyCacEnemy)) {
-				itCacEnemy = cacEnemy.erase(itCacEnemy);
-			}
-			else {
-				itCacEnemy++;
-			}
-		}
-		itToDestroyCacEnemy = _cacEnemyToDestroy.erase(itToDestroyCacEnemy);
-	}
-
-	//check destroy ShooterEnemy
-	auto itToDestroyShooterEnemy = _shooterEnemyToDestroy.begin();
-	while (itToDestroyShooterEnemy != _shooterEnemyToDestroy.end()) {
-		auto itShooterEnemy = shooterEnemy.begin();
-		while (itShooterEnemy != shooterEnemy.end()) {
-			if ((*itShooterEnemy) == (*itToDestroyShooterEnemy)) {
-				itShooterEnemy = shooterEnemy.erase(itShooterEnemy);
-			}
-			else {
-				itShooterEnemy++;
-			}
-		}
-		itToDestroyShooterEnemy = _shooterEnemyToDestroy.erase(itToDestroyShooterEnemy);
-	}
-
-	//check destroy TurretEnemy
-	auto itToDestroyTurretEnemy = _turretEnemyToDestroy.begin();
-	while (itToDestroyTurretEnemy != _turretEnemyToDestroy.end()) {
-		auto itTurretEnemy = turretEnemy.begin();
-		while (itTurretEnemy != turretEnemy.end()) {
-			if ((*itTurretEnemy) == (*itToDestroyTurretEnemy)) {
-				itTurretEnemy = turretEnemy.erase(itTurretEnemy);
-			}
-			else {
-				itTurretEnemy++;
-			}
-		}
-		itToDestroyTurretEnemy = _turretEnemyToDestroy.erase(itToDestroyTurretEnemy);
-	}
-
-	//check destroy lightning
-	auto itToDestroyLightning = _lightningToDestroy.begin();
-	while (itToDestroyLightning != _lightningToDestroy.end())
+void GameManager::UpdateDestroyItem()
+{
+	auto itGo = _gameObjects.begin();
+	while (itGo != _gameObjects.end())
 	{
-		auto itLightning = lightnings.begin();
-		while (itLightning != lightnings.end())
+		if (!(*itGo)->isAlive)
 		{
-			if ((*itLightning) == (*itToDestroyLightning))
-			{
-				delete *itLightning;
-				itLightning = lightnings.erase(itLightning);
-			}
-			else
-			{
-				itLightning++;
-			}
+			itGo = _gameObjects.erase(itGo);
 		}
-		itToDestroyLightning = _lightningToDestroy.erase(itToDestroyLightning);
-	}
-
-	//check destroy collectible
-	auto itToDestroyCollectible = _collectiblesToDestroy.begin();
-	while (itToDestroyCollectible != _collectiblesToDestroy.end())
-	{
-		auto itCollectible = collectibles.begin();
-		while (itCollectible != collectibles.end())
+		else
 		{
-			if ((*itCollectible) == (*itToDestroyCollectible))
-			{
-				delete* itCollectible;
-				itCollectible = collectibles.erase(itCollectible);
-			}
-			else
-			{
-				itCollectible++;
-			}
+			itGo++;
 		}
-		itToDestroyCollectible = _collectiblesToDestroy.erase(itToDestroyCollectible);
 	}
 }
 

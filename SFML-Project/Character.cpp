@@ -116,7 +116,8 @@ void Character::Damage(float dmg)
     health -= dmg;
     if (health <= 0)
     {
-        isAlive = false;
-        pDie(this);
+        /*isAlive = false;
+        pDie(this);*/
+        Destroy();
     }
 }
