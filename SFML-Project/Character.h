@@ -6,6 +6,7 @@ class Character : public Movable
 public:
 	Character();
 	float health = 0;
+	float maxHealth = 0;
 	float speedBullet = 0;
 	float timerShootAgain = 0;
 	float chronoShootAgain = 0;

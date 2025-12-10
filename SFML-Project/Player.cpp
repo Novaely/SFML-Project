@@ -33,7 +33,8 @@ Player::Player() : Character() {
 	timerShootAgain = 0.1f;
 	speedBullet = 150;
 	chronoShootAgain = timerShootAgain;
-	health = 3;
+	health = 5;
+	maxHealth = 5;
 	Active();
 }
 
@@ -152,4 +153,8 @@ void Player::Update(float deltaTime)
 			shape->setFillColor(_colors[_color]);
 		}
 	}
+}
+
+float Player::GetMaxHealth() const {
+	return maxHealth;
 }
