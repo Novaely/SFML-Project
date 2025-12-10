@@ -57,6 +57,8 @@ class SingleLightning : public GameObject
         float GetLightningLength();
         Vec2f GetGLobalStartPoint();
 
+        void Active() override;
+
 	private:
         struct SegmentInfos
         {

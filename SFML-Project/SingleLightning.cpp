@@ -6,9 +6,7 @@ SingleLightning::SingleLightning(LightningParameters& params, sf::Color color, s
 	_color = color;
 	_innerLineColor = &innerColor;
 	rotation = _parameters->rotation;
-	//startPoint = _parameters->startPoint;
 	startPoint = Vec2f::zero;
-	//endPoint = startPoint + _parameters->vecDirection * (_parameters->marginStart + _parameters->marginEnd);
 	endPoint = startPoint + Vec2f::right * (_parameters->marginStart + _parameters->marginEnd);
 	finalEndPoint = startPoint + Vec2f::right * (_parameters->endPoint - _parameters->startPoint).GetMagnitude();
 
@@ -111,7 +109,6 @@ void SingleLightning::ComputeFirstPoint()
 	angle *= sideDirection;
 	sideDirection *= -1;
 	float lengthRatio = RandomFloat(_parameters->randomRatioLengthMin, _parameters->randomRatioLengthMax);
-	//float length = _parameters->vecDirector.GetMagnitude() / _parameters->numSegmentPerUnit * lengthRatio;
 	float length = _parameters->unitSize / _parameters->numSegmentPerUnit * lengthRatio;
 	firstPointVector = -(Math::Polar2Cart(Math::ToRad(angle), length));
 }
@@ -119,7 +116,6 @@ void SingleLightning::ComputeFirstPoint()
 void SingleLightning::ClampFirstPoint()
 {
 	const Vec2f& startP = startPoint;
-	//firstPoint = Math::RotatePoint(points.back(), startP, -Math::ToRad(rotation)) + firstPointVector;
 	firstPoint = points.back() + firstPointVector;
 
 	// Clamp height
@@ -141,7 +137,6 @@ void SingleLightning::ClampFirstPoint()
 
 void SingleLightning::CreateNewPoint()
 {
-	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 	points.push_back(firstPoint);
 
 	ComputeFirstPoint();
@@ -164,29 +159,22 @@ void SingleLightning::Spawning(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 		point += Vec2f::right * _parameters->spawnSpeed * deltaTime;
 	}
-	//endPoint += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 	endPoint += Vec2f::right * _parameters->spawnSpeed * deltaTime;
 
 	// Compute next point
 	ClampFirstPoint();
 
-	//if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
 	if (firstPoint.x > startPoint.x + _parameters->marginStart)
 	{
 		CreateNewPoint();
 	}
 
-	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
-
 	// If end reached, go in Moving state
-	//if (points.size() < 1 && (points.front() - _parameters->endPoint).GetMagnitude() <= _parameters->marginEnd)
 	if (points.size() > 1 && points.front().x > finalEndPoint.x + _parameters->marginEnd)
 	{
 		_currentState = &SingleLightning::Moving;
-		//endPoint = _parameters->endPoint;
 		endPoint = finalEndPoint;
 	}
 }
@@ -194,9 +182,6 @@ void SingleLightning::Spawning(float deltaTime)
 void SingleLightning::CheckLastSeg()
 {
 	if (points.size() < 1 || listSegInfos.size() < 1) return;
-
-	//Vec2f rotatedLastPoint = Math::RotatePoint(points.front(), startPoint, -Math::ToRad(rotation));
-	//Vec2f rotatedEndPoint = Math::RotatePoint(_parameters->endPoint, startPoint, -Math::ToRad(rotation));
 
 	Vec2f rotatedLastPoint = points.front();
 	Vec2f rotatedEndPoint = finalEndPoint;
@@ -216,20 +201,16 @@ void SingleLightning::Moving(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 		point += Vec2f::right * _parameters->movingSpeed * deltaTime;
 	}
 
 	// Compute next point
 	ClampFirstPoint();
 
-	//if (firstPoint.x > _parameters->startPoint.x + _parameters->marginStart)
 	if (firstPoint.x > startPoint.x + _parameters->marginStart)
 	{
 		CreateNewPoint();
 	}
-
-	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 
 	CheckLastSeg();
 }
@@ -246,20 +227,11 @@ void SingleLightning::Destroying(float deltaTime)
 	// Moving points
 	for (Vec2f& point : points)
 	{
-		//point += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
 		point += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 	}
 	startPoint += Vec2f::right * _parameters->destroyingSpeed * deltaTime;
 
 	// If destroying but end not reached, go as far as possible and stop at the end
-	/*if (endPoint != _parameters->endPoint)
-	{
-		if ((endPoint - startPoint).GetMagnitude() < (_parameters->endPoint - startPoint).GetMagnitude())
-		{
-			endPoint += _parameters->vecDirection * _parameters->spawnSpeed * deltaTime;
-		}
-		else endPoint = _parameters->endPoint;
-	}*/
 
 	if (endPoint != finalEndPoint)
 	{
@@ -271,8 +243,6 @@ void SingleLightning::Destroying(float deltaTime)
 	}
 
 	ClampFirstPoint();
-
-	//firstPoint = Math::RotatePoint(firstPoint, startPoint, Math::ToRad(rotation));
 
 	CheckLastSeg();
 }
@@ -325,3 +295,5 @@ Vec2f SingleLightning::GetGLobalStartPoint()
 {
 	return _parameters->startPoint + Math::RotatePoint(startPoint, Vec2f::zero, rotation);
 }
+
+void SingleLightning::Active() {}
