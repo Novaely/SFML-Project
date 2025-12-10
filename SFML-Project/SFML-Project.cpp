@@ -34,7 +34,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "SFML-Project");
 	// Initialise everything below
 	// 
-	 // Game loop
+	// Game loop
 	while (window.isOpen()) {
 		deltaTime = clock.restart().asSeconds();
 

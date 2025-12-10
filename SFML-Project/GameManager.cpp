@@ -165,6 +165,7 @@ void GameManager::CreateCollectible(CustomVector2f position) {
 			collectible->pCollected = [this](GameObject* go) { this->BonusTir(); };
 			break;
 	}
+	collectible->Active();
 }
 
 void GameManager::CreateCacEnemy(CustomVector2f position, float health,ColorType color) {

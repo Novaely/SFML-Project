@@ -12,10 +12,8 @@ Collectible::Collectible() : GameObject() {
 	broadRadius = 5;
 }
 
-void Collectible::OnCollisionEnter(GameObject* other) {
-
-
+void Collectible::OnCollisionEnter(GameObject* other) 
+{
 	pCollected(this);
-	this->isAlive = false;
-	pDie(this);
+	Destroy();
 }
