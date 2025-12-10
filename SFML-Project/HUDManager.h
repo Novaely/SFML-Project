@@ -11,6 +11,7 @@ private:
 		sf::Text _timer;
 		sf::Text _multiplicateur;
 		sf::Text _level;
+		sf::Text _fps;
 		sf::Font _font;
 
     public:

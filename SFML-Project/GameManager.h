@@ -15,6 +15,7 @@ public :
     static GameManager* GetInstance();
 
     int score;
+    int fps;
 
     Player* player = nullptr;
     PoolManager* poolManager = nullptr;
@@ -45,6 +46,7 @@ public :
     float GetTime();
     int GetMultiplicateur() const;
     int GetLevel() const;
+    int GetFPS() const;
 
 private: 
 

@@ -529,3 +529,7 @@ int GameManager::GetLevel() const
 {
 	return player->LevelShooter;
 }
+int GameManager::GetFPS() const
+{
+	return fps;
+}
