@@ -55,7 +55,7 @@ void GameManager::Update(float deltaTime, CustomVector2f& windowSize)
 	_time += deltaTime;
 
 	if (_wantSpawnEnemy) {
-		if (_enemies.size() == 0 || _chronoSpawnEnemies >= _timerSpawnEnemies) {
+		if ((_wave != 0 && _enemies.size() == 0) || _chronoSpawnEnemies >= _timerSpawnEnemies) {
 			_chronoSpawnEnemies = 0;
 			SpawnWaveEnemy(windowSize);
 			_wave++;
@@ -111,9 +111,9 @@ void GameManager::RestartGame()
 	_numberOfEnemyForWave = 5;
 	_numberOfEnemyUp = 1;
 	_numberOfWaveBeforeUpNumberOfEnemy = 5;
-	_timerSpawnEnemies = 10;
+	_timerSpawnEnemies = 10.0f;
 	_wave = 0;
-	_chronoSpawnEnemies = _timerSpawnEnemies;
+	_chronoSpawnEnemies = _timerSpawnEnemies - _timeBeforefirstEnemy;
 	_time = 0;
 
 	pause = false;

@@ -66,6 +66,7 @@ private:
     float _chronoSpawnEnemies;
     bool _wantSpawnEnemy;
     int _wave;
+    float _timeBeforefirstEnemy = 2.0f;
     CustomVector2f _radiusSpawnEnemy;
 
     int _idGameObjectCreateListener = -1;

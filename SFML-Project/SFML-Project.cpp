@@ -52,7 +52,7 @@ int main()
 			{
 				Vec2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-				if (hudManager.DoRestartButtonContainsPos(mousePos))
+				if (gameManager.pause && hudManager.DoRestartButtonContainsPos(mousePos))
 				{
 					gameManager.RestartGame();
 				}
@@ -74,7 +74,7 @@ int main()
 			gameManager.Update(deltaTime, windowSize);
 			collisionManager.Update(deltaTime);
 			gameManager.UpdateDestroyItem();
-
+			
 			//Render
 			window.clear();
 			gameManager.Draw(window);
