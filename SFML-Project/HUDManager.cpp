@@ -21,11 +21,11 @@ HUDManager::HUDManager()
 	_level.setFillColor(sf::Color::White);   // Couleur
 	_multiplicateur.setFillColor(sf::Color::White);   // Couleur
 	_fps.setFillColor(sf::Color::White);   // Couleur
-	_score.setPosition(50, 60);             // Position dans la fenêtre
-	_timer.setPosition(50, 25);             // Position dans la fenêtre
-	_level.setPosition(50, 95);             // Position dans la fenêtre
-	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
-	_fps.setPosition(650, 550);             // Position dans la fenêtre
+	_score.setPosition(50, 60);             // Position dans la fenÃªtre
+	_timer.setPosition(50, 25);             // Position dans la fenÃªtre
+	_level.setPosition(50, 95);             // Position dans la fenÃªtre
+	_multiplicateur.setPosition(30, 550);             // Position dans la fenÃªtre
+	_fps.setPosition(650, 550);             // Position dans la fenÃªtre
 
 	_button.setFillColor(sf::Color::Blue);
 	_button.setSize({200, 35});
@@ -74,12 +74,27 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	}
 }
 
-void HUDManager::CreateLifePoint(CustomVector2f position, sf::RenderWindow& window)
+void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window)
 {
-	sf::CircleShape lifePointShape(10.0f);
-	lifePointShape.setFillColor(sf::Color::Red);
-	lifePointShape.setPosition(position);
-	window.draw(lifePointShape);
+	float radius = 7.5f;
+
+	sf::CircleShape circLeft(radius);
+	circLeft.setFillColor(sf::Color::Red);
+	circLeft.setPosition(position - Vec2f(radius, 0));
+
+	sf::CircleShape circRight(radius);
+	circRight.setFillColor(sf::Color::Red);
+	circRight.setPosition(position + Vec2f(radius, 0));
+
+	sf::ConvexShape convexBot(3);
+	convexBot.setFillColor(sf::Color::Red);
+	convexBot.setPoint(0, Vec2f(0, -radius * 3));
+	convexBot.setPoint(1, Vec2f(radius * 2.125f, 0));
+	convexBot.setPoint(2, Vec2f(-radius * 2.125f, 0));	
+	convexBot.setRotation(180);
+	convexBot.setPosition(position + Vec2f(radius, radius));
+
+	window.draw(circLeft);
+	window.draw(circRight);
+	window.draw(convexBot);
 }
-
-

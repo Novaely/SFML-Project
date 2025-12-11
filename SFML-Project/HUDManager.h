@@ -21,6 +21,6 @@ private:
 		GameManager* gameManager;	
 
 	    void Draw(sf::RenderWindow& window) override;
-        void CreateLifePoint(CustomVector2f position, sf::RenderWindow& window);
+        void CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window);
 };
 

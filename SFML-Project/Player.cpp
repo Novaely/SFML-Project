@@ -26,8 +26,8 @@ Player::Player() : Character() {
 
 	maxInputSpeed = 200;
 	acceleration = 800;
-	stopFriction = 400;
-	turnBackFriction = 800;
+	stopFriction = 800;
+	turnBackFriction = 1600;
 
 	rotationSpeed = 200;
 	timerShootAgain = 0.1f;
