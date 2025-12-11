@@ -28,6 +28,8 @@ public :
     void Draw(sf::RenderWindow& window) override;
     void UpdateDestroyItem();
 
+    void RestartGame();
+
     void PlayerShoot();
     //fonction creation
     void CreateBullet(Team team, CustomVector2f position, float speed, CustomVector2f direction, float damage, ColorType colorType);

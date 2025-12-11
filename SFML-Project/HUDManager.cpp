@@ -98,3 +98,8 @@ void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindo
 	window.draw(circRight);
 	window.draw(convexBot);
 }
+
+bool HUDManager::DoRestartButtonContainsPos(Vec2f& pos) 
+{
+	return _button.getGlobalBounds().contains(pos);
+}

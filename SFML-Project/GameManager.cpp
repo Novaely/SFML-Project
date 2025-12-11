@@ -35,17 +35,7 @@ GameManager::GameManager()
 		return;
 	}
 
-	score = 0;
-	_scoreUpdate = 1;
-	_multiplicateur = 1;
-	_timerBonusScore = 0.0f;
-	_timerBonusScoreCheck = 0.0f;
-	_numberOfEnemyForWave = 5;
-	_numberOfEnemyUp = 1;
-	_numberOfWaveBeforeUpNumberOfEnemy = 5;
-	_timerSpawnEnemies = 10;
-	_wave = 0;
-	_chronoSpawnEnemies = _timerSpawnEnemies;
+	RestartGame();
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 	_idGameObjectCreateListener = GameObject::AddCreateListener([this](GameObject* go)
 		{
@@ -96,6 +86,23 @@ void GameManager::Draw(sf::RenderWindow& window)
 		(*goIt)->Draw(window);
 		goIt++;
 	}
+}
+
+void GameManager::RestartGame()
+{
+	score = 0;
+	_scoreUpdate = 1;
+	_multiplicateur = 1;
+	_timerBonusScore = 0.0f;
+	_timerBonusScoreCheck = 0.0f;
+	_numberOfEnemyForWave = 5;
+	_numberOfEnemyUp = 1;
+	_numberOfWaveBeforeUpNumberOfEnemy = 5;
+	_timerSpawnEnemies = 10;
+	_wave = 0;
+	_chronoSpawnEnemies = _timerSpawnEnemies;
+
+	pause = false;
 }
 
 //fonction bonus

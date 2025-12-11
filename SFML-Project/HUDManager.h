@@ -20,6 +20,7 @@ private:
 
 		GameManager* gameManager;	
 
+		bool DoRestartButtonContainsPos(Vec2f& pos);
 	    void Draw(sf::RenderWindow& window) override;
         void CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window);
 };
