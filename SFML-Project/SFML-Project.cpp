@@ -14,13 +14,10 @@ int main()
 	CustomVector2f windowSize = {800, 600};
 	//initialisation de toutes les variables importantes
 	GameManager gameManager;
-	Player player;
 	int tick = 0;
 	int boucle = 1;
 	InputManager inputManager;
 	PoolManager poolManager;
-	gameManager.player = &player;
-	player.position = { 400,300 };
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(&gameManager, windowSize);
 	HUDManager hudManager;
@@ -46,13 +43,22 @@ int main()
 				window.close();
 			}
 			if (event.type == sf::Event::KeyPressed) {
-				inputManager.OneClickInputPressed(event, player);
+				inputManager.OneClickInputPressed(event, *(gameManager.player));
 			}
 			if (event.type == sf::Event::KeyReleased) {
 				inputManager.OneClickInputUnpressed(event);
 			}
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+			{
+				Vec2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+				if (hudManager.DoRestartButtonContainsPos(mousePos))
+				{
+					gameManager.RestartGame();
+				}
+			}
 		}
-		inputManager.ContinuInputCheck(event, player);
+		inputManager.ContinuInputCheck(event, *(gameManager.player));
 
 		//Update
 		if (gameManager.pause == false)

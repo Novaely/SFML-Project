@@ -96,6 +96,8 @@ void GameObject::OnCollisionEnter(GameObject* other)
 
 void GameObject::Destroy()
 {
+	if (!isAlive) return;
+
 	_isActive = false;
 	isAlive = false;
 	if (pDie != nullptr)

@@ -6,6 +6,17 @@ HUDManager::HUDManager()
 	gameManager = GameManager::GetInstance();
 	_font.loadFromFile("ARIAL.TTF");
 
+	SetGameHUDValues();
+	wasGamePause = false;
+
+	_button.setFillColor(sf::Color::Blue);
+	_button.setSize({200, 35});
+	_button.setPosition({300, 275});
+
+}
+
+void HUDManager::SetGameHUDValues()
+{
 	_score.setFont(_font);                // Police
 	_timer.setFont(_font);                // Police
 	_level.setFont(_font);                // Police
@@ -26,17 +37,30 @@ HUDManager::HUDManager()
 	_level.setPosition(50, 95);             // Position dans la fenêtre
 	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
 	_fps.setPosition(650, 550);             // Position dans la fenêtre
+}
 
-	_button.setFillColor(sf::Color::Blue);
-	_button.setSize({200, 35});
-	_button.setPosition({300, 275});
-
+void HUDManager::SetPauseHUDValues()
+{
+	_level.setPosition(320, 150);
+	_level.setCharacterSize(32);
+	_level.setFillColor(sf::Color::Red);
+	_level.setString("Game Over");
+	_score.setPosition(315, 200);
+	_score.setString("Score final : " + std::to_string(gameManager->score));
+	_multiplicateur.setPosition(350, 275);
+	_multiplicateur.setString("Restart");
 }
 
 void HUDManager::Draw(sf::RenderWindow& window)
 {
 	if (!gameManager->pause)
 	{
+		if (wasGamePause)
+		{
+			wasGamePause = false;
+			SetGameHUDValues();
+		}
+
 		for (int i = 0; i < gameManager->player->health; i++)
 		{
 			CreateLifePoint({ (9.0f + i) * 40.0f, 25.0f }, window);
@@ -57,15 +81,11 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	}
 	else
 	{
-		_level.setPosition(320, 150);
-		_level.setCharacterSize(32);  
-		_level.setFillColor(sf::Color::Red);  
-		_level.setString("Game Over");
-		_score.setPosition(315,200);
-		_score.setString("Score final : " + std::to_string(gameManager->score));
-		_multiplicateur.setPosition(350, 275);
-		_multiplicateur.setString("Restart");
-
+		if (!wasGamePause)
+		{
+			wasGamePause = true;
+			SetPauseHUDValues();
+		}
 
 		window.draw(_score);
 		window.draw(_level);

@@ -262,6 +262,12 @@ void PoolManager::ReturnEnemy(TurretEnemy* enemy)
 
 	indexOfFirstTurretEnemy--;
 
+	if (indexOfFirstTurretEnemy < 0)
+	{
+		std::cout << "Returned a turret enemy but pool is full" << std::endl;
+		indexOfFirstTurretEnemy = 0;
+	}
+
 	turretEnemyPool[indexOfFirstTurretEnemy] = enemy;
 }
 

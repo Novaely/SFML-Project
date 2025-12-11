@@ -15,6 +15,11 @@ private:
 		sf::Font _font;
 		sf::RectangleShape _button;
 
+		bool wasGamePause = false;
+
+		void SetGameHUDValues();
+		void SetPauseHUDValues();
+
     public:
 		HUDManager();
 

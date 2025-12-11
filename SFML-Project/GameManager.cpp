@@ -35,12 +35,13 @@ GameManager::GameManager()
 		return;
 	}
 
-	RestartGame();
-	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 	_idGameObjectCreateListener = GameObject::AddCreateListener([this](GameObject* go)
 		{
 			NewGameObjectCreated(go);
 		});
+
+	RestartGame();
+	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
 	_radiusSpawnEnemy = (200, 200);
 }
 
@@ -90,6 +91,18 @@ void GameManager::Draw(sf::RenderWindow& window)
 
 void GameManager::RestartGame()
 {
+	for (GameObject* pGo : gameObjects)
+	{
+		pGo->Destroy();
+	}
+
+	UpdateDestroyItem();
+
+	if (player != nullptr)
+	{
+		delete player;
+	}
+
 	score = 0;
 	_scoreUpdate = 1;
 	_multiplicateur = 1;
@@ -101,8 +114,12 @@ void GameManager::RestartGame()
 	_timerSpawnEnemies = 10;
 	_wave = 0;
 	_chronoSpawnEnemies = _timerSpawnEnemies;
+	_time = 0;
 
 	pause = false;
+
+	player = new Player();
+	player->position = { 400,300 };
 }
 
 //fonction bonus
@@ -376,6 +393,10 @@ void GameManager::UpdateDestroyItem()
 	{
 		if (!(*itGo)->isAlive)
 		{
+			if ((*itGo)->characterType == CharaType::Bullet)
+			{
+				poolManager->ReturnBullet(static_cast<Bullet*>(*itGo));
+			}
 			itGo = gameObjects.erase(itGo);
 		}
 		else

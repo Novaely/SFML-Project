@@ -19,32 +19,6 @@ void Character::Update(float deltaTime)
 
 void Character::Move(float deltaTime)
 {
-    /*if (inputDirection == CustomVector2f::zero)
-    {
-        speed -= stopFriction * deltaTime;
-    }
-    else
-    {
-        if (inputDirection.Dot(moveDirection) >= 0)
-        {
-            speed += acceleration * deltaTime;
-            moveDirection = moveDirection + (inputDirection - moveDirection) * directionChangeSpeed * deltaTime;
-        }
-        else
-        {
-            moveDirection = moveDirection + (inputDirection - moveDirection) * turnBackDirectionChangeSpeed * deltaTime;
-        }
-        
-        if (moveDirection.DistanceTo(inputDirection) <= diretionChangeTreshold)
-        {
-            moveDirection = inputDirection;
-        }
-    }
-
-    speed = Math::Clamp(speed, 0, maxInputSpeed);
-
-    Movable::Move(deltaTime);*/
-
     // If no inputs, apply stop friction
     if (inputDirection == Vec2f::zero && velocity != Vec2f::zero)
     {
