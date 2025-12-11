@@ -48,7 +48,7 @@ class GameObject
 	protected:
 		bool _isActive = false;
 		ColorType _color = ColorType::None;
-		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Transparent}, {ColorType::Red , sf::Color::Red} , {ColorType::Blue , sf::Color::Cyan} , {ColorType::Green , sf::Color::Green} , {ColorType::Yellow , sf::Color::Yellow} };
+		std::map<ColorType, sf::Color> _colors = { {ColorType::None , sf::Color::Transparent}, {ColorType::Red , sf::Color::Red} , {ColorType::Blue , sf::Color::Cyan} , {ColorType::Green , sf::Color(0, 166, 0)} , {ColorType::Yellow , sf::Color::Yellow}};
 		
 		static std::map<int, std::function<void(GameObject*)>> _createListeners;
 		void SetBroadRadiusFromPoints(const Vec2f points[], int numPoints);
