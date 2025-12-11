@@ -6,7 +6,9 @@ Bullet::Bullet() : Movable()
 	shapeType = ShapeType::Circle;
 	shape = new sf::CircleShape();
 
-	((sf::CircleShape*)shape)->setRadius(5);
+	sf::CircleShape* pShape = (sf::CircleShape*)shape;
+	pShape->setRadius(5);
+	pShape->setOrigin(5, 5);
 	broadRadius = 5;
 
 	Desactive();

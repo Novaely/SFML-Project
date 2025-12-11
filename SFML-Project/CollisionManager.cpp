@@ -10,6 +10,57 @@ CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
 	gameObjects = &(gm->gameObjects);
 }
 
+void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
+{
+	if (rectShape != nullptr)
+	{
+		Vec2f rectPos = rectShape->getPosition();
+		float rectRotation = Math::ToRad(rectShape->getRotation());
+
+		numPoints = rectShape->getPointCount();
+		
+		points.resize(numPoints, Vec2f::zero);
+		normals.resize(numPoints, Vec2f::zero);
+
+		for (int i = 0; i < numPoints; i++)
+		{
+			points[i] = Math::RotatePoint(rectShape->getPoint(i), Vec2f::zero, rectRotation) + rectPos;
+		}
+
+		int rectNextIndex;
+		for (int i = 0; i < numPoints; i++)
+		{
+			rectNextIndex = (i + 1) % numPoints;
+			normals[i] = (points[rectNextIndex] - points[i]).GetNormalClockWise().GetNormalised();
+		}
+
+		return;
+	}
+	if (convexShape != nullptr)
+	{
+		Vec2f trianPos = convexShape->getPosition();
+		float trianRotation = Math::ToRad(convexShape->getRotation());
+
+		numPoints = convexShape->getPointCount();
+		points.resize(numPoints, Vec2f::zero);
+		normals.resize(numPoints, Vec2f::zero);
+
+		for (int i = 0; i < numPoints; i++)
+		{
+			points[i] = Math::RotatePoint(convexShape->getPoint(i), Vec2f::zero, trianRotation) + trianPos;
+		}
+
+		int trianNextIndex;
+		for (int i = 0; i < numPoints; i++)
+		{
+			trianNextIndex = (i + 1) % numPoints;
+			normals[i] = (points[trianNextIndex] - points[i]).GetNormalClockWise().GetNormalised();
+		}
+
+		return;
+	}
+}
+
 bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 {
 	if (!goA->IsActive() || !goB->IsActive() || !goA->isAlive || !goB->isAlive) return false;
@@ -127,58 +178,28 @@ bool CollisionManager::IsPointInConvexShape(const Vec2f& point, const std::vecto
 bool CollisionManager::CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian)
 {
 	// Get Rectangle Points & Normals
-	Vec2f rectPos = rect.getPosition();
-	float rectRotation = Math::ToRad(rect.getRotation());
-
-	int rectNumPoints = rect.getPointCount();
-	std::vector<Vec2f> rectPoints(rectNumPoints, Vec2f::zero);
-	std::vector<Vec2f> rectNormals(rectNumPoints, Vec2f::zero);
-
-	for (int i = 0; i < rectNumPoints; i++)
-	{
-		rectPoints[i] = Math::RotatePoint(rect.getPoint(i), Vec2f::zero, rectRotation) + rectPos;
-	}
-
-	int rectNextIndex;
-	for (int i = 0; i < rectNumPoints; i++)
-	{
-		rectNextIndex = (i + 1) % rectNumPoints;
-		rectNormals[i] = (rectPoints[rectNextIndex] - rectPoints[i]).GetNormalClockWise().GetNormalised();
-	}
+	ConvexShapeInfo rectInfo;
+	rectInfo.rectShape = &rect;
+	rectInfo.ComputPointsAndNormals();
 
 	// Get Triangle Points & Normals
-	Vec2f trianPos = trian.getPosition();
-	float trianRotation = Math::ToRad(trian.getRotation());
-
-	int trianNumPoints = trian.getPointCount();
-	std::vector<Vec2f> trianPoints(trianNumPoints, Vec2f::zero);
-	std::vector<Vec2f> trianNormals(trianNumPoints, Vec2f::zero);
-
-	for (int i = 0; i < trianNumPoints; i++)
-	{
-		trianPoints[i] = Math::RotatePoint(trian.getPoint(i), Vec2f::zero, trianRotation) + trianPos;
-	}
-
-	int trianNextIndex;
-	for (int i = 0; i < trianNumPoints; i++)
-	{
-		trianNextIndex = (i + 1) % trianNumPoints;
-		trianNormals[i] = (trianPoints[trianNextIndex] - trianPoints[i]).GetNormalClockWise().GetNormalised();
-	}
+	ConvexShapeInfo trianInfo;
+	trianInfo.convexShape = &trian;
+	trianInfo.ComputPointsAndNormals();
 
 	// Square -> Triangle
-	for (int i = 0; i < rectNumPoints; i++)
+	for (int i = 0; i < rectInfo.numPoints; i++)
 	{
-		if (IsPointInConvexShape(rectPoints[i], trianPoints, trianNormals))
+		if (IsPointInConvexShape(rectInfo.points[i], trianInfo.points, trianInfo.normals))
 		{
 			return true;
 		}
 	}
 
 	// Triangle -> Square
-	for (int i = 0; i < trianNumPoints; i++)
+	for (int i = 0; i < trianInfo.numPoints; i++)
 	{
-		if (IsPointInConvexShape(trianPoints[i], rectPoints, rectNormals))
+		if (IsPointInConvexShape(trianInfo.points[i], rectInfo.points, rectInfo.normals))
 		{
 			return true;
 		}
@@ -195,79 +216,82 @@ bool CollisionManager::CheckCollisionsTriangleTriangle(const sf::ConvexShape& tr
 	Vec2f triangle1[3] = { {(trian1.getPoint(0) + trianPos1).x, (trian1.getPoint(0) + trianPos1).y}, {(trian1.getPoint(1) + trianPos1).x, (trian1.getPoint(1) + trianPos1).y}, {(trian1.getPoint(2) + trianPos1).x, (trian1.getPoint(2) + trianPos1).y} };
 	Vec2f triangle2[3] = { {(trian2.getPoint(0) + trianPos2).x, (trian2.getPoint(0) + trianPos2).y}, {(trian2.getPoint(1) + trianPos2).x, (trian2.getPoint(1) + trianPos2).y}, {(trian2.getPoint(2) + trianPos2).x, (trian2.getPoint(2) + trianPos2).y} };
 
+	ConvexShapeInfo trianA;
+	trianA.convexShape = &trian1;
+	trianA.ComputPointsAndNormals();
 
-	for (int i = 0; i < 3; i++)
+	ConvexShapeInfo trianB;
+	trianB.convexShape = &trian2;
+	trianB.ComputPointsAndNormals();
+
+	// A -> B
+	for (int i = 0; i < trianA.numPoints; i++)
 	{
-		if (IsPointInTriangle(triangle1[i], triangle2))
-		{
-			return true;
-		}
-		if (IsPointInTriangle(triangle2[i], triangle1))
+		if (IsPointInConvexShape(trianA.points[i], trianB.points, trianB.normals))
 		{
 			return true;
 		}
 	}
+
+	// B -> A
+	for (int i = 0; i < trianB.numPoints; i++)
+	{
+		if (IsPointInConvexShape(trianB.points[i], trianA.points, trianA.normals))
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
 bool CollisionManager::CheckCollisionsCircleRectangle(const sf::CircleShape& circle, const sf::RectangleShape& rect)
 {
-	sf::Vector2f rectPos = rect.getPosition();
-	sf::Vector2f p1 = rect.getPoint(0) + rectPos;
-	sf::Vector2f p2 = rect.getPoint(1) + rectPos;
-	sf::Vector2f p3 = rect.getPoint(2) + rectPos;
-	sf::Vector2f p4 = rect.getPoint(3) + rectPos;
-	Vec2f square[4] = { {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, {p4.x, p4.y} };
-
-	float rw = square[1].x - square[0].x; // width
-	float rh = square[3].y - square[0].y; // height
-	float rx = square[0].x; // x position
-	float ry = square[0].y; // y position
+	ConvexShapeInfo rectInfo;
+	rectInfo.rectShape = &rect;
+	rectInfo.ComputPointsAndNormals();
 
 	float cr = circle.getRadius(); // circle radius
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
+	Vec2f centerCircle = circle.getPosition();
 
-	// Trouve le point du rectangle le plus proche du centre du cercle
-	float closestX = cx;
-	if (closestX < rx) closestX = rx;
-	else if (closestX > rx + rw) closestX = rx + rw;
-
-	float closestY = cy;
-	if (closestY < ry) closestY = ry;
-	else if (closestY > ry + rh) closestY = ry + rh;
-
-	// Distance au carré entre le centre et ce point le plus proche
-	float dx = cx - closestX;
-	float dy = cy - closestY;
-
-	if (dx * dx + dy * dy <= cr * cr)
+	if (IsPointInConvexShape(centerCircle, rectInfo.points, rectInfo.normals))
 	{
 		return true;
 	}
+
+	for (int i = 0; i < rectInfo.numPoints; i++)
+	{
+		float dist = DistancePointToSegment(centerCircle, rectInfo.points[i], rectInfo.points[(i + 1) % rectInfo.numPoints]);
+		if (dist <= cr)
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
 bool CollisionManager::CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian)
 {
-	sf::Vector2f trianPos = trian.getPosition();
-
-	Vec2f triangle[3] = { {(trian.getPoint(0) + trianPos).x, (trian.getPoint(0) + trianPos).y},  {(trian.getPoint(1) + trianPos).x, (trian.getPoint(1) + trianPos).y}, {(trian.getPoint(2) + trianPos).x, (trian.getPoint(2) + trianPos).y} };
+	ConvexShapeInfo trianInfo;
+	trianInfo.convexShape = &trian;
+	trianInfo.ComputPointsAndNormals();
 
 	float cr = circle.getRadius(); // circle radius
 	float cx = circle.getPosition().x; // circle x position (center)
 	float cy = circle.getPosition().y; // circle y position (center)
-	Vec2f centerCircle = { circle.getPosition().x, circle.getPosition().y };
+	Vec2f centerCircle = circle.getPosition();
 
-	if (IsPointInTriangle(centerCircle, triangle))
+	if (IsPointInConvexShape(centerCircle, trianInfo.points, trianInfo.normals))
 	{
 		return true;
 	}
 
-
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < trianInfo.numPoints; i++)
 	{
-		float dist = DistancePointToSegment(centerCircle, triangle[i], triangle[(i + 1) % 3]);
+		float dist = DistancePointToSegment(centerCircle, trianInfo.points[i], trianInfo.points[(i + 1) % trianInfo.numPoints]);
 		if (dist <= cr)
 		{
 			return true;
@@ -308,39 +332,4 @@ float CollisionManager::DistancePointToSegment(const Vec2f& point, const Vec2f& 
 	float dx = point.x - projection.x;
 	float dy = point.y - projection.y;
 	return std::sqrt(dx * dx + dy * dy);
-}
-
-
-bool CollisionManager::IsPointInTriangle(const Vec2f& point, Vec2f triangle[3])
-{
-	Vec2f AB = triangle[1] - triangle[0];
-	Vec2f BC = triangle[2] - triangle[1];
-	Vec2f CA = triangle[0] - triangle[2];
-
-	Vec2f ABP = point - triangle[0] + AB * 0.5f;
-	Vec2f BCP = point - triangle[1] + BC * 0.5f;
-	Vec2f CAP = point - triangle[2] + CA * 0.5f;
-
-	Vec2f n1 = Vec2f(-AB.y, AB.x);
-	Vec2f n2 = Vec2f(-BC.y, BC.x);
-	Vec2f n3 = Vec2f(-CA.y, CA.x);
-
-	if (dotProduct(ABP.x, ABP.y, n1.x, n1.y) < 0)
-	{
-		return false;
-	}
-	if (dotProduct(BCP.x, BCP.y, n2.x, n2.y) < 0)
-	{
-		return false;
-	}
-	if (dotProduct(CAP.x, CAP.y, n3.x, n3.y) < 0)
-	{
-		return false;
-	}
-	return true;
-}
-
-float CollisionManager::dotProduct(float vx1, float vy1, float vx2, float vy2)
-{
-	return vx1 * vx2 + vy1 * vy2;
 }

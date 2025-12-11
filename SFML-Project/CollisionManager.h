@@ -15,6 +15,18 @@ class CollisionManager :
 		GameManager* gameManager;
 		void Update( float deltaTime);
 	private: 
+
+		struct ConvexShapeInfo
+		{
+			const sf::RectangleShape* rectShape = nullptr;
+			const sf::ConvexShape* convexShape = nullptr;
+			int numPoints = 0;
+			std::vector<Vec2f> points;
+			std::vector<Vec2f> normals;
+
+			void ComputPointsAndNormals();
+		};
+
 		bool CheckCollisionPair(GameObject* goA, GameObject* goB);
 		bool CanCollide(GameObject* goA, GameObject* goB);
 		bool AreInDistance(GameObject* goA, GameObject* goB);
@@ -25,7 +37,5 @@ class CollisionManager :
 		bool CheckCollisionsCircleTriangle(const sf::CircleShape& circle, const sf::ConvexShape& trian);
 
 		bool IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals);
-		bool IsPointInTriangle(const Vec2f& point, Vec2f triangle[3]);
 		float DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end);
-		float dotProduct(float vx1, float vy1, float vx2, float vy2);
 };
