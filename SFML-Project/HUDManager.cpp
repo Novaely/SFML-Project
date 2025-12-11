@@ -99,10 +99,12 @@ void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindo
 	float radius = 7.5f;
 
 	sf::CircleShape circLeft(radius);
+	circLeft.setOrigin(Vec2f(radius));
 	circLeft.setFillColor(sf::Color::Red);
 	circLeft.setPosition(position - Vec2f(radius, 0));
 
 	sf::CircleShape circRight(radius);
+	circRight.setOrigin(Vec2f(radius));
 	circRight.setFillColor(sf::Color::Red);
 	circRight.setPosition(position + Vec2f(radius, 0));
 
@@ -110,9 +112,9 @@ void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindo
 	convexBot.setFillColor(sf::Color::Red);
 	convexBot.setPoint(0, Vec2f(0, -radius * 3));
 	convexBot.setPoint(1, Vec2f(radius * 2.125f, 0));
-	convexBot.setPoint(2, Vec2f(-radius * 2.125f, 0));	
+	convexBot.setPoint(2, Vec2f(-radius * 2.125f, 0));
 	convexBot.setRotation(180);
-	convexBot.setPosition(position + Vec2f(radius, radius));
+	convexBot.setPosition(position);
 
 	window.draw(circLeft);
 	window.draw(circRight);

@@ -21,13 +21,13 @@ void Bullet::Active()
 
 	if (team == Team::Enemy)
 	{
-		layer = CollisionLayer::BulletEnemy;
-		collisionMask = static_cast<LayerMask>(CollisionLayer::Player);
+		layer = CollisionLayer::Layer_BulletEnemy;
+		collisionMask = CollisionLayer::Layer_Player;
 	}
 	else
 	{
-		layer = CollisionLayer::BulletPlayer;
-		collisionMask = static_cast<LayerMask>(CollisionLayer::Enemy);
+		layer = CollisionLayer::Layer_BulletPlayer;
+		collisionMask = CollisionLayer::Layer_Enemy;
 	}
 }
 

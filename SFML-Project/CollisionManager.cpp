@@ -134,12 +134,16 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 
 bool CollisionManager::CanCollide(GameObject* goA, GameObject* goB)
 {
-	return (static_cast<LayerMask>(goA->layer) & goB->collisionMask) && (static_cast<LayerMask>(goB->layer) & goA->collisionMask);
+	return ((goA->layer & goB->collisionMask) != 0) && ((goB->layer & goA->collisionMask) != 0);
 }
 
 bool CollisionManager::AreInDistance(GameObject* goA, GameObject* goB)
 {
-	return (goA->broadRadius + goB->broadRadius) * (goA->broadRadius + goB->broadRadius) >= (goA->position - goB->position).GetSquaredMagnitude();
+	float rad = goA->broadRadius + goB->broadRadius;
+	rad *= rad;
+	float distSqrd = (goB->position - goA->position).GetSquaredMagnitude();
+
+	return distSqrd <= rad;
 }
 
 void CollisionManager::Update(float deltaTime)

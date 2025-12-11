@@ -5,9 +5,8 @@ LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
 	characterType = CharaType::Lighting;
 	shapeType = ShapeType::Rectangle;
 
-	layer = CollisionLayer::BulletEnemy;
-	layer = CollisionLayer::BulletEnemy;
-	collisionMask = static_cast<LayerMask>(CollisionLayer::Player);
+	layer = CollisionLayer::Layer_BulletEnemy;
+	collisionMask = CollisionLayer::Layer_Player;
 
 	sf::RectangleShape* pShape = new sf::RectangleShape;
 	shape = pShape;

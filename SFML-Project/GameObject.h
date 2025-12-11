@@ -15,8 +15,8 @@ class GameObject
 		sf::Shape* shape = nullptr;
 		ShapeType shapeType = ShapeType::None;
 		CharaType characterType = CharaType::None;
-		CollisionLayer layer = CollisionLayer::None;
-		LayerMask collisionMask = static_cast<LayerMask>(CollisionLayer::All);
+		LayerMask layer = CollisionLayer::Layer_None;
+		LayerMask collisionMask = CollisionLayer::Layer_All;
 		float broadRadius = 0;
 		Team team = Team::None;
 

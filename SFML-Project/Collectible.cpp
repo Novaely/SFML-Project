@@ -5,8 +5,8 @@ Collectible::Collectible() : GameObject() {
 	shape = new sf::CircleShape();
 	shapeType = ShapeType::Circle;
 	
-	layer = CollisionLayer::Collectible;
-	collisionMask = static_cast<LayerMask>(CollisionLayer::Player);
+	layer = CollisionLayer::Layer_Collectible;
+	collisionMask = CollisionLayer::Layer_Player;
 
 	sf::CircleShape* pShape = (sf::CircleShape*)shape;
 	pShape->setRadius(7.5f);

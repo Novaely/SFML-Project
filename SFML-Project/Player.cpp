@@ -4,9 +4,9 @@ Player::Player() : Character() {
 	characterType = CharaType::Player;
 	shapeType = ShapeType::Convex;
 
-	layer = CollisionLayer::Player;
-	collisionMask = static_cast<LayerMask>(CollisionLayer::BulletEnemy) |
-		static_cast<LayerMask>(CollisionLayer::Enemy) | static_cast<LayerMask>(CollisionLayer::Collectible);
+	layer = CollisionLayer::Layer_Player;
+	collisionMask = static_cast<LayerMask>(CollisionLayer::Layer_BulletEnemy) |
+		static_cast<LayerMask>(CollisionLayer::Layer_Enemy) | static_cast<LayerMask>(CollisionLayer::Layer_Collectible);
 
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
