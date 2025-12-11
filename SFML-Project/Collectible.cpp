@@ -8,8 +8,8 @@ Collectible::Collectible() : GameObject() {
 	layer = CollisionLayer::Collectible;
 	collisionMask = static_cast<LayerMask>(CollisionLayer::Player);
 
-	((sf::CircleShape*)shape)->setRadius(5);
-	broadRadius = 5;
+	((sf::CircleShape*)shape)->setRadius(7.5f);
+	broadRadius = 7.5f;
 }
 
 void Collectible::OnCollisionEnter(GameObject* other) 

@@ -77,6 +77,7 @@ private:
     void UpdateAll(float deltaTime, CustomVector2f& windowSize);
 
     bool IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds);
+    void StickGameObjectInBounds(GameObject& go, Vec2f& bounds);
 
     //foncion bonus
     void BonusScore(float timer, int multiplicateur);

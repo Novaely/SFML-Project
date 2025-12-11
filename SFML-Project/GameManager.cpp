@@ -51,7 +51,7 @@ GameManager::GameManager()
 		{
 			NewGameObjectCreated(go);
 		});
-	_radiusSpawnEnemy = (150, 150);
+	_radiusSpawnEnemy = (200, 200);
 }
 
 void GameManager::NewGameObjectCreated(GameObject* go)
@@ -324,6 +324,17 @@ bool GameManager::IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds)
 	return false;
 }
 
+void GameManager::StickGameObjectInBounds(GameObject& go, Vec2f& bounds)
+{
+	float minX = go.broadRadius * 0.5f;
+	float maxX = bounds.x - minX;
+	float minY = go.broadRadius * 0.5f;
+	float maxY = bounds.y - minY;
+
+	go.position.x = Math::Clamp(go.position.x, minX, maxX);
+	go.position.y = Math::Clamp(go.position.y, minY, maxY);
+}
+
 //fonction update
 void GameManager::UpdateAll(float deltaTime, CustomVector2f& windowSize)
 {
@@ -331,12 +342,21 @@ void GameManager::UpdateAll(float deltaTime, CustomVector2f& windowSize)
 	while (goIt != gameObjects.end())
 	{
 		(*goIt)->Update(deltaTime);
-		if ((*goIt)->characterType == CharaType::Bullet)
+		switch ((*goIt)->characterType)
 		{
+		case CharaType::Bullet:
 			if (IsPosOutOfBounds((*goIt)->position, windowSize))
 			{
 				(*goIt)->Destroy();
 			}
+			break;
+		
+		case CharaType::Player:
+			StickGameObjectInBounds(*(*goIt), windowSize);
+			break;
+
+		default:
+			break;
 		}
 		goIt++;
 	}

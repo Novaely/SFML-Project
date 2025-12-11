@@ -9,15 +9,13 @@ Bullet::Bullet() : Movable()
 	((sf::CircleShape*)shape)->setRadius(5);
 	broadRadius = 5;
 
-	maxInputSpeed = 20;
-
 	Desactive();
 }
 
 void Bullet::Active()
 {
 	Movable::Active();
-	speed = 500.0f;
+	speed = 225.0f;
 
 	if (team == Team::Enemy)
 	{

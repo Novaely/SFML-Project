@@ -11,7 +11,6 @@ void Movable::Update(float deltaTime)
 
 void Movable::Move(float deltaTime)
 {
-    speed = Math::Clamp(speed, 0, maxInputSpeed);
     position += moveDirection * speed * deltaTime;
 }
 
