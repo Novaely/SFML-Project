@@ -7,12 +7,16 @@ class InputManager :
     public Manager
 {
     public :
+        // Constructor
+        InputManager();
+
+        // Function
         void OneClickInputPressed(sf::Event event, Player& player);
         void OneClickInputUnpressed(sf::Event event);
         void ContinuInputCheck(sf::Event event, Player& player);
-        InputManager();
 
     private:
-        GameManager* gameManager = nullptr;
-        bool LShiftPressed = false;
+        // Variable
+        GameManager* _gameManager = nullptr;
+        bool _leftShiftPressed = false;
 };

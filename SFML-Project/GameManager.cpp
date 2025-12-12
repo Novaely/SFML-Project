@@ -3,25 +3,6 @@
 
 GameManager* GameManager::_instance = nullptr;
 
-GameManager* GameManager::GetInstance()
-{
-	return _instance;
-}
-
-GameManager::~GameManager()
-{
-	if (_instance == this)
-	{
-		_instance = nullptr;
-	}
-
-	if (_idGameObjectCreateListener != -1)
-	{
-		GameObject::RemoveCreateListener(_idGameObjectCreateListener);
-		_idGameObjectCreateListener = -1;
-	}
-}
-
 GameManager::GameManager()
 {
 	if (_instance == nullptr)
@@ -41,8 +22,20 @@ GameManager::GameManager()
 		});
 
 	RestartGame();
-	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
-	std::cout << _radiusSpawnEnemy << std::endl;
+}
+
+GameManager::~GameManager()
+{
+	if (_instance == this)
+	{
+		_instance = nullptr;
+	}
+
+	if (_idGameObjectCreateListener != -1)
+	{
+		GameObject::RemoveCreateListener(_idGameObjectCreateListener);
+		_idGameObjectCreateListener = -1;
+	}
 }
 
 void GameManager::NewGameObjectCreated(GameObject* go)
@@ -54,18 +47,16 @@ void GameManager::Update(float deltaTime, CustomVector2f& windowSize)
 {
 	_time += deltaTime;
 	
-	if (_wantSpawnEnemy) {
-		if ((_wave != 0 && _enemies.size() == 0) || _chronoSpawnEnemies >= _timerSpawnEnemies) {
-			_chronoSpawnEnemies = 0;
-			SpawnWaveEnemy(windowSize);
-			_wave++;
-			if (_wave % _numberOfWaveBeforeUpNumberOfEnemy) {
-				_numberOfEnemyForWave += _numberOfEnemyUp;
-			}
+	if ((_wave != 0 && _enemies.size() == 0) || _chronoSpawnEnemies >= _timerSpawnEnemies) {
+		_chronoSpawnEnemies = 0;
+		SpawnWaveEnemy(windowSize);
+		_wave++;
+		if (_wave % _numberOfWaveBeforeUpNumberOfEnemy) {
+			_numberOfEnemyForWave += _numberOfEnemyUp;
 		}
-		else {
-			_chronoSpawnEnemies += deltaTime;
-		}
+	}
+	else {
+		_chronoSpawnEnemies += deltaTime;
 	}
 	UpdateAll(deltaTime, windowSize);
 	_timerBonusScore += deltaTime;
@@ -125,7 +116,6 @@ void GameManager::RestartGame()
 //fonction bonus
 void GameManager::BonusScore(float timer, int multiplicateur)
 {
-	std::cout << "Bonus Score x" << multiplicateur << " for " << timer << " seconds." << std::endl;
 	_multiplicateur = multiplicateur;
 	_timerBonusScore = 0;
 	_timerBonusScoreCheck = timer;
@@ -133,7 +123,6 @@ void GameManager::BonusScore(float timer, int multiplicateur)
 
 void GameManager::BonusVie(float vieRegen)
 {
-	std::cout << "Bonus Vie +" << vieRegen << std::endl;
 	(*player).health += vieRegen;
 	if ((*player).health > (int)player->GetMaxHealth())
 	{
@@ -143,7 +132,6 @@ void GameManager::BonusVie(float vieRegen)
 
 void GameManager::BonusTir()
 {	
-	std::cout << "Bonus Tir Level +" << 1 << std::endl;
 	if((*player).LevelShooter >= 3)
 	{
 		return;
@@ -305,7 +293,7 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	}
 }
 
-//fonction shot
+//fonction shoot
 void GameManager::PlayerShoot()
 {
 	if (!player->CanShoot()) return;
@@ -416,16 +404,18 @@ void GameManager::UpdateDestroyItem()
 }
 
 //fonction get
+GameManager* GameManager::GetInstance()
+{
+	return _instance;
+}
 int GameManager::GetPlayerHealth() const
 {
 	return player->health;
 }
-
 float GameManager::GetTime()
 {
 	return _time;
 }
-
 int GameManager::GetMultiplicateur() const
 {
 	return _multiplicateur;

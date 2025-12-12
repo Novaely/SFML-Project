@@ -14,7 +14,6 @@ void InputManager::OneClickInputPressed(sf::Event event, Player& player)
             LShiftPressed = true;
             player.SwitchColor();
         }
-        
     }
 }
 
@@ -24,8 +23,6 @@ void InputManager::OneClickInputUnpressed(sf::Event event)
         LShiftPressed = false;
     }
 }
-
-
 
 void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     bool keyUp = (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up));

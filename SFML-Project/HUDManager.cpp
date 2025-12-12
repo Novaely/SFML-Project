@@ -3,11 +3,11 @@
 
 HUDManager::HUDManager()
 {
-	gameManager = GameManager::GetInstance();
+	_gameManager = GameManager::GetInstance();
 	_font.loadFromFile("ARIAL.TTF");
 
 	SetGameHUDValues();
-	wasGamePause = false;
+	_wasGamePause = false;
 
 	_button.setFillColor(sf::Color::Blue);
 	_button.setSize({200, 35});
@@ -17,26 +17,33 @@ HUDManager::HUDManager()
 
 void HUDManager::SetGameHUDValues()
 {
-	_score.setFont(_font);                // Police
-	_timer.setFont(_font);                // Police
-	_level.setFont(_font);                // Police
-	_multiplicateur.setFont(_font);                // Police
-	_fps.setFont(_font);                // Police
-	_score.setCharacterSize(28);         // Taille du texte
-	_timer.setCharacterSize(28);         // Taille du texte
-	_level.setCharacterSize(28);         // Taille du texte
-	_multiplicateur.setCharacterSize(28);         // Taille du texte
-	_fps.setCharacterSize(28);         // Taille du texte
-	_score.setFillColor(sf::Color::White);   // Couleur
-	_timer.setFillColor(sf::Color::White);   // Couleur
-	_level.setFillColor(sf::Color::White);   // Couleur
-	_multiplicateur.setFillColor(sf::Color::White);   // Couleur
-	_fps.setFillColor(sf::Color::White);   // Couleur
-	_score.setPosition(50, 60);             // Position dans la fenêtre
-	_timer.setPosition(50, 25);             // Position dans la fenêtre
-	_level.setPosition(50, 95);             // Position dans la fenêtre
-	_multiplicateur.setPosition(30, 550);             // Position dans la fenêtre
-	_fps.setPosition(650, 550);             // Position dans la fenêtre
+	// Police
+	_score.setFont(_font);                
+	_timer.setFont(_font);
+	_level.setFont(_font);
+	_multiplicateur.setFont(_font);
+	_fps.setFont(_font);
+
+	// Taille du texte
+	_score.setCharacterSize(28);
+	_timer.setCharacterSize(28);
+	_level.setCharacterSize(28);
+	_multiplicateur.setCharacterSize(28);
+	_fps.setCharacterSize(28);
+
+	// Couleur
+	_score.setFillColor(sf::Color::White);
+	_timer.setFillColor(sf::Color::White);
+	_level.setFillColor(sf::Color::White);
+	_multiplicateur.setFillColor(sf::Color::White);
+	_fps.setFillColor(sf::Color::White);
+
+	// Position dans la fenêtre
+	_score.setPosition(50, 60);
+	_timer.setPosition(50, 25);
+	_level.setPosition(50, 95);
+	_multiplicateur.setPosition(30, 550);
+	_fps.setPosition(650, 550);
 }
 
 void HUDManager::SetPauseHUDValues()
@@ -46,30 +53,30 @@ void HUDManager::SetPauseHUDValues()
 	_level.setFillColor(sf::Color::Red);
 	_level.setString("Game Over");
 	_score.setPosition(315, 200);
-	_score.setString("Score final : " + std::to_string(gameManager->score));
+	_score.setString("Score final : " + std::to_string(_gameManager->score));
 	_multiplicateur.setPosition(350, 275);
 	_multiplicateur.setString("Restart");
 }
 
 void HUDManager::Draw(sf::RenderWindow& window)
 {
-	if (!gameManager->pause)
+	if (!_gameManager->pause)
 	{
-		if (wasGamePause)
+		if (_wasGamePause)
 		{
-			wasGamePause = false;
+			_wasGamePause = false;
 			SetGameHUDValues();
 		}
 
-		for (int i = 0; i < gameManager->player->health; i++)
+		for (int i = 0; i < _gameManager->player->health; i++)
 		{
 			CreateLifePoint({ (9.0f + i) * 40.0f, 25.0f }, window);
 		}
-		_score.setString("Score : " + std::to_string(gameManager->score));
+		_score.setString("Score : " + std::to_string(_gameManager->score));
 		window.draw(_score);
-		_timer.setString("Time : " + std::to_string((int)gameManager->GetTime()));
+		_timer.setString("Time : " + std::to_string((int)_gameManager->GetTime()));
 		window.draw(_timer);
-		if (gameManager->GetMultiplicateur() > 1)
+		if (_gameManager->GetMultiplicateur() > 1)
 		{
 			_multiplicateur.setString("x" + std::to_string(gameManager->GetMultiplicateur()));
 			window.draw(_multiplicateur);
@@ -81,9 +88,9 @@ void HUDManager::Draw(sf::RenderWindow& window)
 	}
 	else
 	{
-		if (!wasGamePause)
+		if (!_wasGamePause)
 		{
-			wasGamePause = true;
+			_wasGamePause = true;
 			SetPauseHUDValues();
 		}
 

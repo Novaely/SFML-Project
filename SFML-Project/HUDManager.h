@@ -6,7 +6,17 @@
 class HUDManager :
     public Manager
 {
-private:
+    public:
+		// Constructor 
+		HUDManager();
+
+		// Function
+		bool DoRestartButtonContainsPos(Vec2f& pos);
+	    void Draw(sf::RenderWindow& window) override;
+        void CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window);
+
+	private:
+		// Variable text
 		sf::Text _score;
 		sf::Text _timer;
 		sf::Text _multiplicateur;
@@ -15,18 +25,13 @@ private:
 		sf::Font _font;
 		sf::RectangleShape _button;
 
-		bool wasGamePause = false;
+		// Variable 
+		GameManager* _gameManager = nullptr;
+		bool _wasGamePause = false;
 
+		// Function
 		void SetGameHUDValues();
 		void SetPauseHUDValues();
 
-    public:
-		HUDManager();
-
-		GameManager* gameManager;	
-
-		bool DoRestartButtonContainsPos(Vec2f& pos);
-	    void Draw(sf::RenderWindow& window) override;
-        void CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window);
 };
 

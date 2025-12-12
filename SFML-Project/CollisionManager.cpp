@@ -1,13 +1,13 @@
 #include "CollisionManager.h"
 
-CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
+CollisionManager::CollisionManager(CustomVector2f windowSize)
 {
-	windowShape = new sf::RectangleShape();
-	((sf::RectangleShape*)windowShape)->setSize({ windowSize.x, windowSize.y});
+	_windowShape = new sf::RectangleShape();
+	((sf::RectangleShape*)_windowShape)->setSize({ windowSize.x, windowSize.y});
 	
-	gameManager = gm;
+	_gameManager = GameManager::GetInstance();
 
-	gameObjects = &(gm->gameObjects);
+	_gameObjects = &(_gameManager->gameObjects);
 }
 
 void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
@@ -148,12 +148,12 @@ bool CollisionManager::AreInDistance(GameObject* goA, GameObject* goB)
 
 void CollisionManager::Update(float deltaTime)
 {
-	auto itGoA = (*gameObjects).begin();
+	auto itGoA = (*_gameObjects).begin();
 	std::list<GameObject*>::iterator itGoB;
-	while (itGoA != (*gameObjects).end())
+	while (itGoA != (*_gameObjects).end())
 	{
 		itGoB = std::next(itGoA);
-		while (itGoB != (*gameObjects).end())
+		while (itGoB != (*_gameObjects).end())
 		{
 			if (CanCollide(*itGoA, *itGoB) && AreInDistance(*itGoA, *itGoB) && CheckCollisionPair(*itGoA, *itGoB))
 			{
