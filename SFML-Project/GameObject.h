@@ -72,7 +72,10 @@ class GameObject
 			{ColorType::Red , sf::Color::Red},
 			{ColorType::Blue , sf::Color::Cyan},
 			{ColorType::Green , sf::Color(0, 166, 0)},
-			{ColorType::Yellow , sf::Color::Yellow}
+			{ColorType::Orange , sf::Color(255,132,0)},
+			{ColorType::Pink, sf::Color(255,0,236)},
+			{ColorType::Yellow, sf::Color::Yellow }
+
 		};
 
 		static std::map<int, std::function<void(GameObject*)>> _createListeners;

@@ -4,28 +4,25 @@
 
 InputManager::InputManager()
 {
-    gameManager = GameManager::GetInstance();
+    _gameManager = GameManager::GetInstance();
 }
 
 void InputManager::OneClickInputPressed(sf::Event event, Player& player)
 {
     if (event.key.code == sf::Keyboard::LShift) {
-        if (!LShiftPressed) {
-            LShiftPressed = true;
+        if (!_leftShiftPressed) {
+            _leftShiftPressed = true;
             player.SwitchColor();
         }
-        
     }
 }
 
 void InputManager::OneClickInputUnpressed(sf::Event event)
 {
     if (event.key.code == sf::Keyboard::LShift) {
-        LShiftPressed = false;
+        _leftShiftPressed = false;
     }
 }
-
-
 
 void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     bool keyUp = (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
@@ -40,6 +37,6 @@ void InputManager::ContinuInputCheck(sf::Event event, Player & player) {
     player.rotationDirection = (float)keyRotRight - (float)keyRotLeft;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        gameManager->PlayerShoot();
+        _gameManager->PlayerShoot();
     }
 }

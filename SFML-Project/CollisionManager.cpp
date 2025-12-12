@@ -1,13 +1,33 @@
 #include "CollisionManager.h"
 
-CollisionManager::CollisionManager(GameManager* gm, CustomVector2f windowSize)
+CollisionManager::CollisionManager(CustomVector2f windowSize)
 {
-	windowShape = new sf::RectangleShape();
-	((sf::RectangleShape*)windowShape)->setSize({ windowSize.x, windowSize.y});
+	_windowShape = new sf::RectangleShape();
+	((sf::RectangleShape*)_windowShape)->setSize({ windowSize.x, windowSize.y});
 	
-	gameManager = gm;
+	_gameManager = GameManager::GetInstance();
 
-	gameObjects = &(gm->gameObjects);
+	_gameObjects = &(_gameManager->gameObjects);
+}
+
+void CollisionManager::Update(float deltaTime)
+{
+	auto itGoA = (*_gameObjects).begin();
+	std::list<GameObject*>::iterator itGoB;
+	while (itGoA != (*_gameObjects).end())
+	{
+		itGoB = std::next(itGoA);
+		while (itGoB != (*_gameObjects).end())
+		{
+			if (CanCollide(*itGoA, *itGoB) && AreInDistance(*itGoA, *itGoB) && CheckCollisionPair(*itGoA, *itGoB))
+			{
+				(*itGoA)->OnCollisionEnter(*itGoB);
+				(*itGoB)->OnCollisionEnter(*itGoA);
+			}
+			itGoB++;
+		}
+		itGoA++;
+	}
 }
 
 void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
@@ -33,7 +53,6 @@ void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
 			rectNextIndex = (i + 1) % numPoints;
 			normals[i] = (points[rectNextIndex] - points[i]).GetNormalClockWise().GetNormalised();
 		}
-
 		return;
 	}
 	if (convexShape != nullptr)
@@ -56,7 +75,6 @@ void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
 			trianNextIndex = (i + 1) % numPoints;
 			normals[i] = (points[trianNextIndex] - points[i]).GetNormalClockWise().GetNormalised();
 		}
-
 		return;
 	}
 }
@@ -84,7 +102,6 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 		default:
 			return false;
 		}
-
 		break;
 	}
 	// Shape A is Rectangle
@@ -104,7 +121,6 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 		default:
 			return false;
 		}
-
 		break;
 	}
 	// Shape A is Convex
@@ -123,10 +139,8 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 		default:
 			return false;
 		}
-
 		break;
 	}		
-
 	default:
 		return false;
 	}
@@ -144,39 +158,6 @@ bool CollisionManager::AreInDistance(GameObject* goA, GameObject* goB)
 	float distSqrd = (goB->position - goA->position).GetSquaredMagnitude();
 
 	return distSqrd <= rad;
-}
-
-void CollisionManager::Update(float deltaTime)
-{
-	auto itGoA = (*gameObjects).begin();
-	std::list<GameObject*>::iterator itGoB;
-	while (itGoA != (*gameObjects).end())
-	{
-		itGoB = std::next(itGoA);
-		while (itGoB != (*gameObjects).end())
-		{
-			if (CanCollide(*itGoA, *itGoB) && AreInDistance(*itGoA, *itGoB) && CheckCollisionPair(*itGoA, *itGoB))
-			{
-				(*itGoA)->OnCollisionEnter(*itGoB);
-				(*itGoB)->OnCollisionEnter(*itGoA);
-			}
-			itGoB++;
-		}
-		itGoA++;
-	}
-}
-
-bool CollisionManager::IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals)
-{
-	int numPoints = shapePoints.size();
-	for (int i = 0; i < numPoints; i++) 
-	{
-		if (convNormals[i].Dot(point - shapePoints[i]) > 0)
-		{
-			return false;
-		}
-	}
-	return true;
 }
 
 bool CollisionManager::CheckCollisionsSquareTriangle(const sf::RectangleShape& rect, const sf::ConvexShape& trian)
@@ -303,6 +284,19 @@ bool CollisionManager::CheckCollisionsCircleTriangle(const sf::CircleShape& circ
 	}
 
 	return false;
+}
+
+bool CollisionManager::IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals)
+{
+	int numPoints = shapePoints.size();
+	for (int i = 0; i < numPoints; i++) 
+	{
+		if (convNormals[i].Dot(point - shapePoints[i]) > 0)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 float CollisionManager::DistancePointToSegment(const Vec2f& point, const Vec2f& start, const Vec2f& end)

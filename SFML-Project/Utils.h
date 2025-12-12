@@ -8,7 +8,7 @@ using LayerMask = unsigned int;
 using Vec2f = CustomVector2f;
 
 enum class CharaType { None, Player, CACEnemy, ShooterEnemy, Bullet, Lighting };
-enum class ColorType { None = 0, Red = 1, Blue = 2, Green = 3 ,Yellow = 4};
+enum class ColorType { None = 0, Red = 1, Blue = 2, Green = 3 ,Orange = 4, Pink = 5, Yellow = 6};
 enum class ShapeType { None, Circle, Rectangle, Convex};
 
 enum CollisionLayer : LayerMask

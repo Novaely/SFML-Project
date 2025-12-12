@@ -17,7 +17,7 @@ int main()
 	InputManager inputManager;
 	PoolManager poolManager;
 	gameManager.poolManager = &poolManager;
-	CollisionManager collisionManager(&gameManager, windowSize);
+	CollisionManager collisionManager(windowSize);
 	HUDManager hudManager;
 
 	sf::Clock clock;

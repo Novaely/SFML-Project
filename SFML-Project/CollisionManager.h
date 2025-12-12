@@ -7,14 +7,16 @@ class CollisionManager :
     public Manager
 {
     public:
-		CollisionManager(GameManager* gm, CustomVector2f windowSize);
+		// Constructor
+		CollisionManager(CustomVector2f windowSize);
 
-		std::list<GameObject*>* gameObjects;
-		sf::Shape* windowShape;
-
-		GameManager* gameManager;
+		// Function
 		void Update( float deltaTime);
 	private: 
+		// Variable
+		GameManager* _gameManager = nullptr;
+		std::list<GameObject*>* _gameObjects;
+		sf::Shape* _windowShape;
 
 		struct ConvexShapeInfo
 		{
@@ -27,6 +29,7 @@ class CollisionManager :
 			void ComputPointsAndNormals();
 		};
 
+		// Function 
 		bool CheckCollisionPair(GameObject* goA, GameObject* goB);
 		bool CanCollide(GameObject* goA, GameObject* goB);
 		bool AreInDistance(GameObject* goA, GameObject* goB);
