@@ -53,7 +53,7 @@ void GameManager::NewGameObjectCreated(GameObject* go)
 void GameManager::Update(float deltaTime, CustomVector2f& windowSize)
 {
 	_time += deltaTime;
-
+	
 	if (_wantSpawnEnemy) {
 		if ((_wave != 0 && _enemies.size() == 0) || _chronoSpawnEnemies >= _timerSpawnEnemies) {
 			_chronoSpawnEnemies = 0;

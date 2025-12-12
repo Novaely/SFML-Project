@@ -14,8 +14,6 @@ int main()
 	CustomVector2f windowSize = {800, 600};
 	//initialisation de toutes les variables importantes
 	GameManager gameManager;
-	int tick = 0;
-	int boucle = 1;
 	InputManager inputManager;
 	PoolManager poolManager;
 	gameManager.poolManager = &poolManager;
@@ -25,8 +23,10 @@ int main()
 	sf::Clock clock;
 	float deltaTime = 0;
 
-	float fpsTimer = 0.0f;
+	// Variables for FPS
 	int frameCount = 0;
+	float fpsElapsedTime = 0;
+	const float fpsTimeToWait = 0.5f;
 
 	sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "SFML-Project");
 	// Initialise everything below
@@ -63,14 +63,16 @@ int main()
 		//Update
 		if (gameManager.pause == false)
 		{
-			tick++;
-			if (gameManager.GetTime() >= boucle) {
-				//std::cout << "FPS : " << tick << std::endl;
-				//std::cout << gameManager.gameObjects.size() << std::endl;
-				gameManager.fps = tick;
-				boucle++;
-				tick = 0;
+			frameCount++;
+			fpsElapsedTime += deltaTime;
+			if (fpsElapsedTime >= fpsTimeToWait)
+			{
+				gameManager.fps = frameCount / fpsTimeToWait;
+				std::cout << "FPS : " << gameManager.fps << std::endl;
+				frameCount = 0;
+				fpsElapsedTime = 0;
 			}
+
 			gameManager.Update(deltaTime, windowSize);
 			collisionManager.Update(deltaTime);
 			gameManager.UpdateDestroyItem();
