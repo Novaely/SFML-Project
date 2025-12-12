@@ -1,26 +1,46 @@
 #include "GameObject.h"
 
+// ===== VARIABLES ===== //
 std::map<int, std::function<void(GameObject*)>> GameObject::_createListeners;
 
+// ===== FUNCTIONS ===== //
+
+// ===== PUBLIC ===== //
+
+// Constructor //
 GameObject::GameObject() {}
 
-void GameObject::SetBroadRadiusFromPoints(const Vec2f points[], int numPoints)
+// Destructor //
+GameObject::~GameObject()
 {
-	float maxDist = 0;
-	float currentDist = 0;
-	Vec2f point = Vec2f::zero;
-	for (int i = 0; i < numPoints; i++)
+	if (shape != nullptr)
 	{
-		currentDist = points[i].GetSquaredMagnitude();
-		if (currentDist > maxDist)
-		{
-			maxDist = currentDist;
-			point = points[i];
-		}
+		delete shape;
 	}
-	broadRadius = point.GetMagnitude();
 }
 
+// Getters / Setters //
+bool GameObject::IsActive() const
+{
+	return _isActive;
+}
+
+ColorType GameObject::GetColor() const {
+	return _color;
+}
+
+void GameObject::SetColor(ColorType val) {
+	_color = val;
+	if (shape != nullptr)
+	{
+		shape->setFillColor(_colors[_color]);
+	}
+}
+
+// Collisions //
+void GameObject::OnCollisionEnter(GameObject* other) {}
+
+// Game //
 void GameObject::Update(float deltaTime)
 {
 	shape->setPosition(position.x, position.y);
@@ -36,6 +56,25 @@ void GameObject::Active()
 {
 	_isActive = true;
 	NotifyCreated(this);
+}
+
+void GameObject::Desactive()
+{
+	_isActive = false;
+	position = CustomVector2f::zero;
+	SetColor(ColorType::None);
+}
+
+void GameObject::Destroy()
+{
+	if (!isAlive) return;
+
+	_isActive = false;
+	isAlive = false;
+	if (pDie != nullptr)
+	{
+		pDie(this);
+	}
 }
 
 int GameObject::AddCreateListener(const std::function<void(GameObject*)>& func)
@@ -58,50 +97,22 @@ void GameObject::NotifyCreated(GameObject* go)
 	}
 }
 
-void GameObject::Desactive()
+// ===== PROTECTED ===== //
+
+// Collisions //
+void GameObject::SetBroadRadiusFromPoints(const Vec2f points[], int numPoints)
 {
-	_isActive = false;
-	position = CustomVector2f::zero;
-	SetColor(ColorType::None);
-}
-
-ColorType GameObject::GetColor() const {
-	return _color;
-}
-
-void GameObject::SetColor(ColorType val) {
-	_color = val;
-	if (shape != nullptr)
+	float maxDist = 0;
+	float currentDist = 0;
+	Vec2f point = Vec2f::zero;
+	for (int i = 0; i < numPoints; i++)
 	{
-		shape->setFillColor(_colors[_color]);
+		currentDist = points[i].GetSquaredMagnitude();
+		if (currentDist > maxDist)
+		{
+			maxDist = currentDist;
+			point = points[i];
+		}
 	}
-}
-
-bool GameObject::IsActive() const
-{
-	return _isActive;
-}
-
-GameObject::~GameObject()
-{
-	if (shape != nullptr)
-	{
-		delete shape;
-	}
-}
-
-void GameObject::OnCollisionEnter(GameObject* other)
-{
-}
-
-void GameObject::Destroy()
-{
-	if (!isAlive) return;
-
-	_isActive = false;
-	isAlive = false;
-	if (pDie != nullptr)
-	{
-		pDie(this);
-	}
+	broadRadius = point.GetMagnitude();
 }
