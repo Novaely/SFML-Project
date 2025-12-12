@@ -4,8 +4,6 @@
 #include "GameObject.h"
 #include <list>
 
-using Vec2f = CustomVector2f;
-
 struct LightningParameters
 {
     // Parameters to change before play
@@ -43,21 +41,32 @@ struct LightningParameters
 class SingleLightning : public GameObject
 {
 	public:
-        SingleLightning(LightningParameters& params, sf::Color color, sf::Color& innerColor);
-        ~SingleLightning();
 
+        // ===== VARIABLES ===== //
+
+        // Others //
         int sideDirection = 1;
 
-		void Update(float deltaTime) override;
-		void Draw(sf::RenderWindow& window) override;
+        // ===== FUNCTIONS ===== //
 
-        void Stop();
+        // Constructor //
+        SingleLightning(LightningParameters& params, sf::Color color, sf::Color& innerColor);
 
+        // Destructor //
+        ~SingleLightning();
+
+        // Getter / Setters //
         bool IsFinish();
         float GetLightningLength();
         Vec2f GetGLobalStartPoint();
 
+        // Game //
+        void Update(float deltaTime) override;
+        void Draw(sf::RenderWindow& window) override;
         void Active() override;
+
+        // Lightning control //
+        void Stop();        
 
 	private:
         struct SegmentInfos
@@ -68,42 +77,52 @@ class SingleLightning : public GameObject
             sf::RectangleShape* innerRecShape;
         };
 
-        void (SingleLightning::* _currentState)(float) = nullptr;
+        // ===== VARIABLES ===== //
 
+        // Lightning infos //
         bool _isFinished = false;
         bool _isDestroying = false;
-
-        std::list<SegmentInfos> listSegInfos;
-        std::list<Vec2f> points;
+        float currentLifeTime = 0.0f;
         LightningParameters* _parameters;
+
+        sf::Color _color;
+        sf::Color* _innerLineColor;
+
+        // Lightning statics infos //
 
         SegmentInfos firstSeg;
         SegmentInfos secondSeg;
         SegmentInfos lastSeg;
 
-        Vec2f startPoint;
+        // Lightning Points / Segments //
+
+        std::list<SegmentInfos> listSegInfos;
+        std::list<Vec2f> points;
+
         Vec2f endPoint;
         Vec2f finalEndPoint;
+        Vec2f startPoint;
 
         Vec2f firstPoint;
         Vec2f firstPointVector;
 
-        float currentLifeTime = 0.0f;
+        // ===== FUCNTIONS ===== //
 
-        sf::Color _color;
-        sf::Color* _innerLineColor;
+        // State machine //
+        void (SingleLightning::* _currentState)(float) = nullptr;
 
 		void Spawning(float deltaTime);
 		void Moving(float deltaTime);
 		void Destroying(float deltaTime);
 
+        // Lightning points //
         void CreateNewPoint();
 		void ClampFirstPoint();
 		void ComputeFirstPoint();
 
+        // Lightning segments //
         SegmentInfos CreateSegmentInfo();
         void DeleteSegment(SegmentInfos* seg);
-
         void CheckLastSeg();
 
         void DrawLine(sf::RenderWindow& window, SegmentInfos& segInfo);

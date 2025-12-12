@@ -1,6 +1,11 @@
 #include "LightningNode.h"
 
-LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
+// ===== FUNCTIONS ===== //
+
+// ===== PUBLIC ===== //
+
+// Constructor //
+LightningNode::LightningNode() : GameObject(), allLightnings(numLightning, nullptr)
 {
 	characterType = CharaType::Lighting;
 	shapeType = ShapeType::Rectangle;
@@ -12,6 +17,7 @@ LightningNode::LightningNode() : allLightnings(numLightning, nullptr)
 	shape = pShape;
 }
 
+// Game //
 void LightningNode::Update(float deltaTime)
 {
 	auto singleLightIt = allLightnings.begin();
@@ -59,10 +65,9 @@ void LightningNode::Draw(sf::RenderWindow& window)
 		(*singleLightIt)->Draw(window);
 		singleLightIt++;
 	}
-
-	//window.draw(*shape);
 }
 
+// Lightning //
 void LightningNode::StartLightning()
 {
 	parameters.startPoint = startPoint;

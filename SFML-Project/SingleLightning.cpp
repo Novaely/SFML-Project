@@ -1,5 +1,11 @@
 ﻿#include "SingleLightning.h"
 
+// ===== FUNCTIONS ===== //
+
+// ===== Public ===== //
+
+// Constructor //
+
 SingleLightning::SingleLightning(LightningParameters& params, sf::Color color, sf::Color& innerColor)
 {
 	_parameters = &params;
@@ -31,12 +37,43 @@ SingleLightning::SingleLightning(LightningParameters& params, sf::Color color, s
 	_currentState = &SingleLightning::Spawning;
 }
 
-void SingleLightning::Stop()
+// Destructor //
+
+SingleLightning::~SingleLightning()
 {
-	_isDestroying = true;
-	_currentState = &SingleLightning::Destroying;
+	delete firstSeg.recShape;
+	delete firstSeg.innerRecShape;
+
+	delete secondSeg.recShape;
+	delete secondSeg.innerRecShape;
+
+	delete lastSeg.recShape;
+	delete lastSeg.innerRecShape;
+
+	for (SegmentInfos& segInfo : listSegInfos)
+	{
+		delete segInfo.recShape;
+		delete segInfo.innerRecShape;
+	}
 }
 
+// Getters / Setters //
+bool SingleLightning::IsFinish()
+{
+	return _isFinished;
+}
+
+float SingleLightning::GetLightningLength()
+{
+	return endPoint.x - startPoint.x;
+}
+
+Vec2f SingleLightning::GetGLobalStartPoint()
+{
+	return _parameters->startPoint + Math::RotatePoint(startPoint, Vec2f::zero, rotation);
+}
+
+// Game //
 void SingleLightning::Update(float deltaTime)
 {
 	currentLifeTime += deltaTime;
@@ -46,14 +83,14 @@ void SingleLightning::Update(float deltaTime)
 		_isDestroying = true;
 		_currentState = &SingleLightning::Destroying;
 	}
-	
+
 	(this->*_currentState)(deltaTime);
 }
 
 void SingleLightning::Draw(sf::RenderWindow& window)
 {
 	if (_isFinished) return;
-	
+
 	if (!_isDestroying)
 	{
 		DrawLine(window, firstSeg);
@@ -64,7 +101,7 @@ void SingleLightning::Draw(sf::RenderWindow& window)
 		DrawLine(window, firstSeg);
 		DrawLine(window, secondSeg);
 	}
-	
+
 	for (SegmentInfos& seg : listSegInfos)
 	{
 		DrawLine(window, seg);
@@ -73,86 +110,18 @@ void SingleLightning::Draw(sf::RenderWindow& window)
 	DrawLine(window, lastSeg);
 }
 
-void SingleLightning::DrawLine(sf::RenderWindow& window, SegmentInfos& segInfo)
+void SingleLightning::Active() {}
+
+// Lightning control //
+void SingleLightning::Stop()
 {
-	Vec2f startP = _parameters->startPoint + Math::RotatePoint((*segInfo.startPoint), Vec2f::zero, rotation);
-	Vec2f vecDirec = _parameters->startPoint + Math::RotatePoint((*segInfo.endPoint), Vec2f::zero, rotation) - startP;
-	float angle = Math::ToDegree(vecDirec.GetAngle()) + rotation;
-
-	Vec2f recPos = startP + vecDirec * 0.5f;
-	float length = vecDirec.GetMagnitude();
-	
-	Vec2f recSize = Vec2f(length + _parameters->linesWidth, _parameters->linesWidth);
-	Vec2f recOrigin = recSize * 0.5f;
-	Vec2f innerRecSize = Vec2f(length + _parameters->innerLineWidth, _parameters->innerLineWidth);
-	Vec2f recInnerOrigin = innerRecSize * 0.5f;
-
-	segInfo.recShape->setOrigin(recOrigin);
-	segInfo.recShape->setPosition(recPos);
-	segInfo.recShape->setRotation(angle);
-	segInfo.recShape->setSize(recSize);
-	window.draw((*segInfo.recShape));
-
-	segInfo.innerRecShape->setOrigin(recInnerOrigin);
-	segInfo.innerRecShape->setPosition(recPos);
-	segInfo.innerRecShape->setRotation(angle);
-	segInfo.innerRecShape->setSize(innerRecSize);
-	window.draw((*segInfo.innerRecShape));
+	_isDestroying = true;
+	_currentState = &SingleLightning::Destroying;
 }
 
-void SingleLightning::ComputeFirstPoint()
-{
-	float minAngle = _parameters->minAngle;
-	float maxAngle = _parameters->maxAngle;
-	
-	float angle = RandomFloat(minAngle, maxAngle);
-	angle *= sideDirection;
-	sideDirection *= -1;
-	float lengthRatio = RandomFloat(_parameters->randomRatioLengthMin, _parameters->randomRatioLengthMax);
-	float length = _parameters->unitSize / _parameters->numSegmentPerUnit * lengthRatio;
-	firstPointVector = -(Math::Polar2Cart(Math::ToRad(angle), length));
-}
+// ===== PRIVATE ===== //
 
-void SingleLightning::ClampFirstPoint()
-{
-	const Vec2f& startP = startPoint;
-	firstPoint = points.back() + firstPointVector;
-
-	// Clamp height
-	if (firstPoint.y > startP.y + _parameters->width * 0.5f)
-	{
-		firstPoint.y = startP.y + _parameters->width * 0.5f;
-	}
-	else if (firstPoint.y < startP.y - _parameters->width * 0.5f)
-	{
-		firstPoint.y = startP.y - _parameters->width * 0.5f;
-	}
-
-	// Clamp at margin start
-	if (firstPoint.x < startP.x + _parameters->marginStart)
-	{
-		firstPoint.x = startP.x + _parameters->marginStart;
-	}
-}
-
-void SingleLightning::CreateNewPoint()
-{
-	points.push_back(firstPoint);
-
-	ComputeFirstPoint();
-	ClampFirstPoint();
-
-	secondSeg.endPoint = &points.back();
-
-	auto pointsIt = points.end();
-	pointsIt--;
-
-	SegmentInfos newSeg = CreateSegmentInfo();
-	newSeg.startPoint = &(*pointsIt);
-	pointsIt--;
-	newSeg.endPoint = &(*pointsIt);
-	listSegInfos.push_back(newSeg);
-}
+// State machine //
 
 void SingleLightning::Spawning(float deltaTime)
 {
@@ -177,23 +146,6 @@ void SingleLightning::Spawning(float deltaTime)
 		_currentState = &SingleLightning::Moving;
 		endPoint = finalEndPoint;
 	}
-}
-
-void SingleLightning::CheckLastSeg()
-{
-	if (points.size() < 1 || listSegInfos.size() < 1) return;
-
-	Vec2f rotatedLastPoint = points.front();
-	Vec2f rotatedEndPoint = finalEndPoint;
-
-	if (rotatedLastPoint.x < rotatedEndPoint.x) return;
-
-	points.pop_front();
-	DeleteSegment(&listSegInfos.front());
-	listSegInfos.pop_front();
-
-	lastSeg.startPoint = &points.front();
-	listSegInfos.front().endPoint = &endPoint;
 }
 
 void SingleLightning::Moving(float deltaTime)
@@ -247,12 +199,62 @@ void SingleLightning::Destroying(float deltaTime)
 	CheckLastSeg();
 }
 
-void SingleLightning::DeleteSegment(SegmentInfos* seg)
+// Lightning points //
+void SingleLightning::CreateNewPoint()
 {
-	delete seg->recShape;
-	delete seg->innerRecShape;
+	points.push_back(firstPoint);
+
+	ComputeFirstPoint();
+	ClampFirstPoint();
+
+	secondSeg.endPoint = &points.back();
+
+	auto pointsIt = points.end();
+	pointsIt--;
+
+	SegmentInfos newSeg = CreateSegmentInfo();
+	newSeg.startPoint = &(*pointsIt);
+	pointsIt--;
+	newSeg.endPoint = &(*pointsIt);
+	listSegInfos.push_back(newSeg);
 }
 
+void SingleLightning::ClampFirstPoint()
+{
+	const Vec2f& startP = startPoint;
+	firstPoint = points.back() + firstPointVector;
+
+	// Clamp height
+	if (firstPoint.y > startP.y + _parameters->width * 0.5f)
+	{
+		firstPoint.y = startP.y + _parameters->width * 0.5f;
+	}
+	else if (firstPoint.y < startP.y - _parameters->width * 0.5f)
+	{
+		firstPoint.y = startP.y - _parameters->width * 0.5f;
+	}
+
+	// Clamp at margin start
+	if (firstPoint.x < startP.x + _parameters->marginStart)
+	{
+		firstPoint.x = startP.x + _parameters->marginStart;
+	}
+}
+
+void SingleLightning::ComputeFirstPoint()
+{
+	float minAngle = _parameters->minAngle;
+	float maxAngle = _parameters->maxAngle;
+
+	float angle = RandomFloat(minAngle, maxAngle);
+	angle *= sideDirection;
+	sideDirection *= -1;
+	float lengthRatio = RandomFloat(_parameters->randomRatioLengthMin, _parameters->randomRatioLengthMax);
+	float length = _parameters->unitSize / _parameters->numSegmentPerUnit * lengthRatio;
+	firstPointVector = -(Math::Polar2Cart(Math::ToRad(angle), length));
+}
+
+// Lightning segments //
 SingleLightning::SegmentInfos SingleLightning::CreateSegmentInfo()
 {
 	SegmentInfos seg;
@@ -263,37 +265,52 @@ SingleLightning::SegmentInfos SingleLightning::CreateSegmentInfo()
 	return seg;
 }
 
-SingleLightning::~SingleLightning()
+void SingleLightning::DeleteSegment(SegmentInfos* seg)
 {
-	delete firstSeg.recShape;
-	delete firstSeg.innerRecShape;
-
-	delete secondSeg.recShape;
-	delete secondSeg.innerRecShape;
-
-	delete lastSeg.recShape;
-	delete lastSeg.innerRecShape;
-
-	for (SegmentInfos& segInfo : listSegInfos)
-	{
-		delete segInfo.recShape;
-		delete segInfo.innerRecShape;
-	}
+	delete seg->recShape;
+	delete seg->innerRecShape;
 }
 
-bool SingleLightning::IsFinish()
+void SingleLightning::CheckLastSeg()
 {
-	return _isFinished;
+	if (points.size() < 1 || listSegInfos.size() < 1) return;
+
+	Vec2f rotatedLastPoint = points.front();
+	Vec2f rotatedEndPoint = finalEndPoint;
+
+	if (rotatedLastPoint.x < rotatedEndPoint.x) return;
+
+	points.pop_front();
+	DeleteSegment(&listSegInfos.front());
+	listSegInfos.pop_front();
+
+	lastSeg.startPoint = &points.front();
+	listSegInfos.front().endPoint = &endPoint;
 }
 
-float SingleLightning::GetLightningLength()
+void SingleLightning::DrawLine(sf::RenderWindow& window, SegmentInfos& segInfo)
 {
-	return endPoint.x - startPoint.x;
-}
+	Vec2f startP = _parameters->startPoint + Math::RotatePoint((*segInfo.startPoint), Vec2f::zero, rotation);
+	Vec2f vecDirec = _parameters->startPoint + Math::RotatePoint((*segInfo.endPoint), Vec2f::zero, rotation) - startP;
+	float angle = Math::ToDegree(vecDirec.GetAngle()) + rotation;
 
-Vec2f SingleLightning::GetGLobalStartPoint()
-{
-	return _parameters->startPoint + Math::RotatePoint(startPoint, Vec2f::zero, rotation);
-}
+	Vec2f recPos = startP + vecDirec * 0.5f;
+	float length = vecDirec.GetMagnitude();
 
-void SingleLightning::Active() {}
+	Vec2f recSize = Vec2f(length + _parameters->linesWidth, _parameters->linesWidth);
+	Vec2f recOrigin = recSize * 0.5f;
+	Vec2f innerRecSize = Vec2f(length + _parameters->innerLineWidth, _parameters->innerLineWidth);
+	Vec2f recInnerOrigin = innerRecSize * 0.5f;
+
+	segInfo.recShape->setOrigin(recOrigin);
+	segInfo.recShape->setPosition(recPos);
+	segInfo.recShape->setRotation(angle);
+	segInfo.recShape->setSize(recSize);
+	window.draw((*segInfo.recShape));
+
+	segInfo.innerRecShape->setOrigin(recInnerOrigin);
+	segInfo.innerRecShape->setPosition(recPos);
+	segInfo.innerRecShape->setRotation(angle);
+	segInfo.innerRecShape->setSize(innerRecSize);
+	window.draw((*segInfo.innerRecShape));
+}
