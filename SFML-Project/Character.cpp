@@ -5,7 +5,6 @@ Character::Character() : Movable() {}
 void Character::Update(float deltaTime)
 {
 	Movable::Update(deltaTime);
-
 	Rotate(deltaTime);
 
 	if (chronoShootAgain <= timerShootAgain) {
@@ -52,17 +51,17 @@ void Character::Move(float deltaTime)
     position += velocity * deltaTime;
 }
 
+bool Character::CanShoot() const
+{
+    return _canShoot;
+}
+
 void Character::Rotate(float deltaTime)
 {
     if (rotationDirection != 0) {
         rotation += rotationDirection * rotationSpeed * deltaTime;
     }
     rotation = fmodf(rotation, 360);
-}
-
-bool Character::CanShoot() const
-{
-    return _canShoot;
 }
 
 CustomVector2f Character::GetLookDirection()

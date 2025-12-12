@@ -4,21 +4,12 @@
 
 class Player : public Character
 {
-private:
-    int _levelShooter = 1;
-    int _levelShooterMax = 3;
-    bool _isInvicible = false;
-    float _invicibleTime = 2.0f;
-	float _timeSinceInvincible = 0.0f;
-	float _timeSinceColorChange = 0.0f;
-protected:
-    void Damage(float dmg) override;
 
 public:
     //constructer
     Player();
 
-
+    //Functions
 	void Update(float deltaTime) override;
 
     int GetlevelShooter() const;
@@ -29,4 +20,17 @@ public:
     void Shoot();
     void OnCollisionEnter(GameObject* other) override;
     float GetMaxHealth() const;
+
+private:
+    // Variables
+    int _levelShooter = 1;
+    int _levelShooterMax = 3;
+    bool _isInvicible = false;
+    float _invicibleTime = 2.0f;
+	float _timeSinceInvincible = 0.0f;
+	float _timeSinceColorChange = 0.0f;
+
+protected:
+	// Functions
+    void Damage(float dmg) override;
 };

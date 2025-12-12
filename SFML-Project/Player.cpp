@@ -4,9 +4,6 @@ Player::Player() : Character() {
 	characterType = CharaType::Player;
 	shapeType = ShapeType::Convex;
 
-	layer = CollisionLayer::Layer_Player;
-	collisionMask = static_cast<LayerMask>(CollisionLayer::Layer_BulletEnemy) |
-		static_cast<LayerMask>(CollisionLayer::Layer_Enemy) | static_cast<LayerMask>(CollisionLayer::Layer_Collectible);
 
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
@@ -22,20 +19,54 @@ Player::Player() : Character() {
 	Vec2f points[3] = { pShape->getPoint(0), pShape->getPoint(1) , pShape->getPoint(2) };
 	SetBroadRadiusFromPoints(points, 3);
 
+	layer = CollisionLayer::Layer_Player;
+	collisionMask = static_cast<LayerMask>(CollisionLayer::Layer_BulletEnemy) |
+		static_cast<LayerMask>(CollisionLayer::Layer_Enemy) | static_cast<LayerMask>(CollisionLayer::Layer_Collectible);
+
 	bulletSpawnPos = CustomVector2f(15, 0);
+	speedBullet = 150;
+	timerShootAgain = 0.1f;
+	chronoShootAgain = timerShootAgain;
 
 	maxInputSpeed = 200;
 	acceleration = 1600;
 	stopFriction = 800;
 	turnBackFriction = 1600;
-
 	rotationSpeed = 200;
-	timerShootAgain = 0.1f;
-	speedBullet = 150;
-	chronoShootAgain = timerShootAgain;
+
 	health = 5;
 	maxHealth = 5;
+
 	Active();
+}
+
+void Player::Update(float deltaTime)
+{
+	Character::Update(deltaTime);
+	if (_isInvicible)
+	{
+		_timeSinceInvincible += deltaTime;
+		_timeSinceColorChange += deltaTime;
+		if (_timeSinceColorChange >= 0.1f)
+		{
+			_timeSinceColorChange = 0.0f;
+			if (shape->getFillColor() == sf::Color::White)
+			{
+				shape->setFillColor(_colors[_color]);
+			}
+			else
+			{
+				shape->setFillColor(sf::Color::White);
+			}
+		}
+			
+		if(_timeSinceInvincible >= _invicibleTime)
+		{
+			_isInvicible = false;
+			_timeSinceInvincible = 0.0f;
+			shape->setFillColor(_colors[_color]);
+		}
+	}
 }
 
 int Player::GetlevelShooter() const {
@@ -106,6 +137,10 @@ void Player::OnCollisionEnter(GameObject* other)
 	}
 }
 
+float Player::GetMaxHealth() const {
+	return maxHealth;
+}
+
 void Player::Damage(float dmg)
 {
 	if (!_isInvicible)
@@ -124,37 +159,4 @@ void Player::Damage(float dmg)
 			//cut le jeu
 		}
 	}
-}
-
-void Player::Update(float deltaTime)
-{
-	Character::Update(deltaTime);
-	if (_isInvicible)
-	{
-		_timeSinceInvincible += deltaTime;
-		_timeSinceColorChange += deltaTime;
-		if (_timeSinceColorChange >= 0.1f)
-		{
-			_timeSinceColorChange = 0.0f;
-			if (shape->getFillColor() == sf::Color::White)
-			{
-				shape->setFillColor(_colors[_color]);
-			}
-			else
-			{
-				shape->setFillColor(sf::Color::White);
-			}
-		}
-			
-		if(_timeSinceInvincible >= _invicibleTime)
-		{
-			_isInvicible = false;
-			_timeSinceInvincible = 0.0f;
-			shape->setFillColor(_colors[_color]);
-		}
-	}
-}
-
-float Player::GetMaxHealth() const {
-	return maxHealth;
 }

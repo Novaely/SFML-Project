@@ -2,16 +2,16 @@
 
 Collectible::Collectible() : GameObject() {
 	_lifeTime = 5;
+
 	shape = new sf::CircleShape();
 	shapeType = ShapeType::Circle;
-	
-	layer = CollisionLayer::Layer_Collectible;
-	collisionMask = CollisionLayer::Layer_Player;
-
 	sf::CircleShape* pShape = (sf::CircleShape*)shape;
 	pShape->setRadius(7.5f);
 	pShape->setOrigin(7.5f, 7.5f);
 	broadRadius = 7.5f;
+	
+	layer = CollisionLayer::Layer_Collectible;
+	collisionMask = CollisionLayer::Layer_Player;
 }
 
 void Collectible::OnCollisionEnter(GameObject* other) 

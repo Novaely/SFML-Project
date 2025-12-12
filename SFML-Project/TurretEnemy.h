@@ -5,13 +5,17 @@
 class TurretEnemy : public ShooterEnemy
 {
 	public:
-		LightningNode* lastLightningShooted = nullptr;
-
+		// Constructor
 		TurretEnemy();
 
+		// Variables
+		LightningNode* lastLightningShooted = nullptr;
+
+		//Functions
 		std::function<void(TurretEnemy&)> OnShoot;
 
 	protected:
+		//Functions
 		void TryShoot() override;
 		void Damage(float dmg) override;
 };
