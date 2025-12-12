@@ -78,12 +78,12 @@ void HUDManager::Draw(sf::RenderWindow& window)
 		window.draw(_timer);
 		if (_gameManager->GetMultiplicateur() > 1)
 		{
-			_multiplicateur.setString("x" + std::to_string(gameManager->GetMultiplicateur()));
+			_multiplicateur.setString("x" + std::to_string(_gameManager->GetMultiplicateur()));
 			window.draw(_multiplicateur);
 		}
-		_level.setString("Level : " + std::to_string(gameManager->GetLevel()));
+		_level.setString("Level : " + std::to_string(_gameManager->GetLevel()));
 		window.draw(_level);
-		_fps.setString("FPS : " + std::to_string(gameManager->GetFPS()));
+		_fps.setString("FPS : " + std::to_string(_gameManager->GetFPS()));
 		window.draw(_fps);
 	}
 	else

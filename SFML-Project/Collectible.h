@@ -10,10 +10,5 @@ class Collectible : public GameObject
 		//Functions
 		std::function<void(GameObject*)> pCollected;
 		void OnCollisionEnter(GameObject* other) override;
-
-	private :
-		// Variables
-		float _lifeTime;
-		float _chrono = 0;
 };
 

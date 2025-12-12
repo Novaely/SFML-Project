@@ -163,17 +163,19 @@ LightningNode* GameManager::CreateLightning(Team team, CustomVector2f position, 
 
 void GameManager::CreateCollectible(CustomVector2f position) {
 	Collectible* collectible = new Collectible();
-	collectible->Color = ColorType::Yellow;
 	collectible->position = position;
 	collectible->isAlive = true;
 	switch (RandomInt(0, 2)) {
 		case 0:
+			collectible->Color = ColorType::Yellow;
 			collectible->pCollected = [this](GameObject* go) { this->BonusScore(5,2); }; 
 			break;
 		case 1:
+			collectible->Color = ColorType::Pink;
 			collectible->pCollected = [this](GameObject* go) { this->BonusVie(1); }; 
 			break;
 		case 2:
+			collectible->Color = ColorType::Orange;
 			collectible->pCollected = [this](GameObject* go) { this->BonusTir(); };
 			break;
 	}
