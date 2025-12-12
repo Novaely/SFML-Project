@@ -42,7 +42,7 @@ GameManager::GameManager()
 
 	RestartGame();
 	_wantSpawnEnemy = true; //mettre en true si vous voulez avoir le spawn des ennemies
-	_radiusSpawnEnemy = (200, 200);
+	std::cout << _radiusSpawnEnemy << std::endl;
 }
 
 void GameManager::NewGameObjectCreated(GameObject* go)
@@ -267,6 +267,11 @@ void GameManager::SpawnWaveEnemy(CustomVector2f windowSize) {
 	}
 }
 
+Vec2f GameManager::GetRandomPosForEnemy()
+{
+	return player->position + Math::Polar2Cart(RandomFloat(0, Math::PI * 2.0f), _radiusSpawnEnemy);
+}
+
 void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 	ColorType color = ColorType::None;
 	switch (RandomInt(0, 2)) {
@@ -280,18 +285,22 @@ void GameManager::SpawnEnemy(CustomVector2f windowSize) {
 			color = ColorType::Green;
 			break;
 	}
+	Vec2f pos = GetRandomPosForEnemy();
+	pos.x = Math::Clamp(pos.x, _screenPading, windowSize.x - _screenPading);
+	pos.y = Math::Clamp(pos.y, _screenPading, windowSize.y - _screenPading);
+
 	switch (RandomInt(0, 4))
 	{
 		case 0:
 		case 1:
-			CreateCacEnemy({ Math::Clamp(RandomFloat(0, windowSize.x),player->position.x - _radiusSpawnEnemy.x,windowSize.x),Math::Clamp(RandomFloat(0, windowSize.y),player->position.y - _radiusSpawnEnemy.y,windowSize.y) }, 100, color);
+			CreateCacEnemy(pos, 100, color);
 			break;
 		case 2:
 		case 3:
-			CreateShooterEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			CreateShooterEnemy(pos, 100, color);
 			break;
 		case 4:
-			CreateTurretEnemy({ RandomFloat(0, windowSize.x),RandomFloat(0, windowSize.y) }, 100, color);
+			CreateTurretEnemy(pos, 100, color);
 			break;
 	}
 }

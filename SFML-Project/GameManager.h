@@ -67,7 +67,8 @@ private:
     bool _wantSpawnEnemy;
     int _wave;
     float _timeBeforefirstEnemy = 2.0f;
-    CustomVector2f _radiusSpawnEnemy;
+    float _radiusSpawnEnemy = 250;
+    float _screenPading = 15;
 
     int _idGameObjectCreateListener = -1;
 
@@ -81,6 +82,8 @@ private:
 
     bool IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds);
     void StickGameObjectInBounds(GameObject& go, Vec2f& bounds);
+
+    Vec2f GetRandomPosForEnemy();
 
     //foncion bonus
     void BonusScore(float timer, int multiplicateur);
