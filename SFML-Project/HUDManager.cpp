@@ -10,9 +10,6 @@ HUDManager::HUDManager()
 	_wasGamePause = false;
 
 	_button.setFillColor(sf::Color::Blue);
-	_button.setSize({200, 35});
-	_button.setPosition({300, 275});
-
 }
 
 void HUDManager::SetGameHUDValues()
@@ -39,23 +36,25 @@ void HUDManager::SetGameHUDValues()
 	_fps.setFillColor(sf::Color::White);
 
 	// Position dans la fenêtre
-	_score.setPosition(50, 60);
-	_timer.setPosition(50, 25);
-	_level.setPosition(50, 95);
-	_multiplicateur.setPosition(30, 550);
-	_fps.setPosition(650, 550);
+	_score.setPosition(Vec2f(50, 60) * _ratio);
+	_timer.setPosition(Vec2f(50, 25) * _ratio);
+	_level.setPosition(Vec2f(50, 95) * _ratio);
+	_multiplicateur.setPosition(Vec2f(30, 550) * _ratio);
+	_fps.setPosition(Vec2f(650, 550) * _ratio);
 }
 
 void HUDManager::SetPauseHUDValues()
 {
-	_level.setPosition(320, 150);
+	_level.setPosition(Vec2f(320, 150) * _ratio);
 	_level.setCharacterSize(32);
 	_level.setFillColor(sf::Color::Red);
 	_level.setString("Game Over");
-	_score.setPosition(315, 200);
+	_score.setPosition(Vec2f(315, 200) * _ratio);
 	_score.setString("Score final : " + std::to_string(_gameManager->score));
-	_multiplicateur.setPosition(350, 275);
+	_multiplicateur.setPosition(Vec2f(350, 275) * _ratio);
 	_multiplicateur.setString("Restart");
+	_button.setSize(Vec2f(200, 35) * _ratio);
+	_button.setPosition(Vec2f(300, 275) * _ratio);
 }
 
 void HUDManager::Draw(sf::RenderWindow& window)
@@ -68,9 +67,12 @@ void HUDManager::Draw(sf::RenderWindow& window)
 			SetGameHUDValues();
 		}
 
+		Vec2f heartPos = Vec2f::zero;
+		Vec2f heartSpacing = Vec2f(50, 0) * _ratio;
 		for (int i = 0; i < _gameManager->player->health; i++)
 		{
-			CreateLifePoint({ (9.0f + i) * 40.0f, 25.0f }, window);
+			heartPos = Vec2f(300, 25.0f) * _ratio + heartSpacing * i;
+			CreateLifePoint(heartPos, window);
 		}
 		_score.setString("Score : " + std::to_string(_gameManager->score));
 		window.draw(_score);
@@ -103,7 +105,7 @@ void HUDManager::Draw(sf::RenderWindow& window)
 
 void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window)
 {
-	float radius = 7.5f;
+	float radius = 7.5f * _ratio.GetMagnitude();
 
 	sf::CircleShape circLeft(radius);
 	circLeft.setOrigin(Vec2f(radius));
@@ -131,4 +133,23 @@ void HUDManager::CreateLifePoint(const CustomVector2f& position, sf::RenderWindo
 bool HUDManager::DoRestartButtonContainsPos(Vec2f& pos) 
 {
 	return _button.getGlobalBounds().contains(pos);
+}
+
+void HUDManager::SetWindowRatio(const Vec2f& windowSize)
+{
+	_ratio = windowSize / _baseSize;
+	std::cout << _ratio << std::endl;
+	if (_gameManager->pause)
+	{
+		SetPauseHUDValues();
+	}
+	else
+	{
+		SetGameHUDValues();
+	}
+}
+
+Vec2f HUDManager::GetRatio()
+{
+	return _ratio;
 }

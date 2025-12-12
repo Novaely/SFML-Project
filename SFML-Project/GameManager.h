@@ -25,7 +25,7 @@ public :
     PoolManager* poolManager = nullptr;
 
     void Update(float deltaTime, CustomVector2f& windowSize);
-    void Draw(sf::RenderWindow& window) override;
+    void Draw(sf::RenderWindow& window, const Vec2f& _scaleRaio);
     void UpdateDestroyItem();
 
     void RestartGame();

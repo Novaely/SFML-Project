@@ -14,6 +14,8 @@ class HUDManager :
 		bool DoRestartButtonContainsPos(Vec2f& pos);
 	    void Draw(sf::RenderWindow& window) override;
         void CreateLifePoint(const CustomVector2f& position, sf::RenderWindow& window);
+		void SetWindowRatio(const Vec2f& windowSize);
+		Vec2f GetRatio();
 
 	private:
 		// Variable text
@@ -24,6 +26,9 @@ class HUDManager :
 		sf::Text _fps;
 		sf::Font _font;
 		sf::RectangleShape _button;
+
+		Vec2f _baseSize = Vec2f(800, 600);
+		Vec2f _ratio = Vec2f::zero;
 
 		// Variable 
 		GameManager* _gameManager = nullptr;

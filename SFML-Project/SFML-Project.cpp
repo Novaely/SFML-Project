@@ -19,7 +19,9 @@ int main()
 	gameManager.poolManager = &poolManager;
 	CollisionManager collisionManager(windowSize);
 	HUDManager hudManager;
-
+	hudManager.SetWindowRatio(windowSize);
+	Vec2f scaleRatio = hudManager.GetRatio();
+	
 	sf::Clock clock;
 	float deltaTime = 0;
 
@@ -35,7 +37,7 @@ int main()
 	while (window.isOpen()) {
 		deltaTime = clock.restart().asSeconds();
 
-		 //CHeck Input
+		//CHeck Input
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			// Process any input event here
@@ -80,7 +82,7 @@ int main()
 			
 			//Render
 			window.clear();
-			gameManager.Draw(window);
+			gameManager.Draw(window, scaleRatio);
 			hudManager.Draw(window);
 			window.display();
 		}

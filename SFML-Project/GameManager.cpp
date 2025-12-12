@@ -70,11 +70,14 @@ void GameManager::Update(float deltaTime, CustomVector2f& windowSize)
 	}
 }
 
-void GameManager::Draw(sf::RenderWindow& window)
+void GameManager::Draw(sf::RenderWindow& window, const Vec2f& _scaleRatio)
 {
 	auto goIt = gameObjects.begin();
+	sf::Shape* pShape;
 	while (goIt != gameObjects.end()) 
 	{
+		pShape = (*goIt)->shape;
+		pShape->setScale(_scaleRatio);
 		(*goIt)->Draw(window);
 		goIt++;
 	}
