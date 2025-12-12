@@ -7,9 +7,7 @@
 // Constructor //
 LightningNode::LightningNode() : GameObject(), allLightnings(numLightning, nullptr)
 {
-	characterType = CharaType::Lighting;
 	shapeType = ShapeType::Rectangle;
-
 	layer = CollisionLayer::Layer_BulletEnemy;
 	collisionMask = CollisionLayer::Layer_Player;
 
@@ -42,13 +40,13 @@ void LightningNode::Update(float deltaTime)
 	if (allLightnings.size() > 0)
 	{
 		sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
-		pShape->setSize(Vec2f(allLightnings.front()->GetLightningLength(), parameters.width));
+		pShape->setSize(Vec2f(allLightnings.front()->GetLightningLength(), (float)parameters.width));
 		Vec2f pos = allLightnings.front()->GetGLobalStartPoint();
 
 		Vec2f direction = Math::Polar2Cart(parameters.rotation, 1);
 		Vec2f normal = direction.GetNormalClockWise();
 
-		pos += normal * parameters.width * 0.5f;
+		pos += normal * (float)parameters.width * 0.5f;
 
 		pShape->setPosition(pos);
 		pShape->setRotation(Math::ToDegree(parameters.rotation));
@@ -93,7 +91,7 @@ void LightningNode::StartLightning()
 	}
 
 	sf::RectangleShape* pShape = (sf::RectangleShape*)shape;
-	pShape->setSize(Vec2f(0, parameters.width));
+	pShape->setSize(Vec2f(0, (float)parameters.width));
 	pShape->setPosition(startPoint);
 	position = startPoint;
 

@@ -37,7 +37,7 @@ void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
 		Vec2f rectPos = rectShape->getPosition();
 		float rectRotation = Math::ToRad(rectShape->getRotation());
 
-		numPoints = rectShape->getPointCount();
+		numPoints = (int)rectShape->getPointCount();
 		
 		points.resize(numPoints, Vec2f::zero);
 		normals.resize(numPoints, Vec2f::zero);
@@ -60,7 +60,7 @@ void CollisionManager::ConvexShapeInfo::ComputPointsAndNormals()
 		Vec2f trianPos = convexShape->getPosition();
 		float trianRotation = Math::ToRad(convexShape->getRotation());
 
-		numPoints = convexShape->getPointCount();
+		numPoints = (int)convexShape->getPointCount();
 		points.resize(numPoints, Vec2f::zero);
 		normals.resize(numPoints, Vec2f::zero);
 
@@ -93,7 +93,6 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 		switch (goB->shapeType)
 		{
 		case ShapeType::Circle:
-			//std::cout << "Coll Circle with Circle not supported" << std::endl;
 			return false;
 		case ShapeType::Rectangle:
 			return CheckCollisionsCircleRectangle(goAShape, *static_cast<sf::RectangleShape*>(goB->shape));
@@ -114,7 +113,6 @@ bool CollisionManager::CheckCollisionPair(GameObject* goA, GameObject* goB)
 		case ShapeType::Circle:
 			return CheckCollisionsCircleRectangle(*static_cast<sf::CircleShape*>(goB->shape), goAShape);
 		case ShapeType::Rectangle:
-			//std::cout << "Coll Rectangle with Rectangle not supported" << std::endl;
 			return false;
 		case ShapeType::Convex:
 			return CheckCollisionsSquareTriangle(goAShape, *static_cast<sf::ConvexShape*>(goB->shape));
@@ -288,7 +286,7 @@ bool CollisionManager::CheckCollisionsCircleTriangle(const sf::CircleShape& circ
 
 bool CollisionManager::IsPointInConvexShape(const Vec2f& point, const std::vector<Vec2f>& shapePoints, const std::vector<Vec2f>& convNormals)
 {
-	int numPoints = shapePoints.size();
+	int numPoints = (int)shapePoints.size();
 	for (int i = 0; i < numPoints; i++) 
 	{
 		if (convNormals[i].Dot(point - shapePoints[i]) > 0)

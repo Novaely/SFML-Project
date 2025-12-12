@@ -1,7 +1,6 @@
 #include "ShooterEnemy.h"
 
 ShooterEnemy::ShooterEnemy() {
-	characterType = CharaType::ShooterEnemy;
 	shapeType = ShapeType::Convex;
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();

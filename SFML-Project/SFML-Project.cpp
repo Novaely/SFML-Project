@@ -67,7 +67,7 @@ int main()
 			fpsElapsedTime += deltaTime;
 			if (fpsElapsedTime >= fpsTimeToWait)
 			{
-				gameManager.fps = frameCount / fpsTimeToWait;
+				gameManager.fps = (float)frameCount / fpsTimeToWait;
 				//std::cout << "FPS : " << gameManager.fps << std::endl;
 				//std::cout << gameManager.gameObjects.size() << std::endl;
 				frameCount = 0;

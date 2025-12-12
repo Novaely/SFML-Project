@@ -7,9 +7,6 @@ class LightningNode : public GameObject
 	public:
         // ===== VARIABLES ===== //
 
-        // Game //
-        float damages = 0;
-
         // Lightning //
         Vec2f startPoint = Vec2f::zero;
         Vec2f endPoint = Vec2f::zero;

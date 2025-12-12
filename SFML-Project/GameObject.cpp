@@ -79,7 +79,7 @@ void GameObject::Destroy()
 
 int GameObject::AddCreateListener(const std::function<void(GameObject*)>& func)
 {
-	int id = _createListeners.size();
+	int id = (int)_createListeners.size();
 	_createListeners[id] = func;
 	return id;
 }

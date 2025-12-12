@@ -150,7 +150,7 @@ LightningNode* GameManager::CreateLightning(Team team, CustomVector2f position, 
 {
 	LightningNode* lightning = new LightningNode();
 	lightning->isAlive = true;
-	lightning->damages = damage;
+	lightning->damage = damage;
 	lightning->team = team;
 	lightning->startPoint = position;
 	lightning->endPoint = position + direction * 1000;
@@ -365,16 +365,17 @@ void GameManager::UpdateAll(float deltaTime, CustomVector2f& windowSize)
 	while (goIt != gameObjects.end())
 	{
 		(*goIt)->Update(deltaTime);
-		switch ((*goIt)->characterType)
+		switch ((*goIt)->layer)
 		{
-		case CharaType::Bullet:
+		case Layer_BulletPlayer:
+		case Layer_BulletEnemy:
 			if (IsPosOutOfBounds((*goIt)->position, windowSize))
 			{
 				(*goIt)->Destroy();
 			}
 			break;
 		
-		case CharaType::Player:
+		case Layer_Player:
 			StickGameObjectInBounds(*(*goIt), windowSize);
 			break;
 
@@ -388,13 +389,20 @@ void GameManager::UpdateAll(float deltaTime, CustomVector2f& windowSize)
 void GameManager::UpdateDestroyItem()
 {
 	auto itGo = gameObjects.begin();
+	Bullet* pBullet = nullptr;
 	while (itGo != gameObjects.end())
 	{
 		if (!(*itGo)->isAlive)
 		{
-			if ((*itGo)->characterType == CharaType::Bullet)
+			if ((*itGo)->layer == Layer_BulletPlayer || (*itGo)->layer == Layer_BulletEnemy)
 			{
-				poolManager->ReturnBullet(static_cast<Bullet*>(*itGo));
+				// Check if Bullet or Lightning
+				pBullet = dynamic_cast<Bullet*>(*itGo);
+				if (pBullet != nullptr)
+				{
+					poolManager->ReturnBullet(pBullet);
+					pBullet = nullptr;
+				}
 			}
 			itGo = gameObjects.erase(itGo);
 		}
@@ -412,7 +420,7 @@ GameManager* GameManager::GetInstance()
 }
 int GameManager::GetPlayerHealth() const
 {
-	return player->health;
+	return (int)player->health;
 }
 float GameManager::GetTime()
 {

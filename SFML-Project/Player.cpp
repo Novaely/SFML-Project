@@ -1,7 +1,6 @@
 #include "Player.h"
 
 Player::Player() : Character() {
-	characterType = CharaType::Player;
 	shapeType = ShapeType::Convex;
 
 	Color = ColorType::Red;
@@ -75,7 +74,7 @@ int Player::GetlevelShooter() const {
 void Player::SetlevelShooter(int val) {
 	if (val > 0) {
 		_levelShooter = val;
-		Math::Clamp(_levelShooter, 0, _levelShooterMax);
+		Math::Clamp((float)_levelShooter, 0, (float)_levelShooterMax);
 	}
 }
 
@@ -107,32 +106,11 @@ void Player::Shoot() {
 
 void Player::OnCollisionEnter(GameObject* other)
 {
-	const GameObject& Other = *(other);
-	if (Other.characterType == CharaType::Bullet)
-	{
-		if (Other.team == Team::Enemy)
-		{
-			//std::cout << "Player hit by bullet Enemy" << std::endl;
-			Damage(((Movable*)other)->damage);
-		}
-	}
+	const GameObject& pOther = *(other);
 
-	if (Other.characterType == CharaType::CACEnemy)
+	if (pOther.layer == Layer_Enemy || pOther.layer == Layer_BulletEnemy)
 	{
-		//std::cout << "Player hit by CAC Enemy" << std::endl;
-		Damage(((Movable*)other)->damage);
-	}
-
-	if (Other.characterType == CharaType::ShooterEnemy)
-	{
-		//std::cout << "Player hit by Shooter Enemy" << std::endl;
-		Damage(((Movable*)other)->damage);
-	}
-
-	if (Other.characterType == CharaType::Lighting)
-	{
-		//std::cout << "Player hit by Lightning" << std::endl;
-		Damage(((LightningNode*)other)->damages);
+		Damage(((GameObject*)other)->damage);
 	}
 }
 
@@ -154,8 +132,6 @@ void Player::Damage(float dmg)
 		if (health <= 0)
 		{
 			isAlive = false;
-			//std::cout << "fin du jeu" << std::endl;
-			//cut le jeu
 		}
 	}
 }

@@ -2,7 +2,6 @@
 
 Bullet::Bullet() : Movable()
 {
-	characterType = CharaType::Bullet;
 	shapeType = ShapeType::Circle;
 	shape = new sf::CircleShape();
 
@@ -40,33 +39,17 @@ void Bullet::Desactive()
 
 void Bullet::OnCollisionEnter(GameObject* other)
 {
-	if (other == nullptr) {
+	const GameObject& pOther = *(other);
+
+	if (team == Team::Enemy && pOther.layer == Layer_Player)
+	{
 		Destroy();
+		return;
 	}
-	else {
-		const GameObject& Other = *(other);
 
-		if (team == Team::Enemy)
-		{
-			if (Other.characterType == CharaType::Player)
-			{
-				Destroy();
-			}
-		}
-
-		if (team == Team::Player)
-		{
-			if (Other.Color == _color)
-			{
-				if (Other.characterType == CharaType::CACEnemy)
-				{
-					Destroy();
-				}
-				if (Other.characterType == CharaType::ShooterEnemy)
-				{
-					Destroy();
-				}
-			}
-		}
-	}
+	if (team == Team::Player && pOther.layer == Layer_Enemy && pOther.Color == _color)
+	{
+		Destroy();
+		return;
+	}	
 }

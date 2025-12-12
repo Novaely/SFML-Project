@@ -19,7 +19,7 @@ class GameObject
 		// Game //
 		bool isAlive = true;
 		Team team = Team::None;
-		CharaType characterType = CharaType::None;
+		float damage = 0;
 
 		// transform //
 		CustomVector2f position = CustomVector2f::zero;
