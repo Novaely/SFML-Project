@@ -26,7 +26,6 @@ enum class Team { None, Player, Enemy };
 int RandomInt(int min, int max);
 float RandomFloat(float min, float max);
 
-
 namespace Math
 {
 	const float PI = 3.14159265358979323846f;
@@ -40,4 +39,4 @@ namespace Math
 	float DistancePointToSegment(CustomVector2f point, CustomVector2f segPointA, CustomVector2f segPointB);
 
 	CustomVector2f RotatePoint(CustomVector2f point, CustomVector2f origin, float angle);
-} 
+}

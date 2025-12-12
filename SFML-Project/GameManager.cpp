@@ -359,9 +359,9 @@ bool GameManager::IsPosOutOfBounds(Vec2f& pos, Vec2f& bounds)
 
 void GameManager::StickGameObjectInBounds(GameObject& go, Vec2f& bounds)
 {
-	float minX = go.broadRadius * 0.5f;
+	float minX = go.broadRadius;
 	float maxX = bounds.x - minX;
-	float minY = go.broadRadius * 0.5f;
+	float minY = go.broadRadius;
 	float maxY = bounds.y - minY;
 
 	go.position.x = Math::Clamp(go.position.x, minX, maxX);

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 
+// VARIABLES //
+
 #pragma region Consts
 
 const CustomVector2f CustomVector2f::zero = CustomVector2f(0);
@@ -14,6 +16,7 @@ const CustomVector2f CustomVector2f::up = CustomVector2f(0, 1);
 
 #pragma endregion
 
+// FUNCTIONS //
 
 #pragma region Constructors
 
@@ -24,136 +27,6 @@ CustomVector2f::CustomVector2f(const sf::Vector2f& v) : x(v.x), y(v.y) {}
 
 #pragma endregion
 
-#pragma region Operators
-
-//With CustomVector2f
-
-CustomVector2f CustomVector2f::operator+(const CustomVector2f& other) const
-{
-	return CustomVector2f(x + other.x, y + other.y);
-}
-
-CustomVector2f CustomVector2f::operator-(const CustomVector2f& other) const
-{
-	return CustomVector2f(x - other.x, y - other.y);
-}
-
-CustomVector2f CustomVector2f::operator-() const
-{
-	return CustomVector2f(-x, -y);
-}
-
-CustomVector2f CustomVector2f::operator*(const CustomVector2f& other) const
-{
-	return CustomVector2f(x * other.x, y * other.y);
-}
-
-CustomVector2f CustomVector2f::operator/(const CustomVector2f& other) const
-{
-	return CustomVector2f(x / other.x, y / other.y);
-}
-
-CustomVector2f& CustomVector2f::operator+=(const CustomVector2f& other)
-{
-	x += other.x;
-	y += other.y;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator-=(const CustomVector2f& other)
-{
-	x -= other.x;
-	y -= other.y;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator*=(const CustomVector2f& other)
-{
-	x *= other.x;
-	y *= other.y;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator/=(const CustomVector2f& other)
-{
-	x /= other.x;
-	y /= other.y;
-	return *this;
-}
-
-bool CustomVector2f::operator==(const CustomVector2f& other) const
-{
-	return x == other.x && y == other.y;
-}
-
-bool CustomVector2f::operator!=(const CustomVector2f& other) const
-{
-	return x != other.x || y != other.y;
-}
-
-CustomVector2f::operator sf::Vector2f() const
-{ 
-	return sf::Vector2f(x, y);
-}
-
-// With float
-
-CustomVector2f CustomVector2f::operator+(const float& other) const
-{
-	return CustomVector2f(x + other, y + other);
-}
-
-CustomVector2f CustomVector2f::operator-(const float& other) const
-{
-	return CustomVector2f(x - other, y - other);
-}
-
-CustomVector2f CustomVector2f::operator*(const float& other) const
-{
-	return CustomVector2f(x * other, y * other);
-}
-
-CustomVector2f CustomVector2f::operator/(const float& other) const
-{
-	return CustomVector2f(x / other, y / other);
-}
-
-CustomVector2f& CustomVector2f::operator+=(const float& other)
-{
-	x += other;
-	y += other;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator-=(const float& other)
-{
-	x -= other;
-	y -= other;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator*=(const float& other)
-{
-	x *= other;
-	y *= other;
-	return *this;
-}
-
-CustomVector2f& CustomVector2f::operator/=(const float& other)
-{
-	x /= other;
-	y /= other;
-	return *this;
-}
-
-std::ostream& operator<<(std::ostream& os, const CustomVector2f& v)
-{
-	os << "X: " << v.x << " Y: " << v.y;
-	return os;
-}
-
-#pragma endregion
-
 #pragma region Methods
 
 float CustomVector2f::GetSquaredMagnitude() const
@@ -161,7 +34,7 @@ float CustomVector2f::GetSquaredMagnitude() const
 	return x * x + y * y;
 }
 
-float CustomVector2f::GetMagnitude() const 
+float CustomVector2f::GetMagnitude() const
 {
 	return std::sqrt(GetSquaredMagnitude());
 }
@@ -246,3 +119,134 @@ CustomVector2f CustomVector2f::Rotate(float angle) const
 
 #pragma endregion
 
+#pragma region Operators
+
+// Conversion //
+CustomVector2f::operator sf::Vector2f() const
+{
+	return sf::Vector2f(x, y);
+}
+
+// With CustomVector2f //
+
+CustomVector2f CustomVector2f::operator+(const CustomVector2f& other) const
+{
+	return CustomVector2f(x + other.x, y + other.y);
+}
+
+CustomVector2f CustomVector2f::operator-(const CustomVector2f& other) const
+{
+	return CustomVector2f(x - other.x, y - other.y);
+}
+
+CustomVector2f CustomVector2f::operator-() const
+{
+	return CustomVector2f(-x, -y);
+}
+
+CustomVector2f CustomVector2f::operator*(const CustomVector2f& other) const
+{
+	return CustomVector2f(x * other.x, y * other.y);
+}
+
+CustomVector2f CustomVector2f::operator/(const CustomVector2f& other) const
+{
+	return CustomVector2f(x / other.x, y / other.y);
+}
+
+CustomVector2f& CustomVector2f::operator+=(const CustomVector2f& other)
+{
+	x += other.x;
+	y += other.y;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator-=(const CustomVector2f& other)
+{
+	x -= other.x;
+	y -= other.y;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator*=(const CustomVector2f& other)
+{
+	x *= other.x;
+	y *= other.y;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator/=(const CustomVector2f& other)
+{
+	x /= other.x;
+	y /= other.y;
+	return *this;
+}
+
+// With float //
+
+CustomVector2f CustomVector2f::operator+(const float& other) const
+{
+	return CustomVector2f(x + other, y + other);
+}
+
+CustomVector2f CustomVector2f::operator-(const float& other) const
+{
+	return CustomVector2f(x - other, y - other);
+}
+
+CustomVector2f CustomVector2f::operator*(const float& other) const
+{
+	return CustomVector2f(x * other, y * other);
+}
+
+CustomVector2f CustomVector2f::operator/(const float& other) const
+{
+	return CustomVector2f(x / other, y / other);
+}
+
+CustomVector2f& CustomVector2f::operator+=(const float& other)
+{
+	x += other;
+	y += other;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator-=(const float& other)
+{
+	x -= other;
+	y -= other;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator*=(const float& other)
+{
+	x *= other;
+	y *= other;
+	return *this;
+}
+
+CustomVector2f& CustomVector2f::operator/=(const float& other)
+{
+	x /= other;
+	y /= other;
+	return *this;
+}
+
+// Comparaison operators //
+bool CustomVector2f::operator==(const CustomVector2f& other) const
+{
+	return x == other.x && y == other.y;
+}
+
+bool CustomVector2f::operator!=(const CustomVector2f& other) const
+{
+	return x != other.x || y != other.y;
+}
+
+#pragma endregion
+
+std::ostream& operator<<(std::ostream& os, const CustomVector2f& v)
+{
+	os << "X: " << v.x << " Y: " << v.y;
+	return os;
+}

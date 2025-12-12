@@ -104,15 +104,13 @@ void GameObject::SetBroadRadiusFromPoints(const Vec2f points[], int numPoints)
 {
 	float maxDist = 0;
 	float currentDist = 0;
-	Vec2f point = Vec2f::zero;
 	for (int i = 0; i < numPoints; i++)
 	{
 		currentDist = points[i].GetSquaredMagnitude();
 		if (currentDist > maxDist)
 		{
 			maxDist = currentDist;
-			point = points[i];
 		}
 	}
-	broadRadius = point.GetMagnitude();
+	broadRadius = std::sqrt(maxDist);
 }

@@ -4,9 +4,13 @@
 
 struct CustomVector2f
 {
+	// ===== VARIABLES ===== //
+
+	// Transform //
 	float x = 0.0f;
 	float y = 0.0f;
 
+	// Constants //
 	static const CustomVector2f zero;
 	static const CustomVector2f one;
 	static const CustomVector2f minusOne;
@@ -15,6 +19,8 @@ struct CustomVector2f
 	static const CustomVector2f left;
 	static const CustomVector2f up;
 
+	// ===== FUNCTIONS ===== //
+
 	// Constructors
 	CustomVector2f();
 	CustomVector2f(float _xy);
@@ -22,7 +28,6 @@ struct CustomVector2f
 	CustomVector2f(const sf::Vector2f& v);
 
 	// Methods
-
 	float GetSquaredMagnitude() const;
 	float GetMagnitude() const;
 	void SetMagnitude(float mag);
@@ -36,10 +41,12 @@ struct CustomVector2f
 	CustomVector2f GetNormalClockWise() const;
 	CustomVector2f DirectionTo(const CustomVector2f& other) const;
 	CustomVector2f Rotate(float angle) const;
-
 	float Dot(const CustomVector2f& other) const;
 
-	// Operators
+	// Conversion //
+	operator sf::Vector2f() const;
+
+	// Operators with CustomVector2f //
 	CustomVector2f operator+(const CustomVector2f& other) const;
 	CustomVector2f operator-(const CustomVector2f& other) const;
 	CustomVector2f operator-() const;
@@ -51,8 +58,7 @@ struct CustomVector2f
 	CustomVector2f& operator*=(const CustomVector2f& other);
 	CustomVector2f& operator/=(const CustomVector2f& other);
 
-	operator sf::Vector2f() const;
-
+	// Operators with float //
 	CustomVector2f operator+(const float& other) const;
 	CustomVector2f operator-(const float& other) const;
 	CustomVector2f operator*(const float& other) const;
@@ -63,6 +69,7 @@ struct CustomVector2f
 	CustomVector2f& operator*=(const float& other);
 	CustomVector2f& operator/=(const float& other);
 
+	// Comparaisons operators //
 	bool operator==(const CustomVector2f& other) const;
 	bool operator!=(const CustomVector2f& other) const;
 };

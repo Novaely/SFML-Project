@@ -4,12 +4,11 @@ Player::Player() : Character() {
 	characterType = CharaType::Player;
 	shapeType = ShapeType::Convex;
 
-
 	Color = ColorType::Red;
 	shape = new sf::ConvexShape();
 	shape->setFillColor(_colors[_color]);
-	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
 
+	sf::ConvexShape* pShape = (sf::ConvexShape*)shape;
 	pShape->setOrigin(0, 0);
 	pShape->setPointCount(3);
 	pShape->setPoint(0, sf::Vector2f{ 15, 0});
