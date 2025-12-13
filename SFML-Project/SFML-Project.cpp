@@ -29,6 +29,7 @@ int main()
 	const float fpsTimeToWait = 0.5f;
 
 	sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "SFML-Project");
+	window.setSize({1200, 900});
 	// Initialise everything below
 	// 
 	// Game loop
